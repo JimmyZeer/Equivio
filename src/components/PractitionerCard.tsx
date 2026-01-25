@@ -25,7 +25,7 @@ export function PractitionerCard({
     slug
 }: PractitionerCardProps) {
     return (
-        <div className="bg-white rounded-xl border border-neutral-stone/60 p-6 md:p-8 hover:shadow-premium-hover hover:border-primary-soft/20 hover:translate-y-[-2px] transition-soft group shadow-premium ring-0 hover:ring-1 hover:ring-primary-soft/5">
+        <div className="bg-white rounded-xl border border-neutral-stone/60 p-5 md:p-8 hover:shadow-premium-hover hover:border-primary-soft/20 hover:translate-y-[-2px] transition-soft group shadow-premium ring-0 hover:ring-1 hover:ring-primary-soft/5">
             <div className="flex flex-col md:flex-row justify-between gap-8">
                 <div className="space-y-5">
                     <div className="flex flex-wrap items-center gap-4">
@@ -45,7 +45,7 @@ export function PractitionerCard({
                     </div>
                 </div>
 
-                <div className="flex flex-col items-start md:items-end justify-center gap-4 min-w-[200px] border-t md:border-t-0 md:border-l border-neutral-stone/20 pt-6 md:pt-0 md:pl-8">
+                <div className="flex flex-col items-start md:items-end justify-center gap-4 min-w-[200px] border-t md:border-t-0 md:border-l border-neutral-stone/20 pt-5 md:pt-0 md:pl-8 mt-2 md:mt-0">
                     <div className="flex items-center gap-2.5 text-primary font-bold">
                         <Activity className="w-4 h-4 text-primary-soft" strokeWidth={2} />
                         <span className="text-base">{interventionCount} interventions</span>

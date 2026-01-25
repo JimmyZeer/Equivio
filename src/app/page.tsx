@@ -16,12 +16,12 @@ export default function Home() {
                 {/* 🏇 Hero Section Upgrade — Split Layout */}
                 <section className="bg-neutral-offwhite pt-20 pb-40 px-6 reveal overflow-hidden relative">
                     <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-                        <div className="space-y-12 relative z-10">
+                        <div className="space-y-8 md:space-y-12 relative z-10 text-center lg:text-left">
                             <div className="space-y-6">
-                                <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold text-primary leading-[1.1] tracking-tight">
+                                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-primary leading-[1.1] tracking-tight">
                                     Le réseau de <span className="text-primary-soft">confiance</span> des praticiens équins
                                 </h1>
-                                <p className="text-lg md:text-xl text-neutral-charcoal/60 leading-relaxed max-w-2xl">
+                                <p className="text-base sm:text-lg md:text-xl text-neutral-charcoal/60 leading-relaxed max-w-2xl mx-auto lg:mx-0">
                                     Une sélection basée sur l'activité réelle, pas sur des avis subjectifs. Trouvez l'expert certifié adapté à votre cheval.
                                 </p>
                             </div>
@@ -45,45 +45,42 @@ export default function Home() {
 
                 {/* 🛡 3 Pillars of Trust (Reference Design) */}
                 <section className="py-24 bg-white reveal [animation-delay:200ms]">
-                    <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
-                        <div className="space-y-6 p-10 rounded-3xl bg-neutral-offwhite/50 border border-neutral-stone/30 group hover:bg-white hover:shadow-premium transition-all duration-300">
-                            <div className="w-14 h-14 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-soft">
-                                <Database className="w-8 h-8" strokeWidth={1.5} />
+                    <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
+                        <div className="space-y-6 p-8 md:p-10 rounded-3xl bg-neutral-offwhite/50 border border-neutral-stone/30 group hover:bg-white hover:shadow-premium transition-all duration-300">
+                            <div className="w-12 h-12 md:w-14 md:h-14 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-soft">
+                                <Database className="w-6 h-6 md:w-8 md:h-8" strokeWidth={1.5} />
                             </div>
                             <h3 className="text-xl font-bold tracking-tight">Données vérifiées</h3>
                             <p className="text-neutral-charcoal/60 leading-relaxed text-sm">
                                 L'activité est tracée et certifiée par notre protocole technique exclusif, garantissant une pratique réelle.
                             </p>
                         </div>
-                        <div className="space-y-6 p-10 rounded-3xl bg-neutral-offwhite/50 border border-neutral-stone/30 group hover:bg-white hover:shadow-premium transition-all duration-300">
-                            <div className="w-14 h-14 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-soft">
-                                <Globe className="w-8 h-8" strokeWidth={1.5} />
+                        <div className="space-y-6 p-8 md:p-10 rounded-3xl bg-neutral-offwhite/50 border border-neutral-stone/30 group hover:bg-white hover:shadow-premium transition-all duration-300">
+                            <div className="w-12 h-12 md:w-14 md:h-14 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-soft">
+                                <Globe className="w-6 h-6 md:w-8 md:h-8" strokeWidth={1.5} />
                             </div>
                             <h3 className="text-xl font-bold tracking-tight">Transparence totale</h3>
                             <p className="text-neutral-charcoal/60 leading-relaxed text-sm">
                                 Accédez aux indicateurs réels de performance et de disponibilité, sans filtres marketing ou avis trompeurs.
                             </p>
                         </div>
-                        <div className="space-y-6 p-10 rounded-3xl bg-neutral-offwhite/50 border border-neutral-stone/30 group hover:bg-white hover:shadow-premium transition-all duration-300">
-                            <div className="w-14 h-14 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-soft">
-                                <Database className="w-8 h-8" strokeWidth={1.5} />
+                        <div className="space-y-6 p-8 md:p-10 rounded-3xl bg-neutral-offwhite/50 border border-neutral-stone/30 group hover:bg-white hover:shadow-premium transition-all duration-300">
+                            <div className="w-12 h-12 md:w-14 md:h-14 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-soft">
+                                <ShieldCheck className="w-6 h-6 md:w-8 md:h-8" strokeWidth={1.5} />
                             </div>
-                            <h3 className="text-xl font-bold tracking-tight">Réseau métier</h3>
+                            <h3 className="text-xl font-bold tracking-tight">Certification Equivio</h3>
                             <p className="text-neutral-charcoal/60 leading-relaxed text-sm">
-                                Rejoignez un cercle de praticiens engagés pour l'excellence et le bien-être équin.
+                                Chaque praticien est certifié par notre organisme indépendant, garantissant une expertise reconnue et vérifiée.
                             </p>
                         </div>
                     </div>
                 </section>
 
-                {/* Categories Section — Icon-based Grid */}
-                <section className="py-32 bg-neutral-offwhite reveal [animation-delay:400ms]">
-                    <div className="max-w-7xl mx-auto px-6 text-center">
-                        <div className="space-y-4 mb-20">
-                            <h2 className="text-4xl font-extrabold tracking-tight">Parcourir par spécialité</h2>
-                            <div className="w-12 h-1 bg-primary-soft mx-auto rounded-full"></div>
-                        </div>
-                        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+                {/* 🐴 Categories Section */}
+                <section className="py-24 bg-neutral-offwhite reveal [animation-delay:300ms]">
+                    <div className="max-w-7xl mx-auto px-6">
+                        <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-16 md:mb-24 tracking-tight">Trouvez votre expert par spécialité</h2>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 pt-8">
                             {[
                                 { name: "Ostéopathe", icon: Stethoscope, slug: "osteopathes" },
                                 { name: "Maréchal", icon: Hammer, slug: "marechaux" },
@@ -165,8 +162,8 @@ export default function Home() {
                 {/* Pourquoi choisir Equivio ? (4-Pillar Grid) */}
                 <section className="py-40 bg-neutral-offwhite reveal [animation-delay:300ms]">
                     <div className="max-w-7xl mx-auto px-6">
-                        <h2 className="text-4xl font-extrabold text-center mb-24 tracking-tight">Pourquoi choisir Equivio ?</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-16">
+                        <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-16 md:mb-24 tracking-tight">Pourquoi choisir Equivio ?</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-12 md:gap-y-16">
                             {[
                                 { title: "Expertise technique", desc: "Une plateforme conçue par des experts du milieu équin pour répondre aux besoins réels du terrain.", icon: GraduationCap },
                                 { title: "Sécurité des données", desc: "Vos données d'activité sont cryptées et protégées selon les normes européennes les plus strictes.", icon: Lock },
@@ -203,6 +200,6 @@ export default function Home() {
             </main>
 
             <Footer />
-        </div>
+        </div >
     );
 }

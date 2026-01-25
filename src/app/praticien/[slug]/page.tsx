@@ -162,19 +162,21 @@ export default async function PractitionerProfile({ params }: { params: Promise<
                                         <h4 className="text-[10px] font-bold text-neutral-charcoal/40 uppercase tracking-[0.2em]">Flux d'activité mensuel</h4>
                                         <TransparencySeal size="sm" />
                                     </div>
-                                    <div className="flex items-end gap-3 h-32">
-                                        {[40, 65, 30, 85, 45, 95, 70, 55, 80, 60, 40, 90].map((h, i) => (
-                                            <div key={i} className="flex-1 bg-primary-soft/5 rounded-t-lg relative group cursor-pointer">
-                                                <div
-                                                    className="absolute bottom-0 w-full bg-primary-soft/30 group-hover:bg-primary-soft rounded-t-lg transition-all duration-500 ease-out"
-                                                    style={{ height: `${h}%` }}
-                                                ></div>
-                                                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 px-3 py-2 bg-primary text-white text-[9px] font-bold rounded shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap z-50">
-                                                    {Math.round(h * 1.5)} interventions
-                                                    <div className="absolute top-full left-1/2 -translate-x-1/2 border-[4px] border-transparent border-t-primary"></div>
+                                    <div className="overflow-x-auto pb-4 -mx-2 px-2 scrollbar-hide">
+                                        <div className="flex items-end gap-2 md:gap-3 h-32 min-w-[400px]">
+                                            {[40, 65, 30, 85, 45, 95, 70, 55, 80, 60, 40, 90].map((h, i) => (
+                                                <div key={i} className="flex-1 bg-primary-soft/5 rounded-t-lg relative group cursor-pointer min-w-[8px]">
+                                                    <div
+                                                        className="absolute bottom-0 w-full bg-primary-soft/30 group-hover:bg-primary-soft rounded-t-lg transition-all duration-500 ease-out"
+                                                        style={{ height: `${h}%` }}
+                                                    ></div>
+                                                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 px-3 py-2 bg-primary text-white text-[9px] font-bold rounded shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap z-50">
+                                                        {Math.round(h * 1.5)} interventions
+                                                        <div className="absolute top-full left-1/2 -translate-x-1/2 border-[4px] border-transparent border-t-primary"></div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        ))}
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
                             </section>
