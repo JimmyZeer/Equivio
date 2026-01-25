@@ -2,7 +2,14 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/Button";
 import { TransparencySeal } from "@/components/TransparencySeal";
-import { ShieldCheck, ArrowRight, CheckCircle2 } from "lucide-react";
+import { ShieldCheck, CheckCircle2 } from "lucide-react";
+import { ClaimForm } from "@/components/ClaimForm";
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: "Revendiquez votre profil praticien | Equivio",
+    description: "Rejoignez le réseau Equivio. Valorisez votre activité réelle, gérez vos informations professionnelles et renforcez votre visibilité auprès des propriétaires de chevaux.",
+};
 
 export default function ClaimPage() {
     return (
@@ -45,44 +52,7 @@ export default function ClaimPage() {
                                     </ul>
                                 </div>
 
-                                <form className="space-y-6 bg-neutral-offwhite/50 p-8 rounded-xl border border-neutral-stone/20">
-                                    <div>
-                                        <label className="block text-[10px] font-bold text-neutral-charcoal/40 uppercase tracking-[0.15em] mb-3">
-                                            Nom complet
-                                        </label>
-                                        <input
-                                            type="text"
-                                            placeholder="Ex: Jean Dupont"
-                                            className="w-full bg-white border border-neutral-stone/60 rounded-lg py-4 px-5 focus:ring-1 focus:ring-primary focus:border-primary transition-soft outline-none font-medium"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-[10px] font-bold text-neutral-charcoal/40 uppercase tracking-[0.15em] mb-3">
-                                            Email professionnel
-                                        </label>
-                                        <input
-                                            type="email"
-                                            placeholder="jean.dupont@exemple.fr"
-                                            className="w-full bg-white border border-neutral-stone/60 rounded-lg py-4 px-5 focus:ring-1 focus:ring-primary focus:border-primary transition-soft outline-none font-medium"
-                                        />
-                                    </div>
-                                    <div>
-                                        <label className="block text-[10px] font-bold text-neutral-charcoal/40 uppercase tracking-[0.15em] mb-3">
-                                            Numéro de SIRET
-                                        </label>
-                                        <input
-                                            type="text"
-                                            placeholder="123 456 789 00012"
-                                            className="w-full bg-white border border-neutral-stone/60 rounded-lg py-4 px-5 focus:ring-1 focus:ring-primary focus:border-primary transition-soft outline-none font-medium"
-                                        />
-                                    </div>
-                                    <div className="pt-6">
-                                        <Button className="w-full py-5 text-lg flex items-center justify-center gap-3 group shadow-xl">
-                                            Envoyer la demande
-                                            <ArrowRight className="w-5 h-5 group-hover:translate-x-1.5 transition-transform" strokeWidth={2} />
-                                        </Button>
-                                    </div>
-                                </form>
+                                <ClaimForm />
                             </div>
 
                             <div className="pt-16 border-t border-neutral-stone/30 text-center space-y-6">

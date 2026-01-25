@@ -7,6 +7,24 @@ import { SearchBar } from "@/components/SearchBar";
 import { PractitionerCard } from "@/components/PractitionerCard";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
+import { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: Promise<{ specialite: string }> }): Promise<Metadata> {
+    const resolvedParams = await params;
+    const titles: Record<string, string> = {
+        osteopathes: "Ostéopathes équins",
+        marechaux: "Maréchaux-ferrants",
+        dentistes: "Dentistes équins",
+        veterinaires: "Vétérinaires équins",
+        "bien-etre": "Praticiens bien-être",
+    };
+    const title = titles[resolvedParams.specialite] || "Praticiens équins";
+
+    return {
+        title: `${title} certifiés en France | Equivio`,
+        description: `Trouvez les meilleurs professionnels spécialisés en ${title.toLowerCase()} sur la base de leur activité réelle. Le réseau de confiance des praticiens équins.`,
+    };
+}
 
 export default async function CategoryPage({ params }: { params: Promise<{ specialite: string }> }) {
     const resolvedParams = await params;

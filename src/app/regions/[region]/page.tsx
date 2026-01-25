@@ -7,6 +7,17 @@ import { SearchBar } from "@/components/SearchBar";
 import { PractitionerCard } from "@/components/PractitionerCard";
 import { Info } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: Promise<{ region: string }> }): Promise<Metadata> {
+    const resolvedParams = await params;
+    const regionName = resolvedParams.region.charAt(0).toUpperCase() + resolvedParams.region.slice(1);
+
+    return {
+        title: `Praticiens équins en ${regionName} | Equivio`,
+        description: `Découvrez les meilleurs ostéopathes, vétérinaires et maréchaux certifiés intervenant en région ${regionName}. Basé sur l'activité réelle enregistrée.`,
+    };
+}
 
 export default async function RegionPage({ params }: { params: Promise<{ region: string }> }) {
     const resolvedParams = await params;

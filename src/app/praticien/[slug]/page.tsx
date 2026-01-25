@@ -11,6 +11,23 @@ import { TransparencySeal } from "@/components/TransparencySeal";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Metadata } from 'next';
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const resolvedParams = await params;
+    const { data: practitioner } = await supabase
+        .from('practitioners')
+        .select('name, specialty, region')
+        .eq('slug', resolvedParams.slug)
+        .single();
+
+    if (!practitioner) return { title: "Praticien non trouvé | Equivio" };
+
+    return {
+        title: `${practitioner.name} - ${practitioner.specialty} en ${practitioner.region} | Equivio`,
+        description: `Profil certifié de ${practitioner.name}, ${practitioner.specialty.toLowerCase()} intervenant en ${practitioner.region}. Consultez son activité réelle et historique d'interventions sur Equivio.`,
+    };
+}
 
 export default async function PractitionerProfile({ params }: { params: Promise<{ slug: string }> }) {
     const resolvedParams = await params;
