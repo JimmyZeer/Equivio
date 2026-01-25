@@ -45,10 +45,10 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
     try {
         const { data, error: fetchError } = await supabase
             .from('practitioners')
-            .select('*')
+            .select('id, name, specialty, city, slug_seo, status')
             .eq('specialty', currentTitle)
             .eq('status', 'active')
-            .order('last_intervention', { ascending: false });
+            .order('name', { ascending: true });
 
         if (fetchError) throw fetchError;
         practitioners = data || [];
@@ -110,17 +110,10 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
                                         specialty={p.specialty}
                                         city={p.city}
                                         slug_seo={p.slug_seo}
-                                        interventionCount={p.intervention_count || 0}
-                                        lastIntervention={p.last_intervention ? (function () {
-                                            try {
-                                                return new Date(p.last_intervention).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
-                                            } catch (e) {
-                                                console.error("Error formatting date:", e);
-                                                return "—";
-                                            }
-                                        })() : "—"}
-                                        isClaimed={p.is_claimed}
-                                        isVerified={p.is_verified}
+                                        interventionCount={0}
+                                        lastIntervention="—"
+                                        isClaimed={false}
+                                        isVerified={true}
                                     />
                                 ))}
                             </div>

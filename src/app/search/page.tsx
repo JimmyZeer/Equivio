@@ -46,7 +46,7 @@ export default async function SearchPage({
     try {
         let supabaseQuery = supabase
             .from('practitioners')
-            .select('*', { count: 'exact' })
+            .select('id, name, specialty, city, slug_seo, status', { count: 'exact' })
             .eq('status', 'active');
 
         if (query) {
@@ -61,21 +61,11 @@ export default async function SearchPage({
             supabaseQuery = supabaseQuery.in('specialty', specialtyFilterNames);
         }
 
-        if (verified) {
-            supabaseQuery = supabaseQuery.eq('is_verified', true);
-        }
-
-        if (claimed) {
-            supabaseQuery = supabaseQuery.eq('is_claimed', true);
-        }
-
         // Sorting
-        if (sort === "interventions") {
-            supabaseQuery = supabaseQuery.order('intervention_count', { ascending: false });
-        } else if (sort === "alpha") {
+        if (sort === "alpha") {
             supabaseQuery = supabaseQuery.order('name', { ascending: true });
         } else {
-            supabaseQuery = supabaseQuery.order('last_intervention', { ascending: false });
+            supabaseQuery = supabaseQuery.order('name', { ascending: true }); // Fallback to name
         }
 
         const { data, error: fetchError, count: totalCount } = await supabaseQuery;
@@ -125,7 +115,7 @@ export default async function SearchPage({
 
                                 <div className="text-xs font-bold uppercase tracking-widest text-neutral-charcoal/40">
                                     Tri : <span className="text-primary font-extrabold">
-                                        {sort === "interventions" ? "Interventions" : sort === "alpha" ? "Alphabétique" : "Activité récente"}
+                                        {sort === "alpha" ? "Alphabétique" : "Pertinence"}
                                     </span>
                                 </div>
                             </div>
@@ -143,17 +133,10 @@ export default async function SearchPage({
                                             specialty={p.specialty}
                                             city={p.city}
                                             slug_seo={p.slug_seo}
-                                            interventionCount={p.intervention_count || 0}
-                                            lastIntervention={p.last_intervention ? (function () {
-                                                try {
-                                                    return new Date(p.last_intervention).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
-                                                } catch (e) {
-                                                    console.error("Error formatting date:", e);
-                                                    return "—";
-                                                }
-                                            })() : "—"}
-                                            isClaimed={p.is_claimed}
-                                            isVerified={p.is_verified}
+                                            interventionCount={0}
+                                            lastIntervention="—"
+                                            isClaimed={false}
+                                            isVerified={true}
                                         />
                                     ))
                                 ) : (

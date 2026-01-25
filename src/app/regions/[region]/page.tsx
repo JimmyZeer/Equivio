@@ -29,10 +29,10 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
     try {
         const { data, error: fetchError } = await supabase
             .from('practitioners')
-            .select('*')
+            .select('id, name, specialty, city, slug_seo, status')
             .ilike('city', `%${resolvedParams.region}%`)
             .eq('status', 'active')
-            .order('last_intervention', { ascending: false });
+            .order('name', { ascending: true });
 
         if (fetchError) throw fetchError;
         practitioners = data || [];
