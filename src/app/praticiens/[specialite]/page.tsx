@@ -41,7 +41,6 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
 
     let practitioners: any[] = [];
     let error: any = null;
-
     try {
         const { data, error: fetchError } = await supabase
             .from('practitioners')
@@ -50,10 +49,13 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
             .eq('status', 'active')
             .order('name', { ascending: true });
 
-        if (fetchError) throw fetchError;
+        if (fetchError) {
+            console.error("Supabase fetch error details (Specialty):", fetchError);
+            throw fetchError;
+        }
         practitioners = data || [];
-    } catch (e) {
-        console.error("Error fetching practitioners:", e);
+    } catch (e: any) {
+        console.error("Caught error in CategoryPage:", e);
         error = e;
     }
 

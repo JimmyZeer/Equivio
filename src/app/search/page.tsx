@@ -70,11 +70,14 @@ export default async function SearchPage({
 
         const { data, error: fetchError, count: totalCount } = await supabaseQuery;
 
-        if (fetchError) throw fetchError;
+        if (fetchError) {
+            console.error("Supabase fetch error details:", fetchError);
+            throw fetchError;
+        }
         practitioners = data || [];
         count = totalCount || 0;
-    } catch (e) {
-        console.error("Error fetching practitioners:", e);
+    } catch (e: any) {
+        console.error("Caught error in SearchPage:", e);
         error = e;
     }
 
