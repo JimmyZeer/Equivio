@@ -1,46 +1,33 @@
-"use client";
-
 export const runtime = 'edge';
 
-import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SearchBar } from "@/components/SearchBar";
 import { PractitionerCard } from "@/components/PractitionerCard";
-import { Info, Loader2 } from "lucide-react";
+import { Info } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
-export default function RegionPage({ params }: { params: Promise<{ region: string }> }) {
-    const [practitioners, setPractitioners] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [regionName, setRegionName] = useState("");
+export default async function RegionPage({ params }: { params: Promise<{ region: string }> }) {
+    const p = await params;
+    const regionName = p.region.charAt(0).toUpperCase() + p.region.slice(1);
 
-    useEffect(() => {
-        const fetchPractitioners = async () => {
-            const p = await params;
-            const rName = p.region.charAt(0).toUpperCase() + p.region.slice(1);
-            setRegionName(rName);
+    let practitioners: any[] = [];
+    let error: any = null;
 
-            setLoading(true);
-            try {
-                const { data, error } = await supabase
-                    .from('practitioners')
-                    .select('*')
-                    .eq('region', rName)
-                    .order('last_intervention', { ascending: false });
+    try {
+        const { data, error: fetchError } = await supabase
+            .from('practitioners')
+            .select('*')
+            .eq('region', regionName)
+            .order('last_intervention', { ascending: false });
 
-                if (error) throw error;
-                setPractitioners(data || []);
-            } catch (error) {
-                console.error("Error fetching practitioners:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchPractitioners();
-    }, [params]);
+        if (fetchError) throw fetchError;
+        practitioners = data || [];
+    } catch (e) {
+        console.error("Error fetching practitioners:", e);
+        error = e;
+    }
 
     const breadcrumbItems = [
         { label: "Accueil", href: "/" },
@@ -80,9 +67,9 @@ export default function RegionPage({ params }: { params: Promise<{ region: strin
                             <span className="text-[10px] text-neutral-charcoal/40 font-bold uppercase tracking-[0.2em]">Flux territorial</span>
                         </div>
 
-                        {loading ? (
-                            <div className="flex justify-center py-20">
-                                <Loader2 className="w-10 h-10 text-primary animate-spin" />
+                        {error ? (
+                            <div className="bg-red-50 p-8 rounded-2xl border border-red-200 text-center text-red-800">
+                                Une erreur est survenue lors du chargement des praticiens. Veuillez réessayer plus tard.
                             </div>
                         ) : practitioners.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

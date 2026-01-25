@@ -1,106 +1,43 @@
-"use client";
-
 export const runtime = 'edge';
 
-import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { AddInterventionModal } from "@/components/AddInterventionModal";
-import { MapPin, Activity, Calendar, Info, ShieldCheck, ExternalLink, ChevronRight, Loader2 } from "lucide-react";
+import { ProfileInterventionClient } from "@/components/ProfileInterventionClient";
+import { MapPin, Activity, Calendar, Info, ShieldCheck, ExternalLink } from "lucide-react";
 import { TransparencySeal } from "@/components/TransparencySeal";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
-interface Practitioner {
-    id: string;
-    name: string;
-    specialty: string;
-    region: string;
-    slug: string;
-    intervention_count: number;
-    last_intervention: string | null;
-}
+export default async function PractitionerProfile({ params }: { params: Promise<{ slug: string }> }) {
+    const resolvedParams = await params;
 
-interface Intervention {
-    date: string;
-    type: string;
-    location: string;
-}
+    // Fetch practitioner details
+    const { data: practitioner, error: pError } = await supabase
+        .from('practitioners')
+        .select('*')
+        .eq('slug', resolvedParams.slug)
+        .single();
 
-export default function PractitionerProfile({ params }: { params: Promise<{ slug: string }> }) {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [practitioner, setPractitioner] = useState<Practitioner | null>(null);
-    const [interventions, setInterventions] = useState<Intervention[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const resolvedParams = await params;
-            setLoading(true);
-            try {
-                // Fetch practitioner details
-                const { data: pData, error: pError } = await supabase
-                    .from('practitioners')
-                    .select('*')
-                    .eq('slug', resolvedParams.slug)
-                    .single();
-
-                if (pError) throw pError;
-                setPractitioner(pData);
-
-                // Fetch interventions
-                const { data: iData, error: iError } = await supabase
-                    .from('interventions')
-                    .select('date, type, location')
-                    .eq('practitioner_id', pData.id)
-                    .order('date', { ascending: false })
-                    .limit(10);
-
-                if (iError) throw iError;
-                setInterventions(iData.map(i => ({
-                    ...i,
-                    date: new Date(i.date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })
-                })));
-            } catch (error) {
-                console.error("Error loading profile:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, [params]);
-
-    if (loading) {
-        return (
-            <div className="flex flex-col min-h-screen">
-                <Header />
-                <main className="flex-grow flex items-center justify-center">
-                    <Loader2 className="w-12 h-12 text-primary animate-spin" />
-                </main>
-                <Footer />
-            </div>
-        );
+    if (pError || !practitioner) {
+        notFound();
     }
 
-    if (!practitioner) {
-        return (
-            <div className="flex flex-col min-h-screen">
-                <Header />
-                <main className="flex-grow flex flex-col items-center justify-center p-6 space-y-6">
-                    <h1 className="text-3xl font-bold text-primary">Praticien introuvable</h1>
-                    <p className="text-neutral-charcoal/60">Nous n'avons trouvé aucun profil correspondant à cette adresse.</p>
-                    <Link href="/search">
-                        <Button>Retour à la recherche</Button>
-                    </Link>
-                </main>
-                <Footer />
-            </div>
-        );
-    }
+    // Fetch interventions
+    const { data: iData, error: iError } = await supabase
+        .from('interventions')
+        .select('date, type, location')
+        .eq('practitioner_id', practitioner.id)
+        .order('date', { ascending: false })
+        .limit(10);
+
+    const interventions = iData ? iData.map(i => ({
+        ...i,
+        date: new Date(i.date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })
+    })) : [];
 
     const breadcrumbItems = [
         { label: "Accueil", href: "/" },
@@ -182,9 +119,10 @@ export default function PractitionerProfile({ params }: { params: Promise<{ slug
                             <section className="bg-white rounded-2xl border border-neutral-stone/50 p-10 space-y-10 shadow-premium">
                                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
                                     <h2 className="text-2xl font-extrabold tracking-tight">Historique des interventions</h2>
-                                    <Button variant="outline" onClick={() => setIsModalOpen(true)} className="group">
-                                        Je suis client <ChevronRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                                    </Button>
+                                    <ProfileInterventionClient
+                                        practitionerName={practitioner.name}
+                                        practitionerId={practitioner.id}
+                                    />
                                 </div>
 
                                 <div className="space-y-0 divide-y divide-neutral-stone/20 border-t border-neutral-stone/20">
@@ -261,12 +199,6 @@ export default function PractitionerProfile({ params }: { params: Promise<{ slug
                 </div>
             </main>
 
-            <AddInterventionModal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                practitionerName={practitioner.name}
-                practitionerId={practitioner.id}
-            />
             <Footer />
         </div>
     );

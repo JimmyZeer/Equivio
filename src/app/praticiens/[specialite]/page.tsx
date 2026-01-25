@@ -1,21 +1,15 @@
-"use client";
-
 export const runtime = 'edge';
 
-import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SearchBar } from "@/components/SearchBar";
 import { PractitionerCard } from "@/components/PractitionerCard";
 import { supabase } from "@/lib/supabase";
-import { Loader2 } from "lucide-react";
 import Link from "next/link";
 
-export default function CategoryPage({ params }: { params: Promise<{ specialite: string }> }) {
-    const [practitioners, setPractitioners] = useState<any[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [currentTitle, setCurrentTitle] = useState("Praticiens équins");
+export default async function CategoryPage({ params }: { params: Promise<{ specialite: string }> }) {
+    const p = await params;
 
     const titles: Record<string, string> = {
         osteopathes: "Ostéopathes équins",
@@ -25,31 +19,24 @@ export default function CategoryPage({ params }: { params: Promise<{ specialite:
         "bien-etre": "Praticiens bien-être",
     };
 
-    useEffect(() => {
-        const fetchPractitioners = async () => {
-            const p = await params;
-            const title = titles[p.specialite] || "Praticiens équins";
-            setCurrentTitle(title);
+    const currentTitle = titles[p.specialite] || "Praticiens équins";
 
-            setLoading(true);
-            try {
-                const { data, error } = await supabase
-                    .from('practitioners')
-                    .select('*')
-                    .eq('specialty', title)
-                    .order('last_intervention', { ascending: false });
+    let practitioners: any[] = [];
+    let error: any = null;
 
-                if (error) throw error;
-                setPractitioners(data || []);
-            } catch (error) {
-                console.error("Error fetching practitioners:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+    try {
+        const { data, error: fetchError } = await supabase
+            .from('practitioners')
+            .select('*')
+            .eq('specialty', currentTitle)
+            .order('last_intervention', { ascending: false });
 
-        fetchPractitioners();
-    }, [params]);
+        if (fetchError) throw fetchError;
+        practitioners = data || [];
+    } catch (e) {
+        console.error("Error fetching practitioners:", e);
+        error = e;
+    }
 
     const breadcrumbItems = [
         { label: "Accueil", href: "/" },
@@ -91,9 +78,9 @@ export default function CategoryPage({ params }: { params: Promise<{ specialite:
                             <span className="text-[10px] text-neutral-charcoal/40 font-bold uppercase tracking-[0.2em]">Flux en temps réel</span>
                         </div>
 
-                        {loading ? (
-                            <div className="flex justify-center py-20">
-                                <Loader2 className="w-10 h-10 text-primary animate-spin" />
+                        {error ? (
+                            <div className="bg-red-50 p-8 rounded-2xl border border-red-200 text-center text-red-800">
+                                Une erreur est survenue lors du chargement des praticiens. Veuillez réessayer plus tard.
                             </div>
                         ) : practitioners.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
