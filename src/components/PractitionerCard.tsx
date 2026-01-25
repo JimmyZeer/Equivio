@@ -6,7 +6,8 @@ import { MapPin, Calendar, Activity } from "lucide-react";
 interface PractitionerCardProps {
     name: string;
     specialty: string;
-    city: string;
+    city?: string | null;
+    address_full?: string | null;
     isClaimed?: boolean;
     isVerified?: boolean;
     interventionCount: number;
@@ -18,12 +19,23 @@ export function PractitionerCard({
     name,
     specialty,
     city,
+    address_full,
     isClaimed,
     isVerified,
     interventionCount,
     lastIntervention,
     slug_seo
 }: PractitionerCardProps) {
+    // Helper to extract city from address_full (e.g., "123 Rue de la Paix, 75001 Paris" -> "Paris")
+    const getFallbackCity = (address: string | null | undefined) => {
+        if (!address) return "Localisation non renseignée";
+        // Pattern match: look for 5 digits followed by a space and the rest of the string
+        const match = address.match(/\d{5}\s+(.+)$/);
+        return match ? match[1].trim() : address.split(',').pop()?.trim() || "Localisation non renseignée";
+    };
+
+    const displayCity = city || getFallbackCity(address_full);
+
     return (
         <div className="bg-white rounded-xl border border-neutral-stone/60 p-5 md:p-8 hover:shadow-premium-hover hover:border-primary-soft/20 hover:translate-y-[-2px] transition-soft group shadow-premium ring-0 hover:ring-1 hover:ring-primary-soft/5">
             <div className="flex flex-col md:flex-row justify-between gap-8">
@@ -40,7 +52,7 @@ export function PractitionerCard({
                         <span className="font-bold text-neutral-charcoal">{specialty}</span>
                         <div className="flex items-center gap-2 text-neutral-charcoal/50">
                             <MapPin className="w-4 h-4 text-primary-soft/60" strokeWidth={1.5} />
-                            <span className="font-medium">{city}</span>
+                            <span className="font-medium">{displayCity}</span>
                         </div>
                     </div>
                 </div>

@@ -29,7 +29,7 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
     try {
         const { data, error: fetchError } = await supabase
             .from('practitioners')
-            .select('id, name, specialty, city, slug_seo, status')
+            .select('id, name, specialty, city, address_full, slug_seo, status')
             .ilike('city', `%${resolvedParams.region}%`)
             .eq('status', 'active')
             .order('name', { ascending: true });
@@ -91,6 +91,7 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
                                         name={p.name}
                                         specialty={p.specialty}
                                         city={p.city}
+                                        address_full={p.address_full}
                                         slug_seo={p.slug_seo}
                                         interventionCount={p.intervention_count || 0}
                                         lastIntervention={p.last_intervention ? (function () {
