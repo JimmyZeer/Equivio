@@ -1,11 +1,19 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SearchBar } from "@/components/SearchBar";
 import { PractitionerCard } from "@/components/PractitionerCard";
+import { supabase } from "@/lib/supabase";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 
 export default function CategoryPage({ params }: { params: { specialite: string } }) {
+    const [practitioners, setPractitioners] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
     const titles: Record<string, string> = {
         osteopathes: "Ostéopathes équins",
         marechaux: "Maréchaux-ferrants",
@@ -16,32 +24,33 @@ export default function CategoryPage({ params }: { params: { specialite: string 
 
     const title = titles[params.specialite] || "Praticiens équins";
 
+    useEffect(() => {
+        const fetchPractitioners = async () => {
+            setLoading(true);
+            try {
+                // In a real app we might store specialty slug in the DB
+                // For now, we'll fetch where specialty matches the mapped title
+                const { data, error } = await supabase
+                    .from('practitioners')
+                    .select('*')
+                    .eq('specialty', title)
+                    .order('last_intervention', { ascending: false });
+
+                if (error) throw error;
+                setPractitioners(data || []);
+            } catch (error) {
+                console.error("Error fetching practitioners:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPractitioners();
+    }, [params.specialite, title]);
+
     const breadcrumbItems = [
         { label: "Accueil", href: "/" },
         { label: title },
-    ];
-
-    const practitioners = [
-        {
-            name: "Jean Dupont",
-            specialty: title,
-            region: "Calvados (14)",
-            isClaimed: true,
-            isVerified: true,
-            interventionCount: 142,
-            lastIntervention: "12 Jan 2026",
-            slug: "jean-dupont",
-        },
-        {
-            name: "Sophie Bernard",
-            specialty: title,
-            region: "Eure (27)",
-            isClaimed: true,
-            isVerified: false,
-            interventionCount: 110,
-            lastIntervention: "18 Jan 2026",
-            slug: "sophie-bernard",
-        },
     ];
 
     return (
@@ -79,11 +88,31 @@ export default function CategoryPage({ params }: { params: { specialite: string 
                             <span className="text-[10px] text-neutral-charcoal/40 font-bold uppercase tracking-[0.2em]">Flux en temps réel</span>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            {practitioners.map((p) => (
-                                <PractitionerCard key={p.slug} {...p} />
-                            ))}
-                        </div>
+                        {loading ? (
+                            <div className="flex justify-center py-20">
+                                <Loader2 className="w-10 h-10 text-primary animate-spin" />
+                            </div>
+                        ) : practitioners.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                {practitioners.map((p) => (
+                                    <PractitionerCard
+                                        key={p.id}
+                                        name={p.name}
+                                        specialty={p.specialty}
+                                        region={p.region}
+                                        slug={p.slug}
+                                        interventionCount={p.intervention_count}
+                                        lastIntervention={p.last_intervention ? new Date(p.last_intervention).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) : "—"}
+                                        isClaimed={true}
+                                        isVerified={true}
+                                    />
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="bg-white p-12 rounded-2xl border border-dashed border-neutral-stone/40 text-center text-neutral-charcoal/40 italic">
+                                Aucun praticien trouvé dans cette catégorie.
+                            </div>
+                        )}
                     </section>
 
                     <section className="bg-leather-light/20 p-8 rounded-2xl border border-leather-light">

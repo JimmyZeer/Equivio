@@ -1,16 +1,58 @@
 "use client";
 
-import { X } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
 import { Button } from "./ui/Button";
+import { useState } from "react";
+import { supabase } from "@/lib/supabase";
 
 interface AddInterventionModalProps {
     isOpen: boolean;
     onClose: () => void;
     practitionerName: string;
+    practitionerId: string; // Dynamic ID for Supabase
 }
 
-export function AddInterventionModal({ isOpen, onClose, practitionerName }: AddInterventionModalProps) {
+export function AddInterventionModal({ isOpen, onClose, practitionerName, practitionerId }: AddInterventionModalProps) {
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({
+        date: new Date().toISOString().split('T')[0],
+        type: "",
+        location: ""
+    });
+
     if (!isOpen) return null;
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!formData.type || !formData.location) return;
+
+        setLoading(true);
+        try {
+            const { error } = await supabase
+                .from('interventions')
+                .insert([
+                    {
+                        practitioner_id: practitionerId,
+                        date: formData.date,
+                        type: formData.type,
+                        location: formData.location
+                    }
+                ]);
+
+            if (error) throw error;
+
+            // Optionally update practitioner count (could also be a DB trigger)
+            await supabase.rpc('increment_intervention_count', { practitioner_row_id: practitionerId });
+
+            onClose();
+            alert("Intervention ajoutée avec succès !");
+        } catch (error) {
+            console.error("Error adding intervention:", error);
+            alert("Erreur lors de l'ajout. Veuillez réessayer.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-primary/20 backdrop-blur-sm">
@@ -22,7 +64,7 @@ export function AddInterventionModal({ isOpen, onClose, practitionerName }: AddI
                     </button>
                 </div>
 
-                <form className="p-6 space-y-6">
+                <form onSubmit={handleSubmit} className="p-6 space-y-6">
                     <div className="text-sm text-neutral-charcoal/60 bg-leather-light/20 p-4 rounded-lg border border-leather-light">
                         Vous déclarez une intervention effectuée par <strong>{practitionerName}</strong>.
                         Les données sont anonymisées et servent à alimenter l'activité réelle du praticien.
@@ -35,6 +77,9 @@ export function AddInterventionModal({ isOpen, onClose, practitionerName }: AddI
                             </label>
                             <input
                                 type="date"
+                                required
+                                value={formData.date}
+                                onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                                 className="w-full bg-neutral-offwhite border border-neutral-stone rounded-md py-2 px-3 focus:ring-primary focus:border-primary"
                             />
                         </div>
@@ -43,11 +88,16 @@ export function AddInterventionModal({ isOpen, onClose, practitionerName }: AddI
                             <label className="block text-sm font-bold text-neutral-charcoal mb-1.5 uppercase tracking-wide">
                                 Type de prestation
                             </label>
-                            <select className="w-full bg-neutral-offwhite border border-neutral-stone rounded-md py-2 px-3 focus:ring-primary focus:border-primary">
-                                <option>Sélectionnez un type</option>
-                                <option>Consultation classique</option>
-                                <option>Urgence</option>
-                                <option>Suivi / Contrôle</option>
+                            <select
+                                required
+                                value={formData.type}
+                                onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                                className="w-full bg-neutral-offwhite border border-neutral-stone rounded-md py-2 px-3 focus:ring-primary focus:border-primary"
+                            >
+                                <option value="">Sélectionnez un type</option>
+                                <option value="Consultation classique">Consultation classique</option>
+                                <option value="Urgence">Urgence</option>
+                                <option value="Suivi / Contrôle">Suivi / Contrôle</option>
                             </select>
                         </div>
 
@@ -57,7 +107,10 @@ export function AddInterventionModal({ isOpen, onClose, practitionerName }: AddI
                             </label>
                             <input
                                 type="text"
+                                required
                                 placeholder="Ex: 14000"
+                                value={formData.location}
+                                onChange={(e) => setFormData({ ...formData, location: e.target.value })}
                                 className="w-full bg-neutral-offwhite border border-neutral-stone rounded-md py-2 px-3 focus:ring-primary focus:border-primary"
                             />
                         </div>
@@ -69,7 +122,9 @@ export function AddInterventionModal({ isOpen, onClose, practitionerName }: AddI
                             <span className="text-xs text-neutral-charcoal/40 font-medium">Turnstile Anti-spam intégré</span>
                         </div>
 
-                        <Button className="w-full py-3">Confirmer l'intervention</Button>
+                        <Button type="submit" disabled={loading} className="w-full py-3">
+                            {loading ? <Loader2 className="w-5 h-5 animate-spin mx-auto" /> : "Confirmer l'intervention"}
+                        </Button>
                     </div>
                 </form>
             </div>
