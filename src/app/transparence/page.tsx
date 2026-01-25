@@ -1,4 +1,3 @@
-```javascript
 export const runtime = 'edge';
 
 import { Header } from "@/components/Header";
@@ -130,4 +129,3 @@ export default function TransparencePage() {
         </div>
     );
 }
-```
