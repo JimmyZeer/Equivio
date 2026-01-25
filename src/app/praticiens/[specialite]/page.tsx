@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -12,13 +11,13 @@ import { Metadata } from 'next';
 export async function generateMetadata({ params }: { params: Promise<{ specialite: string }> }): Promise<Metadata> {
     const resolvedParams = await params;
     const titles: Record<string, string> = {
-        osteopathes: "Ostéopathes équins",
-        marechaux: "Maréchaux-ferrants",
-        dentistes: "Dentistes équins",
-        veterinaires: "Vétérinaires équins",
-        "bien-etre": "Praticiens bien-être",
+        osteopathes: "Ostéopathe animalier",
+        marechaux: "Maréchal-ferrant",
+        dentistes: "Dentiste équin",
+        veterinaires: "Vétérinaire équin",
+        "bien-etre": "Praticien bien-être",
     };
-    const title = titles[resolvedParams.specialite] || "Praticiens équins";
+    const title = titles[resolvedParams.specialite] || "Praticien équin";
 
     return {
         title: `${title} certifiés en France | Equivio`,
