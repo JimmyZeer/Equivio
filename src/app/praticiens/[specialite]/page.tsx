@@ -9,7 +9,7 @@ import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 
 export default async function CategoryPage({ params }: { params: Promise<{ specialite: string }> }) {
-    const p = await params;
+    const resolvedParams = await params;
 
     const titles: Record<string, string> = {
         osteopathes: "Ostéopathes équins",
@@ -19,7 +19,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
         "bien-etre": "Praticiens bien-être",
     };
 
-    const currentTitle = titles[p.specialite] || "Praticiens équins";
+    const currentTitle = titles[resolvedParams.specialite] || "Praticiens équins";
 
     let practitioners: any[] = [];
     let error: any = null;
@@ -92,7 +92,14 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
                                         region={p.region}
                                         slug={p.slug}
                                         interventionCount={p.intervention_count}
-                                        lastIntervention={p.last_intervention ? new Date(p.last_intervention).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) : "—"}
+                                        lastIntervention={p.last_intervention ? (function () {
+                                            try {
+                                                return new Date(p.last_intervention).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+                                            } catch (e) {
+                                                console.error("Error formatting date:", e);
+                                                return "—";
+                                            }
+                                        })() : "—"}
                                         isClaimed={true}
                                         isVerified={true}
                                     />
