@@ -30,14 +30,14 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
     const resolvedParams = await params;
 
     const titles: Record<string, string> = {
-        osteopathes: "Ostéopathes équins",
-        marechaux: "Maréchaux-ferrants",
-        dentistes: "Dentistes équins",
-        veterinaires: "Vétérinaires équins",
-        "bien-etre": "Praticiens bien-être",
+        osteopathes: "Ostéopathe animalier",
+        marechaux: "Maréchal-ferrant",
+        dentistes: "Dentiste équin",
+        veterinaires: "Vétérinaire équin",
+        "bien-etre": "Praticien bien-être",
     };
 
-    const currentTitle = titles[resolvedParams.specialite] || "Praticiens équins";
+    const currentTitle = titles[resolvedParams.specialite] || "Praticien équin";
 
     let practitioners: any[] = [];
     let error: any = null;
@@ -47,6 +47,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
             .from('practitioners')
             .select('*')
             .eq('specialty', currentTitle)
+            .eq('status', 'active')
             .order('last_intervention', { ascending: false });
 
         if (fetchError) throw fetchError;
@@ -107,9 +108,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
                                         key={p.id}
                                         name={p.name}
                                         specialty={p.specialty}
-                                        region={p.region}
-                                        slug={p.slug}
-                                        interventionCount={p.intervention_count}
+                                        city={p.city}
+                                        slug_seo={p.slug_seo}
+                                        interventionCount={p.intervention_count || 0}
                                         lastIntervention={p.last_intervention ? (function () {
                                             try {
                                                 return new Date(p.last_intervention).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -118,8 +119,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
                                                 return "—";
                                             }
                                         })() : "—"}
-                                        isClaimed={true}
-                                        isVerified={true}
+                                        isClaimed={p.is_claimed}
+                                        isVerified={p.is_verified}
                                     />
                                 ))}
                             </div>

@@ -6,23 +6,23 @@ import { MapPin, Calendar, Activity } from "lucide-react";
 interface PractitionerCardProps {
     name: string;
     specialty: string;
-    region: string;
+    city: string;
     isClaimed?: boolean;
     isVerified?: boolean;
     interventionCount: number;
     lastIntervention: string;
-    slug: string;
+    slug_seo: string;
 }
 
 export function PractitionerCard({
     name,
     specialty,
-    region,
+    city,
     isClaimed,
     isVerified,
     interventionCount,
     lastIntervention,
-    slug
+    slug_seo
 }: PractitionerCardProps) {
     return (
         <div className="bg-white rounded-xl border border-neutral-stone/60 p-5 md:p-8 hover:shadow-premium-hover hover:border-primary-soft/20 hover:translate-y-[-2px] transition-soft group shadow-premium ring-0 hover:ring-1 hover:ring-primary-soft/5">
@@ -40,7 +40,7 @@ export function PractitionerCard({
                         <span className="font-bold text-neutral-charcoal">{specialty}</span>
                         <div className="flex items-center gap-2 text-neutral-charcoal/50">
                             <MapPin className="w-4 h-4 text-primary-soft/60" strokeWidth={1.5} />
-                            <span className="font-medium">{region}</span>
+                            <span className="font-medium">{city}</span>
                         </div>
                     </div>
                 </div>
@@ -56,7 +56,7 @@ export function PractitionerCard({
                     </div>
                 </div>
             </div>
-            <Link href={`/praticien/${slug}`} className="w-full mt-2">
+            <Link href={`/praticien/${slug_seo}`} className="w-full mt-2">
                 <Button variant="outline" className="w-full py-2 hover:bg-primary hover:border-primary">Voir le profil</Button>
             </Link>
         </div>

@@ -86,7 +86,7 @@ export default function Home() {
                                 { name: "Maréchal", icon: Hammer, slug: "marechaux" },
                                 { name: "Dentiste", icon: Zap, slug: "dentistes" },
                                 { name: "Vétérinaire", icon: Heart, slug: "veterinaires" },
-                                { name: "Masseur", icon: Activity, slug: "masseurs" },
+                                { name: "Bien-être", icon: Activity, slug: "bien-etre" },
                             ].map((cat) => (
                                 <Link
                                     key={cat.slug}

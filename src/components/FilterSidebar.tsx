@@ -12,10 +12,10 @@ export function FilterSidebar() {
 
     const categories = [
         { label: "Ostéopathes", value: "osteopathes" },
-        { label: "Maréchaux-ferrants", value: "marechaux" },
+        { label: "Maréchaux", value: "marechaux" },
         { label: "Dentistes", value: "dentistes" },
         { label: "Vétérinaires", value: "veterinaires" },
-        { label: "Praticiens bien-être", value: "bien-etre" }
+        { label: "Bien-être", value: "bien-etre" }
     ];
 
     const currentSpecialties = searchParams.get("specialties")?.split(",") || [];

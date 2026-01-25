@@ -25,11 +25,11 @@ export default async function SearchPage({
     const query = params.q || "";
     const location = params.l || "";
     const specialtiesMap: Record<string, string> = {
-        osteopathes: "Ostéopathes équins",
-        marechaux: "Maréchaux-ferrants",
-        dentistes: "Dentistes équins",
-        veterinaires: "Vétérinaires équins",
-        "bien-etre": "Praticiens bien-être",
+        osteopathes: "Ostéopathe animalier",
+        marechaux: "Maréchal-ferrant",
+        dentistes: "Dentiste équin",
+        veterinaires: "Vétérinaire équin",
+        "bien-etre": "Praticien bien-être",
     };
 
     const specialties = params.specialties ? params.specialties.split(",") : [];
@@ -46,14 +46,15 @@ export default async function SearchPage({
     try {
         let supabaseQuery = supabase
             .from('practitioners')
-            .select('*', { count: 'exact' });
+            .select('*', { count: 'exact' })
+            .eq('status', 'active');
 
         if (query) {
             supabaseQuery = supabaseQuery.or(`name.ilike.%${query}%,specialty.ilike.%${query}%`);
         }
 
         if (location) {
-            supabaseQuery = supabaseQuery.ilike('region', `%${location}%`);
+            supabaseQuery = supabaseQuery.ilike('city', `%${location}%`);
         }
 
         if (specialtyFilterNames.length > 0) {
@@ -118,7 +119,7 @@ export default async function SearchPage({
                                         {count} praticiens trouvés
                                     </h1>
                                     <p className="text-sm text-neutral-charcoal/50 font-medium tracking-wide">
-                                        Basé sur l’activité réelle enregistrée
+                                        Professionnels actifs vérifiés
                                     </p>
                                 </div>
 
@@ -140,9 +141,9 @@ export default async function SearchPage({
                                             key={p.id}
                                             name={p.name}
                                             specialty={p.specialty}
-                                            region={p.region}
-                                            slug={p.slug}
-                                            interventionCount={p.intervention_count}
+                                            city={p.city}
+                                            slug_seo={p.slug_seo}
+                                            interventionCount={p.intervention_count || 0}
                                             lastIntervention={p.last_intervention ? (function () {
                                                 try {
                                                     return new Date(p.last_intervention).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });

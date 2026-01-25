@@ -17,15 +17,16 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const resolvedParams = await params;
     const { data: practitioner } = await supabase
         .from('practitioners')
-        .select('name, specialty, region')
-        .eq('slug', resolvedParams.slug)
+        .select('name, specialty, city')
+        .eq('slug_seo', resolvedParams.slug)
+        .eq('status', 'active')
         .single();
 
     if (!practitioner) return { title: "Praticien non trouvé | Equivio" };
 
     return {
-        title: `${practitioner.name} - ${practitioner.specialty} en ${practitioner.region} | Equivio`,
-        description: `Profil certifié de ${practitioner.name}, ${practitioner.specialty.toLowerCase()} intervenant en ${practitioner.region}. Consultez son activité réelle et historique d'interventions sur Equivio.`,
+        title: `${practitioner.name} - ${practitioner.specialty} à ${practitioner.city} | Equivio`,
+        description: `Profil certifié de ${practitioner.name}, ${practitioner.specialty.toLowerCase()} intervenant à ${practitioner.city}. Consultez son activité réelle et historique d'interventions sur Equivio.`,
     };
 }
 
@@ -36,7 +37,8 @@ export default async function PractitionerProfile({ params }: { params: Promise<
     const { data: practitioner, error: pError } = await supabase
         .from('practitioners')
         .select('*')
-        .eq('slug', resolvedParams.slug)
+        .eq('slug_seo', resolvedParams.slug)
+        .eq('status', 'active')
         .single();
 
     if (pError || !practitioner) {

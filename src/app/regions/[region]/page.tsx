@@ -30,7 +30,8 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
         const { data, error: fetchError } = await supabase
             .from('practitioners')
             .select('*')
-            .eq('region', regionName)
+            .ilike('city', `%${resolvedParams.region}%`)
+            .eq('status', 'active')
             .order('last_intervention', { ascending: false });
 
         if (fetchError) throw fetchError;
@@ -89,9 +90,9 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
                                         key={p.id}
                                         name={p.name}
                                         specialty={p.specialty}
-                                        region={p.region}
-                                        slug={p.slug}
-                                        interventionCount={p.intervention_count}
+                                        city={p.city}
+                                        slug_seo={p.slug_seo}
+                                        interventionCount={p.intervention_count || 0}
                                         lastIntervention={p.last_intervention ? (function () {
                                             try {
                                                 return new Date(p.last_intervention).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
@@ -100,8 +101,8 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
                                                 return "—";
                                             }
                                         })() : "—"}
-                                        isClaimed={true}
-                                        isVerified={true}
+                                        isClaimed={p.is_claimed}
+                                        isVerified={p.is_verified}
                                     />
                                 ))}
                             </div>
