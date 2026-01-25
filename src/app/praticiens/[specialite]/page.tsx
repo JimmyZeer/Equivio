@@ -100,8 +100,10 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
                         </div>
 
                         {error ? (
-                            <div className="bg-red-50 p-8 rounded-2xl border border-red-200 text-center text-red-800">
-                                Une erreur est survenue lors du chargement des praticiens. Veuillez réessayer plus tard.
+                            <div className="bg-red-50 p-8 rounded-2xl border border-red-200 text-center text-red-800 space-y-2">
+                                <p className="font-bold">Une erreur est survenue lors du chargement des praticiens.</p>
+                                <p className="text-xs opacity-60">Détails : {error.message || JSON.stringify(error)}</p>
+                                <p className="text-xs italic">Cible : "{currentTitle}" - Table: practitioners</p>
                             </div>
                         ) : practitioners.length > 0 ? (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
