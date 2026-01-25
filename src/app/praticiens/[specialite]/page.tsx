@@ -10,9 +10,10 @@ import { supabase } from "@/lib/supabase";
 import { Loader2 } from "lucide-react";
 import Link from "next/link";
 
-export default function CategoryPage({ params }: { params: { specialite: string } }) {
+export default function CategoryPage({ params }: { params: Promise<{ specialite: string }> }) {
     const [practitioners, setPractitioners] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const [currentTitle, setCurrentTitle] = useState("Praticiens équins");
 
     const titles: Record<string, string> = {
         osteopathes: "Ostéopathes équins",
@@ -22,14 +23,14 @@ export default function CategoryPage({ params }: { params: { specialite: string 
         "bien-etre": "Praticiens bien-être",
     };
 
-    const title = titles[params.specialite] || "Praticiens équins";
-
     useEffect(() => {
         const fetchPractitioners = async () => {
+            const p = await params;
+            const title = titles[p.specialite] || "Praticiens équins";
+            setCurrentTitle(title);
+
             setLoading(true);
             try {
-                // In a real app we might store specialty slug in the DB
-                // For now, we'll fetch where specialty matches the mapped title
                 const { data, error } = await supabase
                     .from('practitioners')
                     .select('*')
@@ -46,11 +47,11 @@ export default function CategoryPage({ params }: { params: { specialite: string 
         };
 
         fetchPractitioners();
-    }, [params.specialite, title]);
+    }, [params]);
 
     const breadcrumbItems = [
         { label: "Accueil", href: "/" },
-        { label: title },
+        { label: currentTitle },
     ];
 
     return (
@@ -65,10 +66,10 @@ export default function CategoryPage({ params }: { params: { specialite: string 
 
                     <div className="max-w-4xl space-y-6 reveal [animation-delay:100ms]">
                         <h1 className="text-4xl md:text-5xl font-extrabold text-primary leading-tight tracking-tight text-pretty">
-                            {title} <span className="text-primary-soft">référencés en France</span>
+                            {currentTitle} <span className="text-primary-soft">référencés en France</span>
                         </h1>
                         <p className="text-lg md:text-xl text-neutral-charcoal/60 leading-relaxed text-pretty max-w-3xl">
-                            Découvrez les professionnels spécialisés en {title.toLowerCase()} sur la base de leur activité réelle enregistrée.
+                            Découvrez les professionnels spécialisés en {currentTitle.toLowerCase()} sur la base de leur activité réelle enregistrée.
                             La sélection Equivio garantit une visibilité neutre et factuelle.
                         </p>
                     </div>
@@ -120,7 +121,7 @@ export default function CategoryPage({ params }: { params: { specialite: string 
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 text-sm">
                             {["Normandie", "Bretagne", "Nouvelle-Aquitaine", "Pays de la Loire", "Hauts-de-France", "Grand Est", "Occitanie"].map(r => (
                                 <Link key={r} href={`/regions/${r.toLowerCase()}`} className="text-neutral-charcoal/60 hover:text-primary transition-all">
-                                    {title} en {r}
+                                    {currentTitle} en {r}
                                 </Link>
                             ))}
                         </div>

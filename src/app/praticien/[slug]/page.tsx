@@ -28,7 +28,7 @@ interface Intervention {
     location: string;
 }
 
-export default function PractitionerProfile({ params }: { params: { slug: string } }) {
+export default function PractitionerProfile({ params }: { params: Promise<{ slug: string }> }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [practitioner, setPractitioner] = useState<Practitioner | null>(null);
     const [interventions, setInterventions] = useState<Intervention[]>([]);
@@ -36,13 +36,14 @@ export default function PractitionerProfile({ params }: { params: { slug: string
 
     useEffect(() => {
         const fetchData = async () => {
+            const resolvedParams = await params;
             setLoading(true);
             try {
                 // Fetch practitioner details
                 const { data: pData, error: pError } = await supabase
                     .from('practitioners')
                     .select('*')
-                    .eq('slug', params.slug)
+                    .eq('slug', resolvedParams.slug)
                     .single();
 
                 if (pError) throw pError;
@@ -69,7 +70,7 @@ export default function PractitionerProfile({ params }: { params: { slug: string
         };
 
         fetchData();
-    }, [params.slug]);
+    }, [params]);
 
     if (loading) {
         return (
