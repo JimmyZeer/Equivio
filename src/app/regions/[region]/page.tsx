@@ -9,8 +9,8 @@ import { Info } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 
 export default async function RegionPage({ params }: { params: Promise<{ region: string }> }) {
-    const p = await params;
-    const regionName = p.region.charAt(0).toUpperCase() + p.region.slice(1);
+    const resolvedParams = await params;
+    const regionName = resolvedParams.region.charAt(0).toUpperCase() + resolvedParams.region.slice(1);
 
     let practitioners: any[] = [];
     let error: any = null;
@@ -81,7 +81,14 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
                                         region={p.region}
                                         slug={p.slug}
                                         interventionCount={p.intervention_count}
-                                        lastIntervention={p.last_intervention ? new Date(p.last_intervention).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }) : "—"}
+                                        lastIntervention={p.last_intervention ? (function () {
+                                            try {
+                                                return new Date(p.last_intervention).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+                                            } catch (e) {
+                                                console.error("Error formatting date:", e);
+                                                return "—";
+                                            }
+                                        })() : "—"}
                                         isClaimed={true}
                                         isVerified={true}
                                     />

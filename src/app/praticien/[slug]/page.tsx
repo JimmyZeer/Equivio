@@ -36,7 +36,14 @@ export default async function PractitionerProfile({ params }: { params: Promise<
 
     const interventions = iData ? iData.map(i => ({
         ...i,
-        date: new Date(i.date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })
+        date: (function () {
+            try {
+                return new Date(i.date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
+            } catch (e) {
+                console.error("Error formatting intervention date:", e);
+                return "—";
+            }
+        })()
     })) : [];
 
     const breadcrumbItems = [
@@ -94,7 +101,14 @@ export default async function PractitionerProfile({ params }: { params: Promise<
                                         </div>
                                         <div className="bg-neutral-offwhite p-4 rounded-xl border border-neutral-stone">
                                             <span className="block text-2xl font-bold text-primary">
-                                                {practitioner.last_intervention ? new Date(practitioner.last_intervention).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' }) : "—"}
+                                                {practitioner.last_intervention ? (function () {
+                                                    try {
+                                                        return new Date(practitioner.last_intervention).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
+                                                    } catch (e) {
+                                                        console.error("Error formatting last intervention date:", e);
+                                                        return "—";
+                                                    }
+                                                })() : "—"}
                                             </span>
                                             <span className="text-xs text-neutral-charcoal/50 uppercase font-bold tracking-wider">Dernière activité</span>
                                         </div>
