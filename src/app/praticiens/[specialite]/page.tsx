@@ -5,6 +5,7 @@ import { Footer } from "@/components/Footer";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SearchBar } from "@/components/SearchBar";
 import { PractitionerCard } from "@/components/PractitionerCard";
+import { DentistsList } from "@/components/DentistsList";
 import { supabase } from "@/lib/supabase";
 import Link from "next/link";
 import { Metadata } from 'next';
@@ -32,7 +33,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
     const titles: Record<string, string> = {
         osteopathes: "Ostéopathe animalier",
         marechaux: "Maréchal-ferrant",
-        dentistes: "Dentiste équin",
+        dentistes: "Dentisterie équine", // Updated strictly for the requirement
         veterinaires: "Vétérinaire équin",
         "bien-etre": "Praticien bien-être",
     };
@@ -41,19 +42,46 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
 
     let practitioners: any[] = [];
     let error: any = null;
+    let dbCount = 0;
+
     try {
-        const { data, error: fetchError } = await supabase
+        // Build the query
+        let query = supabase
             .from('practitioners')
-            .select('id, name, specialty, city, address_full, slug_seo, status')
-            .eq('specialty', currentTitle)
-            .eq('status', 'active')
+            .select('id, slug, name, specialty, city, address_full, phone_norm, website, profile_url, quality_score, status', { count: 'exact' })
+            .eq('specialty', currentTitle);
+
+        // Filter status 'active' as required
+        query = query.eq('status', 'active');
+
+        // Sort by quality_score if available, otherwise name
+        // (Assuming quality_score is descending, name ascending)
+        query = query.order('quality_score', { ascending: false, nullsFirst: false })
             .order('name', { ascending: true });
+
+        const { data, error: fetchError, count } = await query;
 
         if (fetchError) {
             console.error("Supabase fetch error details (Specialty):", fetchError);
             throw fetchError;
         }
+
         practitioners = data || [];
+        dbCount = count || 0;
+
+        // Debug Panel (Server Side Logs as requested)
+        if (process.env.NODE_ENV === 'development') {
+            console.log("--- DEBUG PANEL: Dentisterie Équine ---");
+            console.log(`Querying for specialty: '${currentTitle}'`);
+            console.log(`Rows fetched: ${practitioners.length}`);
+            if (practitioners.length > 0) {
+                console.log("First record sample:", practitioners[0]);
+            } else {
+                console.log("No records found. Check table 'practitioners', column 'specialty', and status 'active'.");
+            }
+            console.log("---------------------------------------");
+        }
+
     } catch (e: any) {
         console.error("Caught error in CategoryPage:", e);
         error = e;
@@ -93,38 +121,14 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
                             <div className="space-y-1">
                                 <h2 className="font-bold text-primary uppercase tracking-[0.15em] text-xs flex items-center gap-3">
                                     <span className="w-2 h-2 bg-primary-soft rounded-full animate-pulse shadow-[0_0_8px_rgba(58,107,79,0.5)]"></span>
-                                    Activité récente enregistrée
+                                    {dbCount} Praticiens trouvés
                                 </h2>
                             </div>
-                            <span className="text-[10px] text-neutral-charcoal/40 font-bold uppercase tracking-[0.2em]">Flux en temps réel</span>
+                            <span className="text-[10px] text-neutral-charcoal/40 font-bold uppercase tracking-[0.2em]">Données certifiées</span>
                         </div>
 
-                        {error ? (
-                            <div className="bg-red-50 p-8 rounded-2xl border border-red-200 text-center text-red-800">
-                                Une erreur est survenue lors du chargement des praticiens. Veuillez réessayer plus tard.
-                            </div>
-                        ) : practitioners.length > 0 ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                {practitioners.map((p) => (
-                                    <PractitionerCard
-                                        key={p.id}
-                                        name={p.name}
-                                        specialty={p.specialty}
-                                        city={p.city}
-                                        address_full={p.address_full}
-                                        slug_seo={p.slug_seo}
-                                        interventionCount={0}
-                                        lastIntervention="—"
-                                        isClaimed={false}
-                                        isVerified={true}
-                                    />
-                                ))}
-                            </div>
-                        ) : (
-                            <div className="bg-white p-12 rounded-2xl border border-dashed border-neutral-stone/40 text-center text-neutral-charcoal/40 italic">
-                                Aucun praticien trouvé dans cette catégorie.
-                            </div>
-                        )}
+                        {/* Rendering the dedicated list component */}
+                        <DentistsList practitioners={practitioners} error={error} />
                     </section>
 
                     <section className="bg-leather-light/20 p-8 rounded-2xl border border-leather-light">
