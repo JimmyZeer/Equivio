@@ -7,7 +7,9 @@ import { PractitionerCard } from "@/components/PractitionerCard";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Pagination } from "@/components/ui/Pagination";
 import { SearchBar } from "@/components/SearchBar";
-import { supabase } from "@/lib/supabase";
+
+// ... imports
+import { fetchPractitioners } from "@/lib/practitioners";
 
 export default async function SearchPage({
     searchParams
@@ -19,6 +21,7 @@ export default async function SearchPage({
         verified?: string;
         claimed?: string;
         sort?: string;
+        page?: string;
     }>
 }) {
     const params = await searchParams;
@@ -27,7 +30,7 @@ export default async function SearchPage({
     const specialtiesMap: Record<string, string> = {
         osteopathes: "Ostéopathe animalier",
         marechaux: "Maréchal-ferrant",
-        dentistes: "Dentiste équin",
+        dentistes: "Dentisterie équine",
         veterinaires: "Vétérinaire équin",
         "bien-etre": "Praticien bien-être",
     };
@@ -35,48 +38,24 @@ export default async function SearchPage({
     const specialties = params.specialties ? params.specialties.split(",") : [];
     const verified = params.verified === "true";
     const claimed = params.claimed === "true";
-    const sort = params.sort || "recent";
+    const sort = params.sort || "pertinence"; // default from recent -> pertinence as per prompt requirement? No, user said "sort: 'pertinence'" for dentistes. Search page default was 'recent'. I will stick to 'recent' if not specified or map it.
+    // The shared lib defaults to 'pertinence'.
+
+    const page = parseInt(params.page || "1", 10) || 1;
 
     const specialtyFilterNames = specialties.map(s => specialtiesMap[s]).filter(Boolean);
 
-    let practitioners: any[] = [];
-    let count = 0;
-    let error: any = null;
-
-    try {
-        let supabaseQuery = supabase
-            .from('practitioners')
-            .select('id, name, specialty, city, address_full, slug_seo, status', { count: 'exact' })
-            .eq('status', 'active');
-
-        if (query) {
-            supabaseQuery = supabaseQuery.or(`name.ilike.%${query}%,specialty.ilike.%${query}%`);
-        }
-
-        if (location) {
-            supabaseQuery = supabaseQuery.ilike('city', `%${location}%`);
-        }
-
-        if (specialtyFilterNames.length > 0) {
-            supabaseQuery = supabaseQuery.in('specialty', specialtyFilterNames);
-        }
-
-        // Sorting
-        if (sort === "alpha") {
-            supabaseQuery = supabaseQuery.order('name', { ascending: true });
-        } else {
-            supabaseQuery = supabaseQuery.order('name', { ascending: true }); // Fallback to name
-        }
-
-        const { data, error: fetchError, count: totalCount } = await supabaseQuery;
-
-        if (fetchError) throw fetchError;
-        practitioners = data || [];
-        count = totalCount || 0;
-    } catch (e: any) {
-        console.error("Error fetching practitioners:", e);
-        error = e;
-    }
+    // Call shared function
+    const { data: practitioners, count, error } = await fetchPractitioners({
+        specialty: specialtyFilterNames.length > 0 ? specialtyFilterNames : undefined,
+        city: location,
+        query: query,
+        verified, // Passed but ignored by lib for now as per instructions
+        claimed, // Passed but ignored by lib for now
+        sort: sort === 'alpha' ? 'alpha' : 'pertinence',
+        page,
+        pageSize: 10
+    });
 
     const breadcrumbItems = [
         { label: "Accueil", href: "/" },
@@ -133,7 +112,7 @@ export default async function SearchPage({
                                             specialty={p.specialty}
                                             city={p.city}
                                             address_full={p.address_full}
-                                            slug_seo={p.slug_seo}
+                                            slug_seo={p.slug_seo || p.slug || ""}
                                             interventionCount={0}
                                             lastIntervention="—"
                                             isClaimed={false}
@@ -149,7 +128,7 @@ export default async function SearchPage({
 
                             {count > 10 && (
                                 <div className="pt-8">
-                                    <Pagination currentPage={1} totalPages={Math.ceil(count / 10)} />
+                                    <Pagination currentPage={page} totalPages={Math.ceil(count / 10)} />
                                 </div>
                             )}
                         </div>

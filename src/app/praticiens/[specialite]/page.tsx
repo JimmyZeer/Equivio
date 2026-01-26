@@ -6,8 +6,8 @@ import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SearchBar } from "@/components/SearchBar";
 import { PractitionerCard } from "@/components/PractitionerCard";
 import { DentistsList } from "@/components/DentistsList";
-import { supabase } from "@/lib/supabase";
 import Link from "next/link";
+import { fetchPractitioners } from "@/lib/practitioners";
 import { Metadata } from 'next';
 
 export async function generateMetadata({ params }: { params: Promise<{ specialite: string }> }): Promise<Metadata> {
@@ -40,52 +40,13 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
 
     const currentTitle = titles[resolvedParams.specialite] || "Praticien équin";
 
-    let practitioners: any[] = [];
-    let error: any = null;
-    let dbCount = 0;
-
-    try {
-        // Build the query
-        let query = supabase
-            .from('practitioners')
-            .select('id, slug, name, specialty, city, address_full, phone_norm, website, profile_url, quality_score, status', { count: 'exact' })
-            .eq('specialty', currentTitle);
-
-        // Filter status 'active' as required
-        query = query.eq('status', 'active');
-
-        // Sort by quality_score if available, otherwise name
-        // (Assuming quality_score is descending, name ascending)
-        query = query.order('quality_score', { ascending: false, nullsFirst: false })
-            .order('name', { ascending: true });
-
-        const { data, error: fetchError, count } = await query;
-
-        if (fetchError) {
-            console.error("Supabase fetch error details (Specialty):", fetchError);
-            throw fetchError;
-        }
-
-        practitioners = data || [];
-        dbCount = count || 0;
-
-        // Debug Panel (Server Side Logs as requested)
-        if (process.env.NODE_ENV === 'development') {
-            console.log("--- DEBUG PANEL: Dentisterie Équine ---");
-            console.log(`Querying for specialty: '${currentTitle}'`);
-            console.log(`Rows fetched: ${practitioners.length}`);
-            if (practitioners.length > 0) {
-                console.log("First record sample:", practitioners[0]);
-            } else {
-                console.log("No records found. Check table 'practitioners', column 'specialty', and status 'active'.");
-            }
-            console.log("---------------------------------------");
-        }
-
-    } catch (e: any) {
-        console.error("Caught error in CategoryPage:", e);
-        error = e;
-    }
+    // Use shared fetch function
+    const { data: practitioners, count: dbCount, error } = await fetchPractitioners({
+        specialty: currentTitle,
+        sort: 'pertinence',
+        page: 1,
+        pageSize: 50
+    });
 
     const breadcrumbItems = [
         { label: "Accueil", href: "/" },
