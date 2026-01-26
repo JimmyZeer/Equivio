@@ -14,8 +14,8 @@ export default function Home() {
 
             <main className="flex-grow">
                 {/* 🏇 Hero Section Upgrade — Split Layout */}
-                <section className="bg-neutral-offwhite pt-20 pb-40 px-6 reveal overflow-hidden relative">
-                    <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+                <section className="bg-neutral-offwhite pt-12 pb-20 lg:pt-20 lg:pb-32 px-6 reveal overflow-hidden relative">
+                    <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                         <div className="space-y-8 md:space-y-12 relative z-10 text-center lg:text-left">
                             <div className="space-y-6">
                                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-primary leading-[1.1] tracking-tight">
@@ -44,7 +44,7 @@ export default function Home() {
                 </section>
 
                 {/* 🛡 3 Pillars of Trust (Reference Design) */}
-                <section className="py-24 bg-white reveal [animation-delay:200ms]">
+                <section className="py-16 lg:py-24 bg-white reveal [animation-delay:200ms]">
                     <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
                         <div className="space-y-6 p-8 md:p-10 rounded-3xl bg-neutral-offwhite/50 border border-neutral-stone/30 group hover:bg-white hover:shadow-premium transition-all duration-300">
                             <div className="w-12 h-12 md:w-14 md:h-14 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-soft">
@@ -77,7 +77,7 @@ export default function Home() {
                 </section>
 
                 {/* 🐴 Categories Section */}
-                <section className="py-24 bg-neutral-offwhite reveal [animation-delay:300ms]">
+                <section className="py-16 lg:py-24 bg-neutral-offwhite reveal [animation-delay:300ms]">
                     <div className="max-w-7xl mx-auto px-6">
                         <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-16 md:mb-24 tracking-tight">Trouvez votre expert par spécialité</h2>
                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 pt-8">
@@ -104,10 +104,10 @@ export default function Home() {
                 </section>
 
                 {/* 👥 Dual Journey (Split Propriétaires / Praticiens) */}
-                <section className="py-40 bg-white reveal [animation-delay:200ms]">
+                <section className="py-16 lg:py-32 bg-white reveal [animation-delay:200ms]">
                     <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-12">
                         {/* Propriétaires */}
-                        <div className="bg-neutral-offwhite/40 border border-neutral-stone/20 rounded-[40px] p-12 md:p-16 space-y-10 flex flex-col h-full">
+                        <div className="bg-neutral-offwhite/40 border border-neutral-stone/20 rounded-[40px] p-8 lg:p-16 space-y-10 flex flex-col h-full">
                             <div className="space-y-4">
                                 <p className="text-xs font-bold text-primary-soft uppercase tracking-widest">Propriétaires de chevaux</p>
                                 <h2 className="text-4xl font-extrabold tracking-tight leading-tight">Trouvez les meilleurs experts à proximité</h2>
@@ -132,11 +132,11 @@ export default function Home() {
                         </div>
 
                         {/* Praticiens */}
-                        <div className="bg-primary rounded-[40px] p-12 md:p-16 space-y-10 flex flex-col h-full text-white card-grain relative overflow-hidden group">
+                        <div className="bg-primary rounded-[40px] p-8 lg:p-16 space-y-10 flex flex-col h-full text-white card-grain relative overflow-hidden group">
                             <div className="absolute inset-0 bg-grain opacity-5"></div>
                             <div className="space-y-4 relative z-10">
                                 <p className="text-xs font-bold text-leather-light uppercase tracking-widest">Praticiens & Professionnels</p>
-                                <h2 className="text-4xl font-extrabold tracking-tight leading-tight">Valorisez votre activité réelle</h2>
+                                <h2 className="text-4xl font-extrabold tracking-tight leading-tight text-white">Valorisez votre activité réelle</h2>
                                 <div className="w-12 h-1 bg-leather rounded-full"></div>
                             </div>
                             <p className="text-white/70 leading-relaxed text-lg relative z-10">
@@ -160,7 +160,7 @@ export default function Home() {
                 </section>
 
                 {/* Pourquoi choisir Equivio ? (4-Pillar Grid) */}
-                <section className="py-40 bg-neutral-offwhite reveal [animation-delay:300ms]">
+                <section className="py-16 lg:py-32 bg-neutral-offwhite reveal [animation-delay:300ms]">
                     <div className="max-w-7xl mx-auto px-6">
                         <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-16 md:mb-24 tracking-tight">Pourquoi choisir Equivio ?</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-20 gap-y-12 md:gap-y-16">
@@ -185,7 +185,7 @@ export default function Home() {
                 </section>
 
                 {/* Regions (SEO) */}
-                <section className="py-32 bg-white border-t border-neutral-stone/20">
+                <section className="py-12 lg:py-24 bg-white border-t border-neutral-stone/20">
                     <div className="max-w-7xl mx-auto px-6">
                         <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-charcoal/40 mb-10">Trouver un expert par région</h2>
                         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-4">
