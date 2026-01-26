@@ -26,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
     return {
         title: `${practitioner.name} - ${practitioner.specialty} à ${practitioner.city} | Equivio`,
-        description: `Profil certifié de ${practitioner.name}, ${practitioner.specialty.toLowerCase()} intervenant à ${practitioner.city}. Consultez son activité réelle et historique d'interventions sur Equivio.`,
+        description: `Profil certifié de ${practitioner.name}, ${practitioner.specialty.toLowerCase()} intervenant à ${practitioner.city}. Profil vérifié par Equivio.`,
     };
 }
 
@@ -111,25 +111,15 @@ export default async function PractitionerProfile({ params }: { params: Promise<
                                 <div className="space-y-4">
                                     <h3 className="font-bold flex items-center gap-2">
                                         <Activity className="w-5 h-5 text-primary-soft" />
-                                        Résumé d'activité enregistrée
+                                        Statut du profil
                                     </h3>
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="bg-neutral-offwhite p-4 rounded-xl border border-neutral-stone">
-                                            <span className="block text-2xl font-bold text-primary">{practitioner.intervention_count}</span>
-                                            <span className="text-xs text-neutral-charcoal/50 uppercase font-bold tracking-wider">Interventions</span>
+                                    <div className="bg-neutral-offwhite p-6 rounded-xl border border-neutral-stone flex items-center gap-4">
+                                        <div className="bg-primary/10 p-3 rounded-full text-primary">
+                                            <ShieldCheck className="w-6 h-6" />
                                         </div>
-                                        <div className="bg-neutral-offwhite p-4 rounded-xl border border-neutral-stone">
-                                            <span className="block text-2xl font-bold text-primary">
-                                                {practitioner.last_intervention ? (function () {
-                                                    try {
-                                                        return new Date(practitioner.last_intervention).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short' });
-                                                    } catch (e) {
-                                                        console.error("Error formatting last intervention date:", e);
-                                                        return "—";
-                                                    }
-                                                })() : "—"}
-                                            </span>
-                                            <span className="text-xs text-neutral-charcoal/50 uppercase font-bold tracking-wider">Dernière activité</span>
+                                        <div>
+                                            <span className="block font-bold text-primary">Profil vérifié – présence terrain confirmée</span>
+                                            <span className="text-xs text-neutral-charcoal/60">La zone d’intervention et l’activité professionnelle du praticien ont été vérifiées par Equivio.</span>
                                         </div>
                                     </div>
                                 </div>
@@ -151,7 +141,7 @@ export default async function PractitionerProfile({ params }: { params: Promise<
                         <div className="lg:col-span-2 space-y-8 reveal [animation-delay:200ms]">
                             <section className="bg-white rounded-2xl border border-neutral-stone/50 p-10 space-y-10 shadow-premium">
                                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
-                                    <h2 className="text-2xl font-extrabold tracking-tight">Historique des interventions</h2>
+                                    <h2 className="text-2xl font-extrabold tracking-tight">Historique vérifié</h2>
                                     <ProfileInterventionClient
                                         practitionerName={practitioner.name}
                                         practitionerId={practitioner.id}
@@ -172,39 +162,20 @@ export default async function PractitionerProfile({ params }: { params: Promise<
                                             </div>
                                         </div>
                                     )) : (
-                                        <div className="py-10 text-center text-neutral-charcoal/40 italic">Aucune intervention enregistrée récemment.</div>
+                                        <div className="py-10 text-center text-neutral-charcoal/40 italic">
+                                            La zone d’intervention et l’activité professionnelle du praticien ont été vérifiées par Equivio.
+                                        </div>
                                     )}
                                 </div>
 
-                                <div className="pt-12 border-t border-neutral-stone/30">
-                                    <div className="flex justify-between items-end mb-8">
-                                        <h4 className="text-[10px] font-bold text-neutral-charcoal/40 uppercase tracking-[0.2em]">Flux d'activité mensuel</h4>
-                                        <TransparencySeal size="sm" />
-                                    </div>
-                                    <div className="overflow-x-auto pb-4 -mx-2 px-2 scrollbar-hide">
-                                        <div className="flex items-end gap-2 md:gap-3 h-32 min-w-[400px]">
-                                            {[40, 65, 30, 85, 45, 95, 70, 55, 80, 60, 40, 90].map((h, i) => (
-                                                <div key={i} className="flex-1 bg-primary-soft/5 rounded-t-lg relative group cursor-pointer min-w-[8px]">
-                                                    <div
-                                                        className="absolute bottom-0 w-full bg-primary-soft/30 group-hover:bg-primary-soft rounded-t-lg transition-all duration-500 ease-out"
-                                                        style={{ height: `${h}%` }}
-                                                    ></div>
-                                                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 px-3 py-2 bg-primary text-white text-[9px] font-bold rounded shadow-xl opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none whitespace-nowrap z-50">
-                                                        {Math.round(h * 1.5)} interventions
-                                                        <div className="absolute top-full left-1/2 -translate-x-1/2 border-[4px] border-transparent border-t-primary"></div>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
+
                             </section>
 
                             <section className="bg-white rounded-2xl border border-neutral-stone p-8">
                                 <h3 className="font-bold mb-4">Présentation professionnelle</h3>
                                 <div className="prose prose-sm text-neutral-charcoal/80 leading-relaxed">
                                     <p>
-                                        Spécialisé en {practitioner.specialty.toLowerCase()}, ce professionnel intervient dans la région {practitioner.region}. Son activité sur Equivio est certifiée par les interventions enregistrées par ses clients.
+                                        Spécialisé en {practitioner.specialty.toLowerCase()}, ce professionnel intervient dans la région {practitioner.region}. Son activité professionnelle est vérifiée par Equivio.
                                     </p>
                                 </div>
                             </section>

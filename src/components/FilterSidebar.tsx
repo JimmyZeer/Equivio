@@ -131,8 +131,7 @@ export function FilterSidebar() {
                         onChange={(e) => updateFilters("sort", e.target.value)}
                         className="w-full bg-white border border-neutral-stone rounded-md py-2 px-3 text-sm text-neutral-charcoal focus:ring-primary focus:border-primary"
                     >
-                        <option value="recent">Activité récente</option>
-                        <option value="interventions">Nombre d'interventions</option>
+                        <option value="recent">Pertinence</option>
                         <option value="alpha">Ordre alphabétique</option>
                     </select>
                 </div>

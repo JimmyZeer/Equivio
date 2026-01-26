@@ -109,7 +109,7 @@ export default async function SearchPage({
                                         {count} praticiens trouvés
                                     </h1>
                                     <p className="text-sm text-neutral-charcoal/50 font-medium tracking-wide">
-                                        Professionnels actifs vérifiés
+                                        Professionnels vérifiés – présence confirmée
                                     </p>
                                 </div>
 

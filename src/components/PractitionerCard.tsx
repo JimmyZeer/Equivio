@@ -58,13 +58,12 @@ export function PractitionerCard({
                 </div>
 
                 <div className="flex flex-col items-start md:items-end justify-center gap-4 min-w-[200px] border-t md:border-t-0 md:border-l border-neutral-stone/20 pt-5 md:pt-0 md:pl-8 mt-2 md:mt-0">
-                    <div className="flex items-center gap-2.5 text-primary font-bold">
-                        <Activity className="w-4 h-4 text-primary-soft" strokeWidth={2} />
-                        <span className="text-base">{interventionCount} interventions</span>
+                    <div className="flex items-center gap-2 text-primary font-bold text-sm md:text-right">
+                        <Activity className="w-4 h-4 text-primary-soft shrink-0" strokeWidth={2} />
+                        <span>Présence terrain confirmée</span>
                     </div>
-                    <div className="flex items-center gap-2.5 text-[10px] text-neutral-charcoal/40 uppercase font-bold tracking-[0.1em]">
-                        <Calendar className="w-4 h-4 opacity-50" strokeWidth={1.5} />
-                        <span>Activité : {lastIntervention}</span>
+                    <div className="flex items-center gap-2 text-[10px] text-neutral-charcoal/60 uppercase font-bold tracking-[0.1em] md:text-right">
+                        <span>Profil vérifié par Equivio</span>
                     </div>
                 </div>
             </div>

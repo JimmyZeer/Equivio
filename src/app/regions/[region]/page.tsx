@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SearchBar } from "@/components/SearchBar";
 import { PractitionerCard } from "@/components/PractitionerCard";
-import { Info } from "lucide-react";
+import { Info, ShieldCheck } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { Metadata } from 'next';
 
@@ -61,8 +61,8 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
                             Praticiens équins référencés en <span className="text-primary-soft">{regionName || "..."}</span>
                         </h1>
                         <p className="text-lg md:text-xl text-neutral-charcoal/60 leading-relaxed text-pretty max-w-3xl">
-                            Consultez l'activité réelle des professionnels intervenant dans la région {regionName}.
-                            Equivio répertorie les interventions anonymisées pour vous offrir une vision objective du maillage professionnel local.
+                            Consultez les professionnels vérifiés intervenant dans la région {regionName}.
+                            Equivio répertorie les praticiens dont la zone d'intervention a été validée pour vous offrir une vision fiable du maillage professionnel local.
                         </p>
                     </div>
 
@@ -73,10 +73,10 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
                     <section className="space-y-10 reveal [animation-delay:300ms]">
                         <div className="flex justify-between items-center bg-stone-100/50 p-6 rounded-xl border border-neutral-stone/30">
                             <h2 className="font-bold text-primary uppercase tracking-[0.15em] text-xs flex items-center gap-3">
-                                <span className="w-2 h-2 bg-primary-soft rounded-full animate-pulse shadow-[0_0_8px_rgba(58,107,79,0.5)]"></span>
-                                Activité récente anonymisée en {regionName}
+                                <ShieldCheck className="w-4 h-4 text-primary-soft" />
+                                Professionnels vérifiés en {regionName}
                             </h2>
-                            <span className="text-[10px] text-neutral-charcoal/40 font-bold uppercase tracking-[0.2em]">Flux territorial</span>
+                            <span className="text-[10px] text-neutral-charcoal/40 font-bold uppercase tracking-[0.2em]">Réseau certifié</span>
                         </div>
 
                         {error ? (
@@ -121,7 +121,7 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
                         <div className="space-y-3">
                             <h3 className="text-2xl font-bold text-primary tracking-tight">Note de transparence locale</h3>
                             <p className="text-neutral-charcoal/70 text-base leading-relaxed max-w-3xl">
-                                L'activité affichée pour la région {regionName} est issue d'un cumul de données certifiées et de déclarations propriétaires vérifiées par notre algorithme de cohérence géographique.
+                                La présence des professionnels affichée pour la région {regionName} est validée par notre algorithme de cohérence géographique et nos vérifications administratives.
                             </p>
                         </div>
                     </section>
