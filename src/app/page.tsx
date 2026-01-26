@@ -19,10 +19,10 @@ export default function Home() {
                         <div className="space-y-8 md:space-y-12 relative z-10 text-center lg:text-left">
                             <div className="space-y-6">
                                 <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-primary leading-[1.1] tracking-tight">
-                                    Le réseau de <span className="text-primary-soft">confiance</span> des praticiens équins
+                                    Trouvez un praticien équin <span className="text-primary-soft">réellement actif</span> près de chez vous
                                 </h1>
                                 <p className="text-base sm:text-lg md:text-xl text-neutral-charcoal/60 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                                    Une sélection basée sur l'activité réelle, pas sur des avis subjectifs. Trouvez l'expert certifié adapté à votre cheval.
+                                    Ostéopathes, maréchaux, dentistes et vétérinaires sélectionnés sur leur présence confirmée sur le terrain. Pas d'avis anonymes, juste la réalité de l'activité.
                                 </p>
                             </div>
                             <div className="pt-4">
@@ -50,27 +50,27 @@ export default function Home() {
                             <div className="w-12 h-12 md:w-14 md:h-14 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-soft">
                                 <Database className="w-6 h-6 md:w-8 md:h-8" strokeWidth={1.5} />
                             </div>
-                            <h3 className="text-xl font-bold tracking-tight">Données vérifiées</h3>
+                            <h3 className="text-xl font-bold tracking-tight">Présence Terrain Vérifiée</h3>
                             <p className="text-neutral-charcoal/60 leading-relaxed text-sm">
-                                L'activité est tracée et certifiée par notre protocole technique exclusif, garantissant une pratique réelle.
+                                Nous validons que le praticien intervient régulièrement et récemment dans votre secteur géographique.
                             </p>
                         </div>
                         <div className="space-y-6 p-8 md:p-10 rounded-3xl bg-neutral-offwhite/50 border border-neutral-stone/30 group hover:bg-white hover:shadow-premium transition-all duration-300">
                             <div className="w-12 h-12 md:w-14 md:h-14 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-soft">
                                 <Globe className="w-6 h-6 md:w-8 md:h-8" strokeWidth={1.5} />
                             </div>
-                            <h3 className="text-xl font-bold tracking-tight">Transparence totale</h3>
+                            <h3 className="text-xl font-bold tracking-tight">Sans Avis Clients</h3>
                             <p className="text-neutral-charcoal/60 leading-relaxed text-sm">
-                                Accédez aux indicateurs réels de performance et de disponibilité, sans filtres marketing ou avis trompeurs.
+                                Ici, la réputation ne s'achète pas et ne se note pas. Seule la réalité du travail effectué compte.
                             </p>
                         </div>
                         <div className="space-y-6 p-8 md:p-10 rounded-3xl bg-neutral-offwhite/50 border border-neutral-stone/30 group hover:bg-white hover:shadow-premium transition-all duration-300">
                             <div className="w-12 h-12 md:w-14 md:h-14 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-soft">
                                 <ShieldCheck className="w-6 h-6 md:w-8 md:h-8" strokeWidth={1.5} />
                             </div>
-                            <h3 className="text-xl font-bold tracking-tight">Certification Equivio</h3>
+                            <h3 className="text-xl font-bold tracking-tight">Expertise Certifiée</h3>
                             <p className="text-neutral-charcoal/60 leading-relaxed text-sm">
-                                Chaque praticien est certifié par notre organisme indépendant, garantissant une expertise reconnue et vérifiée.
+                                Diplômes contrôlés et statut professionnel validé pour chaque expert du réseau.
                             </p>
                         </div>
                     </div>
@@ -79,7 +79,7 @@ export default function Home() {
                 {/* 🐴 Categories Section */}
                 <section className="py-16 lg:py-24 bg-neutral-offwhite reveal [animation-delay:300ms]">
                     <div className="max-w-7xl mx-auto px-6">
-                        <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-16 md:mb-24 tracking-tight">Trouvez votre expert par spécialité</h2>
+                        <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-16 md:mb-24 tracking-tight">Tous les experts de santé et bien-être équin</h2>
                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 pt-8">
                             {[
                                 { name: "Ostéopathe", icon: Stethoscope, slug: "osteopathes" },
@@ -136,14 +136,14 @@ export default function Home() {
                             <div className="absolute inset-0 bg-grain opacity-5"></div>
                             <div className="space-y-4 relative z-10">
                                 <p className="text-xs font-bold text-leather-light uppercase tracking-widest">Praticiens & Professionnels</p>
-                                <h2 className="text-4xl font-extrabold tracking-tight leading-tight text-white">Valorisez votre activité réelle</h2>
+                                <h2 className="text-4xl font-extrabold tracking-tight leading-tight text-white">Votre visibilité dépend de votre activité, pas de votre budget</h2>
                                 <div className="w-12 h-1 bg-leather rounded-full"></div>
                             </div>
                             <p className="text-white/70 leading-relaxed text-lg relative z-10">
-                                Rejoignez le premier réseau professionnel qui met en avant votre expertise de terrain. Transformez votre volume de travail en gage de confiance institutionnel.
+                                Fini le marketing payant. Sur Equivio, c'est votre travail quotidien sur le terrain qui construit votre réputation.
                             </p>
                             <ul className="space-y-4 pt-4 relative z-10">
-                                {["Tableau de bord de suivi d'activité", "Badge de certification Equivio"].map((item, idx) => (
+                                {["Pas d'algorithme payant", "Valorisation de votre zone d'intervention réelle"].map((item, idx) => (
                                     <li key={idx} className="flex gap-4 items-center font-bold text-white">
                                         <CheckCircle2 className="w-6 h-6 text-leather" />
                                         {item}
