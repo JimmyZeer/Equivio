@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SearchBar } from "@/components/SearchBar";
 import { PractitionerCard } from "@/components/PractitionerCard";
-import { PractitionersList } from "@/components/PractitionersList";
+import { PractitionerResults } from "@/components/PractitionerResults";
 import Link from "next/link";
 import { fetchPractitioners } from "@/lib/practitioners";
 import { Metadata } from 'next';
@@ -118,20 +118,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
                         <SearchBar />
                     </div>
 
-                    <section className="space-y-10 reveal [animation-delay:300ms]">
-                        <div className="flex justify-between items-center bg-stone-100/50 p-6 rounded-xl border border-neutral-stone/30">
-                            <div className="space-y-1">
-                                <h2 className="font-bold text-primary uppercase tracking-[0.15em] text-xs flex items-center gap-3">
-                                    <span className="w-2 h-2 bg-primary-soft rounded-full animate-pulse shadow-[0_0_8px_rgba(58,107,79,0.5)]"></span>
-                                    {dbCount} Praticiens trouvés
-                                </h2>
-                            </div>
-                            <span className="text-[10px] text-neutral-charcoal/40 font-bold uppercase tracking-[0.2em]">Données certifiées</span>
-                        </div>
-
-                        {/* Rendering the dedicated list component */}
-                        <PractitionersList practitioners={practitioners} error={error} />
-                    </section>
+                    <div className="reveal [animation-delay:300ms]">
+                        <PractitionerResults practitioners={practitioners} count={dbCount} error={error} />
+                    </div>
 
                     <section className="bg-leather-light/20 p-8 rounded-2xl border border-leather-light">
                         <h3 className="text-xl font-bold mb-6">Rechercher par région</h3>
