@@ -42,20 +42,25 @@ CREATE INDEX idx_contact_requests_created ON contact_requests(created_at DESC);
 
 -- ============================================
 -- 2. CLEANUP: Fix unknown/null data in practitioners
+-- Note: region column has NOT NULL constraint, using 'Non renseigné' instead
 -- ============================================
 
--- Replace 'unknown' region with NULL (cleaner)
+-- Replace 'unknown' region with 'Non renseigné' (cleaner display)
 UPDATE practitioners 
-SET region = NULL 
+SET region = 'Non renseigné' 
 WHERE region = 'unknown' OR region = 'Unknown' OR LOWER(region) = 'unknown';
 
--- Replace 'unknown' city with NULL
+-- Replace empty string regions
 UPDATE practitioners 
-SET city = NULL 
+SET region = 'Non renseigné' 
+WHERE region = '' OR region IS NULL;
+
+-- Replace 'unknown' city with empty string or NULL (if allowed)
+UPDATE practitioners 
+SET city = '' 
 WHERE city = 'unknown' OR city = 'Unknown' OR LOWER(city) = 'unknown';
 
--- Replace empty strings with NULL for cleaner data
-UPDATE practitioners SET region = NULL WHERE region = '';
+-- Clean up empty values
 UPDATE practitioners SET city = NULL WHERE city = '';
 UPDATE practitioners SET phone_norm = NULL WHERE phone_norm = '';
 UPDATE practitioners SET website = NULL WHERE website = '';
