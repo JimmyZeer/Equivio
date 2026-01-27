@@ -13,6 +13,8 @@ export interface Practitioner {
     profile_url?: string | null;
     quality_score?: number | null;
     status?: string | null;
+    lat?: number | null;
+    lng?: number | null;
     // Add other fields as needed based on the select query
 }
 
@@ -53,7 +55,7 @@ export async function fetchPractitioners({
         // Specialty page used: id, slug, name, specialty, city, address_full, phone_norm, website, profile_url, quality_score, status
         // Selected fields: id, slug, slug_seo, name, specialty, city, address_full, phone_norm, website, profile_url, status
         // Removed quality_score as it does not exist in DB
-        .select('id, slug, slug_seo, name, specialty, city, address_full, phone_norm, website, profile_url, status, intervention_count', { count: 'exact' });
+        .select('id, slug, slug_seo, name, specialty, city, address_full, phone_norm, website, profile_url, status, intervention_count, lat, lng', { count: 'exact' });
 
     // Status active filter
     dbQuery = dbQuery.eq('status', 'active');
