@@ -49,7 +49,7 @@ export function PractitionerCard({
                     </Link>
 
                     <p className="text-neutral-charcoal font-medium">
-                        {specialty === "Ostéopathe animalier" ? "Ostéopathe équin" : specialty}
+                        {specialty === "Ostéopathe animalier" ? "Ostéopathe équin" : (specialty === "Dentisterie équine" ? "Dentiste équin" : specialty)}
                     </p>
 
                     <p className="text-neutral-charcoal/60 text-sm font-medium capitalize flex items-center gap-2">

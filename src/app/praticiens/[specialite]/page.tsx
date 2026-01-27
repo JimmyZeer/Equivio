@@ -5,7 +5,7 @@ import { Footer } from "@/components/Footer";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SearchBar } from "@/components/SearchBar";
 import { PractitionerCard } from "@/components/PractitionerCard";
-import { DentistsList } from "@/components/DentistsList";
+import { PractitionersList } from "@/components/PractitionersList";
 import Link from "next/link";
 import { fetchPractitioners } from "@/lib/practitioners";
 import { Metadata } from 'next';
@@ -130,7 +130,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
                         </div>
 
                         {/* Rendering the dedicated list component */}
-                        <DentistsList practitioners={practitioners} error={error} />
+                        <PractitionersList practitioners={practitioners} error={error} />
                     </section>
 
                     <section className="bg-leather-light/20 p-8 rounded-2xl border border-leather-light">

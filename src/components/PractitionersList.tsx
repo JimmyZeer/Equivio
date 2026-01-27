@@ -5,12 +5,12 @@ import { Button } from "@/components/ui/Button";
 import { PractitionerCard } from "./PractitionerCard";
 import { Practitioner } from "@/lib/practitioners";
 
-interface DentistsListProps {
+interface PractitionersListProps {
     practitioners: Practitioner[];
     error?: any;
 }
 
-export function DentistsList({ practitioners, error }: DentistsListProps) {
+export function PractitionersList({ practitioners, error }: PractitionersListProps) {
     if (error) {
         return (
             <div className="bg-red-50 p-8 rounded-xl border border-red-200 text-center text-red-800 flex flex-col items-center gap-4">

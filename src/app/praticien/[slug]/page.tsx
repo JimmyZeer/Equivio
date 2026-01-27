@@ -25,9 +25,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
     if (!practitioner) return { title: "Praticien non trouvé | Equivio" };
 
+    const displaySpecialty = practitioner.specialty === "Ostéopathe animalier" ? "Ostéopathe équin" : practitioner.specialty;
+
     return {
-        title: `${practitioner.name} - ${practitioner.specialty} à ${practitioner.city} | Equivio`,
-        description: `Profil certifié de ${practitioner.name}, ${practitioner.specialty.toLowerCase()} intervenant à ${practitioner.city}. Profil vérifié par Equivio.`,
+        title: `${practitioner.name} - ${displaySpecialty} à ${practitioner.city} | Equivio`,
+        description: `Profil certifié de ${practitioner.name}, ${displaySpecialty.toLowerCase()} intervenant à ${practitioner.city}. Profil vérifié par Equivio.`,
     };
 }
 
@@ -72,13 +74,20 @@ export default async function PractitionerProfile({ params }: { params: Promise<
         { label: practitioner.name },
     ];
 
+    // Terminology Normalization
+    const displaySpecialty = practitioner.specialty === "Ostéopathe animalier" ? "Ostéopathe équin" : practitioner.specialty;
+
     return (
         <div className="flex flex-col min-h-screen">
             <Header />
 
             <main className="flex-grow bg-neutral-offwhite pt-8 pb-20 px-4">
                 <div className="max-w-5xl mx-auto space-y-8">
-                    <Breadcrumb items={breadcrumbItems} />
+                    <Breadcrumb items={[
+                        { label: "Accueil", href: "/" },
+                        { label: "Recherche", href: "/search" },
+                        { label: practitioner.name },
+                    ]} />
 
                     {/* Header Profile */}
                     <section className="bg-white rounded-2xl border border-neutral-stone overflow-hidden shadow-sm">
@@ -94,7 +103,7 @@ export default async function PractitionerProfile({ params }: { params: Promise<
                                     </div>
 
                                     <div className="space-y-2">
-                                        <p className="text-xl font-semibold text-primary/80">{practitioner.specialty}</p>
+                                        <p className="text-xl font-semibold text-primary/80">{displaySpecialty}</p>
                                         <div className="flex items-center gap-2 text-neutral-charcoal/60">
                                             <MapPin className="w-4 h-4" />
                                             <span>Intervient en {practitioner.region}</span>
@@ -166,7 +175,7 @@ export default async function PractitionerProfile({ params }: { params: Promise<
                                 <h3 className="font-bold mb-4">Présentation professionnelle</h3>
                                 <div className="prose prose-sm text-neutral-charcoal/80 leading-relaxed">
                                     <p>
-                                        Spécialisé en {practitioner.specialty.toLowerCase()}, ce professionnel intervient dans la région {practitioner.region}. Son activité professionnelle est vérifiée par Equivio.
+                                        Spécialisé en {displaySpecialty.toLowerCase()}, ce professionnel intervient dans la région {practitioner.region}. Son activité professionnelle est vérifiée par Equivio.
                                     </p>
                                 </div>
                             </section>

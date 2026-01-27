@@ -28,7 +28,7 @@ export default async function SearchPage({
     const query = params.q || "";
     const location = params.l || "";
     const specialtiesMap: Record<string, string> = {
-        osteopathes: "Ostéopathe animalier",
+        osteopathes: "Ostéopathe équin",
         marechaux: "Maréchal-ferrant",
         dentistes: "Dentisterie équine",
         veterinaires: "Vétérinaire équin",
