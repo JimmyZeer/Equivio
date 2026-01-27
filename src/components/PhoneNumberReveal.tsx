@@ -4,6 +4,7 @@
 import { useState } from "react";
 import { Button } from "./ui/Button";
 import { Phone } from "lucide-react";
+import { trackPhoneReveal } from "@/lib/analytics";
 
 interface PhoneNumberRevealProps {
     phoneNumber: string;
@@ -17,8 +18,9 @@ export function PhoneNumberReveal({ phoneNumber, practitionerId }: PhoneNumberRe
         e.preventDefault();
         e.stopPropagation();
         setIsRevealed(true);
-        // TODO: Trigger analytics event 'reveal_phone' here
-        console.log("Phone revealed for practitioner:", practitionerId);
+
+        // Trigger analytics
+        trackPhoneReveal(practitionerId);
     };
 
     if (isRevealed) {
