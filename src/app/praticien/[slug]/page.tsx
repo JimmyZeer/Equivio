@@ -5,6 +5,7 @@ import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { PhoneNumberReveal } from "@/components/PhoneNumberReveal";
+import { TransparencyIndex } from "@/components/TransparencyIndex";
 import { MapPin, ShieldCheck, ExternalLink, Info } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
@@ -86,18 +87,30 @@ export default async function PractitionerProfile({ params }: { params: Promise<
                         </div>
                     </div>
 
-                    {/* Bloc Statut & Confiance */}
-                    <div className="flex flex-wrap gap-4">
-                        {/* Always show Verified for now as per previous logic "active" = verified, or check explicit fields */}
-                        {/* Prompt says "Visible mais sobre", "Max 2 statuts" */}
+                    {/* Bloc Statut & Confiance — With Transparency Index */}
+                    <div className="flex flex-wrap gap-4 items-center">
+                        {/* Transparency Index Badge */}
+                        <TransparencyIndex
+                            isVerified={practitioner.status === 'active'}
+                            hasPhone={!!practitioner.phone_norm}
+                            hasRegion={!!practitioner.region && practitioner.region !== 'unknown'}
+                            hasCity={!!practitioner.city}
+                            hasWebsite={!!practitioner.website}
+                            hasPhoto={false}
+                            hasDiploma={false}
+                        />
+
+                        {/* Legacy badges for SEO/accessibility */}
                         <div className="px-4 py-2 bg-primary/5 border border-primary/20 rounded-full flex items-center gap-2 text-primary font-bold text-sm">
                             <ShieldCheck className="w-4 h-4" />
                             Profil vérifié
                         </div>
-                        <div className="px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-full flex items-center gap-2 text-emerald-700 font-bold text-sm">
-                            <MapPin className="w-4 h-4" />
-                            Présence terrain confirmée
-                        </div>
+                        {practitioner.region && practitioner.region !== 'unknown' && (
+                            <div className="px-4 py-2 bg-emerald-50 border border-emerald-200 rounded-full flex items-center gap-2 text-emerald-700 font-bold text-sm">
+                                <MapPin className="w-4 h-4" />
+                                Présence terrain confirmée
+                            </div>
+                        )}
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
