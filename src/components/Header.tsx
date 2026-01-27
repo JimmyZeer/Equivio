@@ -2,11 +2,24 @@
 
 import Link from "next/link";
 import { Button } from "./ui/Button";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Search } from "lucide-react";
 import { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 
 export function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const router = useRouter();
+    const pathname = usePathname();
+
+    const handleSearchClick = () => {
+        if (pathname === "/") {
+            // On homepage: scroll to search section
+            document.getElementById("search-section")?.scrollIntoView({ behavior: "smooth" });
+        } else {
+            // On other pages: navigate to homepage with hash
+            router.push("/#search-section");
+        }
+    };
 
     return (
         <header className="bg-white border-b border-neutral-stone sticky top-0 z-50">
@@ -25,9 +38,14 @@ export function Header() {
 
                 <div className="flex items-center gap-4">
                     <Link href="/revendiquer" className="hidden sm:inline-flex">
-                        <Button variant="outline">Revendiquer ma fiche</Button>
+                        <Button variant="outline" className="border-primary/30 text-primary hover:bg-primary/5 hover:border-primary/50 transition-all">
+                            Revendiquer ma fiche
+                        </Button>
                     </Link>
-                    <Button className="hidden sm:inline-flex">Rechercher</Button>
+                    <Button onClick={handleSearchClick} className="hidden sm:inline-flex gap-2">
+                        <Search className="w-4 h-4" />
+                        Rechercher
+                    </Button>
 
                     <button
                         onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -51,7 +69,10 @@ export function Header() {
                             <Link href="/revendiquer" onClick={() => setIsMenuOpen(false)}>
                                 <Button variant="outline" className="w-full">Revendiquer ma fiche</Button>
                             </Link>
-                            <Button className="w-full">Rechercher</Button>
+                            <Button onClick={() => { setIsMenuOpen(false); handleSearchClick(); }} className="w-full gap-2">
+                                <Search className="w-4 h-4" />
+                                Rechercher
+                            </Button>
                         </div>
                     </nav>
                 </div>

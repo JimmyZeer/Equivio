@@ -106,23 +106,25 @@ export default async function PractitionerProfile({ params }: { params: Promise<
                             <section className="space-y-4">
                                 <h2 className="text-xl font-bold text-primary border-b border-neutral-stone pb-2">Présentation</h2>
                                 <p className="text-neutral-charcoal/80 leading-relaxed text-pretty">
-                                    {displaySpecialty} exerçant principalement en {practitioner.region}.
+                                    {displaySpecialty}{practitioner.region && practitioner.region !== "unknown" ? ` exerçant principalement en ${practitioner.region}` : ""}.
                                     Interventions possibles pour chevaux de sport et de loisir.
                                     {practitioner.city ? ` Basé à ${practitioner.city}.` : ""}
                                 </p>
                             </section>
 
-                            {/* Zones d'intervention */}
-                            <section className="space-y-4">
-                                <h2 className="text-xl font-bold text-primary border-b border-neutral-stone pb-2">Zones d’intervention</h2>
-                                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-neutral-charcoal/80">
-                                    <li className="flex items-start gap-2">
-                                        <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/40 shrink-0" />
-                                        {practitioner.region} (Principale)
-                                    </li>
-                                    {/* Future: Add list of departments if available */}
-                                </ul>
-                            </section>
+                            {/* Zones d'intervention - Only show if region is valid */}
+                            {practitioner.region && practitioner.region !== "unknown" && (
+                                <section className="space-y-4">
+                                    <h2 className="text-xl font-bold text-primary border-b border-neutral-stone pb-2">Zones d’intervention</h2>
+                                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-neutral-charcoal/80">
+                                        <li className="flex items-start gap-2">
+                                            <div className="mt-1.5 w-1.5 h-1.5 rounded-full bg-primary/40 shrink-0" />
+                                            {practitioner.region} (Principale)
+                                        </li>
+                                        {/* Future: Add list of departments if available */}
+                                    </ul>
+                                </section>
+                            )}
                         </div>
 
                         <div className="space-y-8">

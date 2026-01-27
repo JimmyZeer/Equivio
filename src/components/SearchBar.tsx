@@ -53,7 +53,7 @@ export function SearchBar() {
     };
 
     return (
-        <div className="w-full max-w-5xl mx-auto bg-white rounded-2xl shadow-premium border border-neutral-stone/50 overflow-hidden p-3 flex flex-col md:flex-row items-stretch gap-3">
+        <div id="search-section" className="w-full max-w-5xl mx-auto bg-white rounded-2xl shadow-premium border border-neutral-stone/50 overflow-hidden p-3 flex flex-col md:flex-row items-stretch gap-3">
             <div className="flex-1 flex flex-col px-6 py-2 gap-1.5 border-b md:border-b-0 md:border-r border-neutral-stone/20 group/input hover:bg-primary/5 transition-soft rounded-xl">
                 <label className="text-[10px] font-bold text-neutral-charcoal/40 uppercase tracking-[0.15em] flex items-center gap-2">
                     <Search className="w-3.5 h-3.5" strokeWidth={2} />

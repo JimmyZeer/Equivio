@@ -28,7 +28,7 @@ export default async function Home() {
                     <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                         <div className="space-y-8 md:space-y-12 relative z-10 text-center lg:text-left">
                             <div className="space-y-6">
-                                <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-primary leading-[1.1] tracking-tight">
+                                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-primary leading-[1.1] tracking-tight">
                                     Trouvez un praticien équin <span className="text-primary-soft">réellement actif</span> près de chez vous
                                 </h1>
                                 <p className="text-base sm:text-lg md:text-xl text-neutral-charcoal/60 leading-relaxed max-w-2xl mx-auto lg:mx-0">
