@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ specialit
 
     // Plural mapping for Title
     const pluralTitles: Record<string, string> = {
-        osteopathes: "Ostéopathes animaliers",
+        osteopathes: "Ostéopathes équins",
         marechaux: "Maréchaux-ferrants",
         dentistes: "Dentistes équins",
         veterinaires: "Vétérinaires équins",
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ specialit
 
     // Singular mapping for description
     const singularTitles: Record<string, string> = {
-        osteopathes: "ostéopathe animalier",
+        osteopathes: "ostéopathe équin",
         marechaux: "maréchal-ferrant",
         dentistes: "dentiste équin",
         veterinaires: "vétérinaire équin",
@@ -66,7 +66,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
 
     // Plural display for H1
     const pluralTitles: Record<string, string> = {
-        osteopathes: "Ostéopathes animaliers",
+        osteopathes: "Ostéopathes équins",
         marechaux: "Maréchaux-ferrants",
         dentistes: "Dentistes équins",
         veterinaires: "Vétérinaires équins",
