@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "functions": {
+    "/a-propos": {},
+    "/cgv": {},
+    "/confidentialite": {},
+    "/contact": {},
+    "/mentions-legales": {},
+    "/praticien/[slug]": {},
+    "/praticiens/[specialite]": {},
+    "/regions/[region]": {},
+    "/search": {},
+    "/transparence": {}
+  }
+}

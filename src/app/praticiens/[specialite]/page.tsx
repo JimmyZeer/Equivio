@@ -14,42 +14,28 @@ export async function generateMetadata({ params }: { params: Promise<{ specialit
     const resolvedParams = await params;
 
     // Plural mapping for Title
-    const pluralTitles: Record<string, string> = {
-        osteopathes: "Ostéopathes équins",
-        marechaux: "Maréchaux-ferrants",
-        dentistes: "Dentistes équins",
-        veterinaires: "Vétérinaires équins",
-        "bien-etre": "Praticiens bien-être",
+    const config: Record<string, { plural: string, singular: string, db: string }> = {
+        osteopathes: { plural: "Ostéopathes équins", singular: "ostéopathe équin", db: "Ostéopathe animalier" },
+        marechaux: { plural: "Maréchaux-ferrants", singular: "maréchal-ferrant", db: "Maréchal-ferrant" },
+        dentistes: { plural: "Dentistes équins", singular: "dentiste équin", db: "Dentisterie équine" },
+        veterinaires: { plural: "Vétérinaires équins", singular: "vétérinaire équin", db: "Vétérinaire équin" },
+        "bien-etre": { plural: "Praticiens bien-être", singular: "praticien bien-être", db: "Praticien bien-être" },
     };
 
-    // Singular mapping for description
-    const singularTitles: Record<string, string> = {
-        osteopathes: "ostéopathe équin",
-        marechaux: "maréchal-ferrant",
-        dentistes: "dentiste équin",
-        veterinaires: "vétérinaire équin",
-        "bien-etre": "praticien bien-être",
+    const current = config[resolvedParams.specialite] || {
+        plural: "Praticiens équins",
+        singular: "praticien équin",
+        db: "Praticien équin"
     };
 
-    const title = pluralTitles[resolvedParams.specialite] || "Praticiens équins";
-    const typeSingular = singularTitles[resolvedParams.specialite] || "praticien équin";
-
-    // We need the count for the title. 
-    // Ideally we should cache or estimate this as fetching in generateMetadata might double cost if not careful,
-    // but Next.js deduplicates requests.
-    // However, we don't have the count here easily without importing fetch.
-    // Let's assume we can fetch just the count or use a placeholder if needed, but request said "Dynamique".
-    // I will fetch only count here.
     const { count } = await fetchPractitioners({
-        specialty: singularTitles[resolvedParams.specialite] === "dentiste équin" ? "Dentisterie équine" : (resolvedParams.specialite === 'osteopathes' ? 'Ostéopathe animalier' : title), /* Need match DB specialty name */
+        specialty: current.db,
         pageSize: 1
     });
-    // Note: Mapping above for DB specialty is tricky if I don't use the exact shared logic.
-    // The previous code had `titles` mapping to single DB values. I'll reuse that logic.
 
     return {
-        title: `${title} en France (${count} praticiens) | Equivio`,
-        description: `Trouvez un ${typeSingular} près de chez vous. Professionnels référencés selon leur présence terrain, sans classement sponsorisé.`,
+        title: `${current.plural} en France (${count} praticiens) | Equivio`,
+        description: `Trouvez un ${current.singular} près de chez vous. Professionnels référencés selon leur présence terrain, sans classement sponsorisé.`,
     };
 }
 

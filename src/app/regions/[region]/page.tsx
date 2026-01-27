@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -30,7 +29,7 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
         const { data, error: fetchError } = await supabase
             .from('practitioners')
             .select('id, name, specialty, city, address_full, slug_seo, status')
-            .ilike('city', `%${resolvedParams.region}%`)
+            .ilike('region', `%${resolvedParams.region}%`)
             .eq('status', 'active')
             .order('name', { ascending: true });
 

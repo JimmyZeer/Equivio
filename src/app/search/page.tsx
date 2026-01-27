@@ -1,4 +1,3 @@
-export const runtime = 'edge';
 
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -31,7 +30,7 @@ export default async function SearchPage({
     const query = params.q || "";
     const location = params.l || "";
     const specialtiesMap: Record<string, string> = {
-        osteopathes: "Ostéopathe équin",
+        osteopathes: "Ostéopathe animalier",
         marechaux: "Maréchal-ferrant",
         dentistes: "Dentisterie équine",
         veterinaires: "Vétérinaire équin",

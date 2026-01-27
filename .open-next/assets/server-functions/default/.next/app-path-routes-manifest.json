@@ -1,0 +1,18 @@
+{
+  "/_global-error/page": "/_global-error",
+  "/_not-found/page": "/_not-found",
+  "/a-propos/page": "/a-propos",
+  "/cgv/page": "/cgv",
+  "/confidentialite/page": "/confidentialite",
+  "/contact/page": "/contact",
+  "/mentions-legales/page": "/mentions-legales",
+  "/page": "/",
+  "/praticien/[slug]/page": "/praticien/[slug]",
+  "/praticiens/[specialite]/page": "/praticiens/[specialite]",
+  "/regions/[region]/page": "/regions/[region]",
+  "/revendiquer/page": "/revendiquer",
+  "/robots.txt/route": "/robots.txt",
+  "/search/page": "/search",
+  "/sitemap.xml/route": "/sitemap.xml",
+  "/transparence/page": "/transparence"
+}

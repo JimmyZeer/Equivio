@@ -1,0 +1,18 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/a-propos/page": "app-edge-has-no-entrypoint",
+  "/cgv/page": "app-edge-has-no-entrypoint",
+  "/confidentialite/page": "app-edge-has-no-entrypoint",
+  "/contact/page": "app-edge-has-no-entrypoint",
+  "/mentions-legales/page": "app-edge-has-no-entrypoint",
+  "/page": "app/page.js",
+  "/praticien/[slug]/page": "app-edge-has-no-entrypoint",
+  "/praticiens/[specialite]/page": "app-edge-has-no-entrypoint",
+  "/regions/[region]/page": "app-edge-has-no-entrypoint",
+  "/revendiquer/page": "app/revendiquer/page.js",
+  "/robots.txt/route": "app/robots.txt/route.js",
+  "/search/page": "app-edge-has-no-entrypoint",
+  "/sitemap.xml/route": "app/sitemap.xml/route.js",
+  "/transparence/page": "app-edge-has-no-entrypoint"
+}
