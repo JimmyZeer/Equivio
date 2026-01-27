@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { PhoneNumberReveal } from "@/components/PhoneNumberReveal";
 import { TransparencyIndex } from "@/components/TransparencyIndex";
 import { ContactButton } from "@/components/ContactButton";
+import { LocalBusinessSchema, BreadcrumbSchema } from "@/components/StructuredData";
 import { MapPin, ShieldCheck, ExternalLink, Info } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
@@ -61,6 +62,26 @@ export default async function PractitionerProfile({ params }: { params: Promise<
 
     return (
         <div className="flex flex-col min-h-screen font-sans">
+            {/* Structured Data for SEO */}
+            <LocalBusinessSchema
+                name={practitioner.name}
+                specialty={displaySpecialty}
+                city={practitioner.city}
+                region={practitioner.region}
+                phone={practitioner.phone_norm}
+                website={practitioner.website}
+                slug={resolvedParams.slug}
+                lat={practitioner.lat}
+                lng={practitioner.lng}
+            />
+            <BreadcrumbSchema
+                items={[
+                    { name: "Accueil", url: "https://equivio.fr" },
+                    { name: "Praticiens", url: "https://equivio.fr/search" },
+                    { name: practitioner.name, url: `https://equivio.fr/praticien/${resolvedParams.slug}` },
+                ]}
+            />
+
             <Header />
 
             <main className="flex-grow bg-neutral-offwhite pt-8 pb-24 px-4 sm:px-6">

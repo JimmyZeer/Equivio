@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { OrganizationSchema, WebsiteSchema } from "@/components/StructuredData";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +29,9 @@ export const metadata: Metadata = {
         index: true,
         follow: true,
     },
+    verification: {
+        google: "your-google-verification-code", // TODO: Add actual verification code
+    },
 };
 
 export default function RootLayout({
@@ -38,6 +42,10 @@ export default function RootLayout({
     return (
         <html lang="fr">
             <body className={`${inter.className} bg-neutral-offwhite text-neutral-charcoal antialiased`}>
+                {/* Global Structured Data */}
+                <OrganizationSchema />
+                <WebsiteSchema />
+
                 <div className="fixed inset-0 bg-grain pointer-events-none z-[9999]"></div>
                 <main className="min-h-screen">
                     {children}
@@ -46,3 +54,4 @@ export default function RootLayout({
         </html>
     );
 }
+
