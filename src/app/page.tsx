@@ -6,8 +6,18 @@ import { TransparencySeal } from "@/components/TransparencySeal";
 import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import Image from "next/image";
+import { supabase } from "@/lib/supabase";
+import { PractitionerCard } from "@/components/PractitionerCard";
 
-export default function Home() {
+export default async function Home() {
+    // Fetch latest verified profiles
+    const { data: latestPractitioners } = await supabase
+        .from('practitioners')
+        .select('*')
+        .eq('status', 'active')
+        .order('created_at', { ascending: false })
+        .limit(3);
+
     return (
         <div className="flex flex-col min-h-screen">
             <Header />
@@ -75,6 +85,32 @@ export default function Home() {
                         </div>
                     </div>
                 </section>
+
+                {/* ✨ Social Proof Section (New) */}
+                {latestPractitioners && latestPractitioners.length > 0 && (
+                    <section className="py-16 bg-neutral-offwhite border-y border-neutral-stone/20">
+                        <div className="max-w-7xl mx-auto px-6 space-y-10">
+                            <div className="flex flex-col md:flex-row justify-between items-end gap-6">
+                                <div className="space-y-2">
+                                    <h2 className="text-2xl md:text-3xl font-extrabold text-primary tracking-tight">Ils ont rejoint le réseau</h2>
+                                    <p className="text-neutral-charcoal/60">Derniers professionnels dont l'activité a été vérifiée.</p>
+                                </div>
+                                <Link href="/search" className="text-primary font-bold hover:underline flex items-center gap-2 text-sm">
+                                    Voir tous les praticiens <ArrowRight className="w-4 h-4" />
+                                </Link>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {latestPractitioners.map((practitioner) => (
+                                    <PractitionerCard
+                                        key={practitioner.id}
+                                        {...practitioner}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+                )}
 
                 {/* 🐴 Categories Section */}
                 <section className="py-16 lg:py-24 bg-neutral-offwhite reveal [animation-delay:300ms]">
