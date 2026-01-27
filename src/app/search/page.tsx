@@ -22,6 +22,9 @@ export default async function SearchPage({
         claimed?: string;
         sort?: string;
         page?: string;
+        lat?: string;
+        lng?: string;
+        radius?: string;
     }>
 }) {
     const params = await searchParams;
@@ -43,6 +46,11 @@ export default async function SearchPage({
 
     const page = parseInt(params.page || "1", 10) || 1;
 
+    // Radius / GPS logic
+    const lat = params.lat ? parseFloat(params.lat) : undefined;
+    const lng = params.lng ? parseFloat(params.lng) : undefined;
+    const radius = params.radius ? parseFloat(params.radius) : undefined;
+
     const specialtyFilterNames = specialties.map(s => specialtiesMap[s]).filter(Boolean);
 
     // Call shared function
@@ -54,7 +62,10 @@ export default async function SearchPage({
         claimed, // Passed but ignored by lib for now
         sort: sort === 'alpha' ? 'alpha' : 'pertinence',
         page,
-        pageSize: 10
+        pageSize: 10,
+        lat,
+        lng,
+        radius
     });
 
     const breadcrumbItems = [

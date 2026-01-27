@@ -27,6 +27,9 @@ export interface FetchPractitionersParams {
     sort?: string; // 'pertinence' | 'alpha' | 'recent'
     page?: number;
     pageSize?: number;
+    lat?: number;
+    lng?: number;
+    radius?: number;
 }
 
 export interface FetchPractitionersResult {
@@ -43,16 +46,48 @@ export async function fetchPractitioners({
     claimed,
     sort = 'pertinence',
     page = 1,
-    pageSize = 10
+    pageSize = 10,
+    lat,
+    lng,
+    radius = 50
 }: FetchPractitionersParams): Promise<FetchPractitionersResult> {
     const from = (page - 1) * pageSize;
+    // const to = from + pageSize - 1; // Not needed for RPC limit/offset
+
+    // 📍 GEOLOCATION SEARCH (RPC)
+    if (lat && lng) {
+        console.log("📍 Fetching nearby practitioners...", { lat, lng, radius });
+
+        const { data, error } = await supabase.rpc('get_nearby_practitioners', {
+            user_lat: lat,
+            user_lng: lng,
+            radius_km: radius,
+            specialty_filter: typeof specialty === 'string' ? specialty : null, // RPC handles single string for now.
+            search_query: query || null,
+            limit_val: pageSize,
+            offset_val: from
+        });
+
+        if (error) {
+            console.error("RPC Error:", error);
+            return { data: [], count: 0, error };
+        }
+
+        // RPC returns total_count in each row. We pick it from the first row.
+        const count = data && data.length > 0 ? Number(data[0].total_count) : 0;
+
+        return {
+            data: (data as Practitioner[]) || [],
+            count,
+            error: null
+        };
+    }
+
+    // 🔎 STANDARD SEARCH
     const to = from + pageSize - 1;
 
     let dbQuery = supabase
         .from('practitioners')
-        // Select all fields required by both pages. 
-        // Search page used: id, name, specialty, city, address_full, slug_seo, status
-        // Specialty page used: id, slug, name, specialty, city, address_full, phone_norm, website, profile_url, quality_score, status
         // Selected fields: id, slug, slug_seo, name, specialty, city, address_full, phone_norm, website, profile_url, status
         // Removed quality_score as it does not exist in DB
         .select('id, slug, slug_seo, name, specialty, city, address_full, phone_norm, website, profile_url, status, intervention_count, lat, lng', { count: 'exact' });
