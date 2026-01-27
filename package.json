@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "opennextjs-cloudflare build",
+    "pages:build": "npx @opennextjs/cloudflare build",
     "deploy": "wrangler deploy",
     "start": "next start",
     "lint": "next lint"
