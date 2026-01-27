@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { PhoneNumberReveal } from "@/components/PhoneNumberReveal";
 import { TransparencyIndex } from "@/components/TransparencyIndex";
+import { ContactButton } from "@/components/ContactButton";
 import { MapPin, ShieldCheck, ExternalLink, Info } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
@@ -81,6 +82,11 @@ export default async function PractitionerProfile({ params }: { params: Promise<
                             {practitioner.phone_norm && (
                                 <PhoneNumberReveal phoneNumber={practitioner.phone_norm} practitionerId={practitioner.id} />
                             )}
+                            <ContactButton
+                                practitionerId={practitioner.id}
+                                practitionerName={practitioner.name}
+                                className="w-full justify-center"
+                            />
                             <a href={googleMapsUrl} target="_blank" rel="noopener noreferrer" className="w-full">
                                 <Button variant="outline" className="w-full justify-center">Voir sur la carte</Button>
                             </a>
