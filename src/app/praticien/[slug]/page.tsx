@@ -6,6 +6,7 @@ import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { ProfileInterventionClient } from "@/components/ProfileInterventionClient";
+import { PhoneNumberReveal } from "@/components/PhoneNumberReveal";
 import { MapPin, Activity, Calendar, Info, ShieldCheck, ExternalLink } from "lucide-react";
 import { TransparencySeal } from "@/components/TransparencySeal";
 import { supabase } from "@/lib/supabase";
@@ -86,8 +87,8 @@ export default async function PractitionerProfile({ params }: { params: Promise<
                                 <div className="space-y-4">
                                     <div className="flex flex-wrap items-center gap-3">
                                         <h1 className="text-3xl md:text-4xl font-extrabold text-primary">{practitioner.name}</h1>
+                                        {/* Max 1 Badge Logic */}
                                         <div className="flex gap-2">
-                                            <Badge variant="claimed">Profil revendiqué</Badge>
                                             <Badge variant="verified">Profil vérifié</Badge>
                                         </div>
                                     </div>
@@ -98,6 +99,12 @@ export default async function PractitionerProfile({ params }: { params: Promise<
                                             <MapPin className="w-4 h-4" />
                                             <span>Intervient en {practitioner.region}</span>
                                         </div>
+                                        {/* Phone Button instead of "Contacter par email" if phone exists */}
+                                        {practitioner.phone_norm && (
+                                            <div className="pt-2">
+                                                <PhoneNumberReveal phoneNumber={practitioner.phone_norm} practitionerId={practitioner.id} />
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 
@@ -141,34 +148,18 @@ export default async function PractitionerProfile({ params }: { params: Promise<
                         <div className="lg:col-span-2 space-y-8 reveal [animation-delay:200ms]">
                             <section className="bg-white rounded-2xl border border-neutral-stone/50 p-10 space-y-10 shadow-premium">
                                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
-                                    <h2 className="text-2xl font-extrabold tracking-tight">Historique vérifié</h2>
-                                    <ProfileInterventionClient
-                                        practitionerName={practitioner.name}
-                                        practitionerId={practitioner.id}
-                                    />
+                                    <h2 className="text-2xl font-extrabold tracking-tight">Zone d'intervention</h2>
                                 </div>
 
-                                <div className="space-y-0 divide-y divide-neutral-stone/20 border-t border-neutral-stone/20">
-                                    {interventions.length > 0 ? interventions.map((item, idx) => (
-                                        <div key={idx} className="py-5 flex justify-between items-center text-[0.9375rem] group/line hover:bg-neutral-offwhite/50 px-2 -mx-2 transition-colors duration-200">
-                                            <div className="flex gap-6 items-center">
-                                                <Calendar className="w-4 h-4 text-neutral-charcoal/20 group-hover/line:text-primary-soft transition-colors" strokeWidth={1.5} />
-                                                <span className="font-bold text-primary/80">{item.date}</span>
-                                            </div>
-                                            <div className="flex items-center gap-3">
-                                                <span className="text-neutral-charcoal/60">{item.type}</span>
-                                                <div className="h-1 w-1 rounded-full bg-neutral-stone"></div>
-                                                <span className="text-neutral-charcoal/40 font-medium">{item.location}</span>
-                                            </div>
-                                        </div>
-                                    )) : (
-                                        <div className="py-10 text-center text-neutral-charcoal/40 italic">
-                                            La zone d’intervention et l’activité professionnelle du praticien ont été vérifiées par Equivio.
-                                        </div>
-                                    )}
+                                <div className="bg-neutral-offwhite p-8 rounded-xl border border-neutral-stone text-center space-y-4">
+                                    <MapPin className="w-12 h-12 text-primary mx-auto opacity-20" />
+                                    <p className="text-neutral-charcoal/60 italic font-medium">
+                                        Ce praticien intervient principalement en région <span className="text-primary font-bold">{practitioner.region}</span>.
+                                    </p>
+                                    <p className="text-xs text-neutral-charcoal/40">
+                                        L'activité professionnelle est confirmée sans affichage de données clients nominatives.
+                                    </p>
                                 </div>
-
-
                             </section>
 
                             <section className="bg-white rounded-2xl border border-neutral-stone p-8">

@@ -108,15 +108,15 @@ export default async function SearchPage({
                                     practitioners.map((p) => (
                                         <PractitionerCard
                                             key={p.id}
+                                            id={p.id}
                                             name={p.name}
                                             specialty={p.specialty}
                                             city={p.city}
                                             address_full={p.address_full}
                                             slug_seo={p.slug_seo || p.slug || ""}
-                                            interventionCount={0}
-                                            lastIntervention="—"
+                                            phone_norm={p.phone_norm}
                                             isClaimed={false}
-                                            isVerified={true}
+                                            isVerified={p.status === 'active'}
                                         />
                                     ))
                                 ) : (

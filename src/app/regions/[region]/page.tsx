@@ -88,22 +88,15 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
                                 {practitioners.map((p) => (
                                     <PractitionerCard
                                         key={p.id}
+                                        id={p.id}
                                         name={p.name}
                                         specialty={p.specialty}
                                         city={p.city}
                                         address_full={p.address_full}
                                         slug_seo={p.slug_seo}
-                                        interventionCount={p.intervention_count || 0}
-                                        lastIntervention={p.last_intervention ? (function () {
-                                            try {
-                                                return new Date(p.last_intervention).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' });
-                                            } catch (e) {
-                                                console.error("Error formatting date:", e);
-                                                return "—";
-                                            }
-                                        })() : "—"}
+                                        phone_norm={p.phone_norm}
                                         isClaimed={p.is_claimed}
-                                        isVerified={p.is_verified}
+                                        isVerified={p.is_verified || p.status === 'active'}
                                     />
                                 ))}
                             </div>
