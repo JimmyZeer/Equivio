@@ -16,16 +16,18 @@ if (fs.existsSync(envPath)) {
 }
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-if (!SUPABASE_URL || !SUPABASE_KEY) {
-    console.error("❌ Missing Supabase keys. Please ensure NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY (or ANON KEY) are in .env.local");
+if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+    console.error("❌ OBLIGATOIRE: SUPABASE_SERVICE_ROLE_KEY manquant.");
+    console.error("Le script nécessite cette clé pour outrepasser les RLS et mettre à jour les praticiens.");
     process.exit(1);
 }
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
 async function geocodeAddress(address: string, city: string) {
+    // Strategy: address_full -> fallback on city
     const query = `${address ? address + ', ' : ''}${city}`;
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`;
 
@@ -48,16 +50,15 @@ async function geocodeAddress(address: string, city: string) {
     return null;
 }
 
-// Simple sleep to respect API limits
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function main() {
-    console.log("🚀 Starting Geocoding Script...");
+    console.log("🚀 Starting Geocoding Script (Backfill)...");
 
     // 1. Fetch practitioners without coordinates
     const { data: practitioners, error } = await supabase
         .from('practitioners')
-        .select('id, name, address_full, city')
+        .select('id, name, address_full, city, specialty')
         .is('lat', null);
 
     if (error) {
@@ -71,41 +72,45 @@ async function main() {
     let failCount = 0;
 
     for (const p of practitioners) {
-        if (!p.city) {
-            console.log(`⚠️ Skipping ${p.name} (No city)`);
+        const address = p.address_full || "";
+        const city = p.city || "";
+
+        if (!city && !address) {
+            console.log(`⚠️ Skipping ID: ${p.id} (${p.name}) - No address/city`);
             failCount++;
             continue;
         }
 
-        // Clean address for better results? simple heuristic
-        const address = p.address_full || "";
+        console.log(`GEOCODING ID: ${p.id} | ${p.name} | ${address}, ${city}`);
 
-        console.log(`SEARCHING: ${p.name} -> ${address}, ${p.city}`);
+        let coords = await geocodeAddress(address, city);
 
-        let coords = await geocodeAddress(address, p.city);
-
-        if (!coords && p.city) {
-            console.log(`   🔸 Retry city only: ${p.city}`);
+        // Fallback on city only if full address failed
+        if (!coords && city && address) {
+            console.log(`   🔸 Fallback on city only: ${city}`);
             await sleep(1100);
-            coords = await geocodeAddress("", p.city);
+            coords = await geocodeAddress("", city);
         }
 
         if (coords) {
-            console.log(`   ✅ Found: ${coords.lat}, ${coords.lng}`);
-
-            const { error: updateError } = await supabase
+            const { data, error: updateError } = await supabase
                 .from('practitioners')
                 .update({ lat: coords.lat, lng: coords.lng })
-                .eq('id', p.id);
+                .eq('id', p.id)
+                .select(); // Should return the updated row count
 
             if (updateError) {
-                console.error(`   ❌ Failed to update DB:`, updateError.message);
+                console.error(`   ❌ Failed to update DB for ID ${p.id}:`, updateError.message);
+                failCount++;
+            } else if (!data || data.length === 0) {
+                console.error(`   ❌ Failed: Update count is 0 for ID ${p.id} (Operation failed)`);
                 failCount++;
             } else {
+                console.log(`   ✅ Success! Update count: ${data.length} | Coords: ${coords.lat}, ${coords.lng}`);
                 successCount++;
             }
         } else {
-            console.log(`   ❌ Not Found`);
+            console.log(`   ❌ Not Found for ID: ${p.id}`);
             failCount++;
         }
 
@@ -113,7 +118,19 @@ async function main() {
         await sleep(1100);
     }
 
-    console.log(`\n🎉 Done! Updated: ${successCount}, Failed/Skipped: ${failCount}`);
+    console.log("\n--- VERIFICATION FINALE ---");
+    const { data: summary, error: sumError } = await supabase
+        .from('practitioners')
+        .select('specialty')
+        .not('lat', 'is', null)
+        .not('lng', 'is', null);
+
+    if (summary) {
+        console.log(`📊 Practitioners with valid coords: ${summary.length}`);
+    }
+
+    console.log(`🎉 Done! Success: ${successCount}, Fail/Skipped: ${failCount}`);
 }
 
 main();
+
