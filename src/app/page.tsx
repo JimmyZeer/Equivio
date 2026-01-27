@@ -23,32 +23,46 @@ export default async function Home() {
             <Header />
 
             <main className="flex-grow">
-                {/* 🏇 Hero Section Upgrade — Split Layout */}
-                <section className="bg-neutral-offwhite pt-12 pb-20 lg:pt-20 lg:pb-32 px-6 reveal overflow-hidden relative">
-                    <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-                        <div className="space-y-8 md:space-y-12 relative z-10 text-center lg:text-left">
+                {/* 🏇 Hero Section Upgrade — Premium Animated */}
+                <section className="bg-neutral-offwhite pt-12 pb-20 lg:pt-20 lg:pb-32 px-6 overflow-hidden relative">
+                    {/* Animated gradient orbs background */}
+                    <div className="absolute top-10 left-10 w-64 h-64 lg:w-96 lg:h-96 bg-primary/5 rounded-full blur-3xl animate-pulse-glow will-animate" />
+                    <div className="absolute bottom-20 right-10 w-48 h-48 lg:w-80 lg:h-80 bg-primary-soft/5 rounded-full blur-3xl animate-pulse-glow will-animate [animation-delay:2s]" />
+                    <div className="absolute top-1/2 left-1/3 w-32 h-32 bg-leather/5 rounded-full blur-2xl animate-pulse-glow will-animate [animation-delay:4s]" />
+
+                    <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-center relative z-10">
+                        <div className="space-y-8 md:space-y-12 text-center lg:text-left">
                             <div className="space-y-6">
                                 <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-primary leading-[1.1] tracking-tight">
-                                    Trouvez un praticien équin <span className="text-primary-soft">réellement actif</span> près de chez vous
+                                    <span className="inline-block animate-slide-up will-animate">Trouvez un praticien équin</span>{" "}
+                                    <span className="inline-block text-primary-soft animate-slide-up will-animate stagger-2">réellement actif</span>{" "}
+                                    <span className="inline-block animate-slide-up will-animate stagger-3">près de chez vous</span>
                                 </h1>
-                                <p className="text-base sm:text-lg md:text-xl text-neutral-charcoal/60 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                                <p className="text-base sm:text-lg md:text-xl text-neutral-charcoal/60 leading-relaxed max-w-2xl mx-auto lg:mx-0 animate-slide-up will-animate stagger-4">
                                     Ostéopathes, maréchaux, dentistes et vétérinaires sélectionnés sur leur présence confirmée sur le terrain. Pas d'avis anonymes, juste la réalité de l'activité.
                                 </p>
                             </div>
-                            <div className="pt-4">
+                            <div className="pt-4 animate-slide-up will-animate stagger-5">
                                 <SearchBar />
                             </div>
                         </div>
-                        <div className="relative group hidden lg:block">
-                            <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-8 border-white">
-                                <Image
-                                    src="/images/hero_horse.png"
-                                    alt="Hero Horse Portrait"
-                                    width={800}
-                                    height={800}
-                                    className="object-cover transition-transform duration-1000 group-hover:scale-105"
-                                />
+
+                        {/* Hero image - now visible on mobile too */}
+                        <div className="relative group mt-8 lg:mt-0">
+                            <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl border-4 lg:border-8 border-white animate-scale-in will-animate stagger-3">
+                                <div className="animate-float will-animate">
+                                    <Image
+                                        src="/images/hero_horse.png"
+                                        alt="Portrait d'un cheval - Equivio"
+                                        width={800}
+                                        height={800}
+                                        className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                                        priority
+                                    />
+                                </div>
                             </div>
+                            {/* Decorative glow behind image */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-primary-soft/10 rounded-3xl blur-2xl scale-95 -z-10 animate-pulse-glow will-animate" />
                         </div>
                     </div>
                 </section>
@@ -113,9 +127,11 @@ export default async function Home() {
                 )}
 
                 {/* 🐴 Categories Section */}
-                <section className="py-16 lg:py-24 bg-neutral-offwhite reveal [animation-delay:300ms]">
+                <section className="py-16 lg:py-24 bg-neutral-offwhite">
                     <div className="max-w-7xl mx-auto px-6">
-                        <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-16 md:mb-24 tracking-tight">Tous les experts de santé et bien-être équin</h2>
+                        <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-16 md:mb-24 tracking-tight animate-slide-up will-animate">
+                            Tous les experts de santé et bien-être équin
+                        </h2>
                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-6 pt-8">
                             {[
                                 { name: "Ostéopathe", icon: Stethoscope, slug: "osteopathes" },
@@ -123,16 +139,17 @@ export default async function Home() {
                                 { name: "Dentiste", icon: Zap, slug: "dentistes" },
                                 { name: "Vétérinaire", icon: Heart, slug: "veterinaires" },
                                 { name: "Bien-être", icon: Activity, slug: "bien-etre" },
-                            ].map((cat) => (
+                            ].map((cat, idx) => (
                                 <Link
                                     key={cat.slug}
                                     href={`/praticiens/${cat.slug}`}
-                                    className="group flex flex-col items-center gap-6"
+                                    className={`group flex flex-col items-center gap-6 animate-scale-in will-animate`}
+                                    style={{ animationDelay: `${idx * 100 + 200}ms` }}
                                 >
-                                    <div className="w-20 h-20 rounded-2xl bg-white shadow-premium flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all scale-100 group-hover:scale-110">
+                                    <div className="w-20 h-20 rounded-2xl bg-white shadow-premium flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all duration-300 group-hover:scale-110 group-hover:shadow-premium-hover group-hover:-translate-y-1">
                                         <cat.icon className="w-10 h-10" />
                                     </div>
-                                    <span className="font-bold text-sm uppercase tracking-widest text-neutral-charcoal/60 group-hover:text-primary transition-colors">{cat.name}</span>
+                                    <span className="font-bold text-sm uppercase tracking-widest text-neutral-charcoal/60 group-hover:text-primary transition-colors text-center">{cat.name}</span>
                                 </Link>
                             ))}
                         </div>
