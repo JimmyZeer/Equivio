@@ -1,70 +1,64 @@
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { Button } from "@/components/ui/Button";
 import { TransparencySeal } from "@/components/TransparencySeal";
-import { ShieldCheck, CheckCircle2 } from "lucide-react";
 import { ClaimForm } from "@/components/ClaimForm";
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-    title: "Revendiquez votre profil praticien | Equivio",
-    description: "Rejoignez le réseau Equivio. Valorisez votre activité réelle, gérez vos informations professionnelles et renforcez votre visibilité auprès des propriétaires de chevaux.",
+    title: "Revendiquer votre fiche professionnelle | Equivio",
+    description: "Vous êtes praticien ? Confirmez votre identité et précisez votre zone d'exercice sur Equivio.",
 };
 
 export default function ClaimPage() {
     return (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col min-h-screen font-sans">
             <Header />
 
-            <main className="flex-grow bg-neutral-offwhite">
-                {/* Hero — Reveal */}
-                <section className="py-32 px-6 bg-primary text-white text-center reveal relative overflow-hidden">
-                    <div className="absolute inset-0 bg-grain opacity-5"></div>
-                    <div className="max-w-4xl mx-auto space-y-8 relative z-10">
-                        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight">Vous êtes praticien ?</h1>
-                        <p className="text-leather-light/80 text-xl md:text-2xl leading-relaxed max-w-3xl mx-auto">
-                            Revendiquez votre profil institutionnel pour valoriser votre activité réelle et renforcer votre visibilité.
+            <main className="flex-grow bg-neutral-offwhite py-12 px-4 sm:px-6">
+                <div className="max-w-3xl mx-auto space-y-12">
+
+                    {/* Header Section */}
+                    <div className="text-center space-y-6">
+                        <h1 className="text-3xl md:text-4xl font-extrabold text-primary tracking-tight">
+                            Revendiquer votre fiche professionnelle
+                        </h1>
+                        <p className="text-lg text-neutral-charcoal/80 leading-relaxed max-w-2xl mx-auto">
+                            Vous êtes le praticien concerné par cette fiche ?<br className="hidden sm:block" />
+                            Vous pouvez confirmer votre identité et préciser vos informations professionnelles, notamment votre zone d'exercice.
                         </p>
                     </div>
-                </section>
 
-                <section className="max-w-5xl mx-auto -mt-16 px-6 pb-32 reveal [animation-delay:200ms]">
-                    <div className="bg-white rounded-2xl border border-neutral-stone/40 shadow-2xl overflow-hidden">
-                        <div className="p-10 md:p-16 space-y-16">
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-                                <div className="space-y-8">
-                                    <h3 className="text-2xl font-bold flex items-center gap-3 tracking-tight">
-                                        <ShieldCheck className="w-8 h-8 text-primary" strokeWidth={1.5} />
-                                        Pourquoi revendiquer ?
-                                    </h3>
-                                    <ul className="space-y-6">
-                                        {[
-                                            "Complétez vos coordonnées professionnelles",
-                                            "Ajoutez votre zone d'intervention précise",
-                                            "Gérez l'affichage de votre activité historique",
-                                            "Obtenez le badge 'Profil Revendiqué' pour rassurer",
-                                        ].map((item, idx) => (
-                                            <li key={idx} className="flex gap-4 text-[0.9375rem] text-neutral-charcoal/70 leading-relaxed font-medium">
-                                                <CheckCircle2 className="w-6 h-6 text-primary-soft flex-shrink-0" strokeWidth={1.5} />
-                                                {item}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
+                    {/* Form Container */}
+                    <div className="bg-white rounded-2xl border border-neutral-stone/60 shadow-xl overflow-hidden">
+                        <div className="p-8 md:p-10">
+                            <ClaimForm />
+                        </div>
 
-                                <ClaimForm />
-                            </div>
-
-                            <div className="pt-16 border-t border-neutral-stone/30 text-center space-y-6">
-                                <TransparencySeal className="justify-center" />
-                                <p className="mt-6 text-sm text-neutral-charcoal/50 max-w-2xl mx-auto leading-relaxed font-medium italic">
-                                    Toutes les demandes font l'objet d'une vérification manuelle par l'équipe Equivio sous 48h ouvrées.
-                                    Notre protocole garantit la stricte confidentialité de vos données personnelles.
-                                </p>
-                            </div>
+                        {/* Transparency Block inside the card or below? Prompt says "Bloc Transparence (Inchangé) Toujours afficher" */}
+                        {/* Prompt structure implies it's a section "Comment fonctionne..." */}
+                        <div className="bg-neutral-offwhite/50 border-t border-neutral-stone/40 p-8 space-y-4">
+                            <h3 className="font-bold text-primary text-sm uppercase tracking-wider">Comment fonctionne la revendication ?</h3>
+                            <ul className="space-y-3 text-sm text-neutral-charcoal/70">
+                                <li className="flex gap-2">
+                                    <span className="text-primary/60">•</span>
+                                    La demande est étudiée manuellement par l’équipe Equivio
+                                </li>
+                                <li className="flex gap-2">
+                                    <span className="text-primary/60">•</span>
+                                    Les informations fournies ne sont pas publiées sans validation
+                                </li>
+                                <li className="flex gap-2">
+                                    <span className="text-primary/60">•</span>
+                                    La revendication n’implique aucun engagement commercial
+                                </li>
+                                <li className="flex gap-2">
+                                    <span className="text-primary/60">•</span>
+                                    Equivio ne vend pas la visibilité des praticiens
+                                </li>
+                            </ul>
                         </div>
                     </div>
-                </section>
+                </div>
             </main>
 
             <Footer />
