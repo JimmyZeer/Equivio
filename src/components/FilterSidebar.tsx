@@ -64,7 +64,9 @@ export function FilterSidebar() {
                 {isOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
             </button>
 
-            <aside className={`w-full lg:w-64 space-y-8 bg-leather-light/30 p-6 rounded-xl border border-leather-light lg:block ${isOpen ? "block" : "hidden"}`}>
+            <aside
+                className={`w-full lg:w-64 space-y-8 bg-leather-light/30 p-6 rounded-xl border border-leather-light lg:block overflow-hidden transition-all duration-300 ease-out ${isOpen ? "max-h-[600px] opacity-100 mt-4" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100 p-0 lg:p-6 border-0 lg:border"}`}
+            >
                 <div className="flex items-center justify-between lg:hidden mb-2">
                     <h3 className="font-bold text-primary">Filtres</h3>
                     <button onClick={clearFilters} className="text-xs text-primary/60 flex items-center gap-1 hover:text-primary">

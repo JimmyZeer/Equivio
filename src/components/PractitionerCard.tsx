@@ -53,36 +53,36 @@ export function PractitionerCard({
     const SpecialtyIcon = getSpecialtyIcon(specialty);
 
     return (
-        <div className="bg-white rounded-2xl border border-neutral-stone/40 p-6 transition-all duration-300 hover:shadow-premium-hover hover:-translate-y-1 hover:border-primary/30 group">
-            <div className="flex flex-col sm:flex-row justify-between items-start gap-6">
-                <div className="space-y-3 flex-1 min-w-0">
+        <div className="bg-white rounded-2xl border border-neutral-stone/40 p-4 sm:p-6 transition-all duration-300 hover:shadow-premium-hover hover:-translate-y-1 hover:border-primary/30 group">
+            <div className="flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-6">
+                <div className="space-y-2 sm:space-y-3 flex-1 min-w-0">
                     <Link href={`/praticien/${slug_seo}`} className="block">
-                        <h3 className="text-xl font-bold text-primary group-hover:text-primary-soft transition-colors truncate">
+                        <h3 className="text-lg sm:text-xl font-bold text-primary group-hover:text-primary-soft transition-colors truncate">
                             {name}
                         </h3>
                     </Link>
 
                     <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
-                            <SpecialtyIcon className="w-4 h-4" />
+                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
+                            <SpecialtyIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                         </div>
-                        <p className="text-neutral-charcoal font-medium">
+                        <p className="text-sm sm:text-base text-neutral-charcoal font-medium">
                             {displaySpecialty}
                         </p>
                     </div>
 
-                    <p className="text-neutral-charcoal/60 text-sm font-medium capitalize flex items-center gap-2">
-                        <MapPin className="w-4 h-4 text-neutral-charcoal/40" />
+                    <p className="text-neutral-charcoal/60 text-xs sm:text-sm font-medium capitalize flex items-center gap-2">
+                        <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-neutral-charcoal/40" />
                         {displayCity}
                     </p>
                 </div>
 
-                <div className="flex flex-col gap-3 w-full sm:w-auto mt-4 sm:mt-0">
+                <div className="flex flex-col gap-2 sm:gap-3 w-full sm:w-auto">
                     {phone_norm && (
                         <PhoneNumberReveal phoneNumber={phone_norm} practitionerId={id} />
                     )}
                     <Link href={`/praticien/${slug_seo}`} className="w-full sm:w-auto">
-                        <Button variant="outline" className="w-full border-neutral-stone hover:bg-primary hover:text-white hover:border-primary text-neutral-charcoal/80 font-medium transition-all press-effect">
+                        <Button variant="outline" className="w-full min-h-[44px] border-neutral-stone hover:bg-primary hover:text-white hover:border-primary text-neutral-charcoal/80 font-medium transition-all press-effect">
                             Voir le profil
                         </Button>
                     </Link>

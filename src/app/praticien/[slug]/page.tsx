@@ -84,14 +84,14 @@ export default async function PractitionerProfile({ params }: { params: Promise<
 
             <Header />
 
-            <main className="flex-grow bg-neutral-offwhite pt-8 pb-24 px-4 sm:px-6">
+            <main className="flex-grow bg-neutral-offwhite pt-6 sm:pt-8 pb-24 px-4 sm:px-6">
                 <div className="max-w-4xl mx-auto space-y-12">
 
                     {/* Bloc Identité (Above the fold) */}
-                    <div className="flex flex-col md:flex-row justify-between items-start gap-8 bg-white p-8 rounded-2xl border border-neutral-stone/60 shadow-sm">
+                    <div className="flex flex-col md:flex-row justify-between items-start gap-5 sm:gap-8 bg-white p-5 sm:p-8 rounded-2xl border border-neutral-stone/60 shadow-sm">
                         <div className="space-y-4">
-                            <h1 className="text-3xl md:text-4xl font-extrabold text-primary tracking-tight">
-                                {practitioner.name} <span className="text-neutral-charcoal/40 font-light">–</span> <span className="text-primary-soft">{displaySpecialty}</span>
+                            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-primary tracking-tight leading-tight">
+                                {practitioner.name} <span className="hidden sm:inline text-neutral-charcoal/40 font-light">–</span> <br className="sm:hidden" /><span className="text-primary-soft">{displaySpecialty}</span>
                             </h1>
                             <div className="flex items-center gap-2 text-lg text-neutral-charcoal font-medium">
                                 <MapPin className="w-5 h-5 text-neutral-charcoal/50" />
@@ -99,7 +99,7 @@ export default async function PractitionerProfile({ params }: { params: Promise<
                             </div>
                         </div>
 
-                        <div className="flex flex-col gap-3 w-full md:w-auto min-w-[200px]">
+                        <div className="flex flex-col gap-2 sm:gap-3 w-full md:w-auto md:min-w-[200px]">
                             {practitioner.phone_norm && (
                                 <PhoneNumberReveal phoneNumber={practitioner.phone_norm} practitionerId={practitioner.id} />
                             )}

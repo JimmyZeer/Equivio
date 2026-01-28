@@ -53,50 +53,52 @@ export function SearchBar() {
     };
 
     return (
-        <div id="search-section" className="w-full max-w-5xl mx-auto bg-white rounded-2xl shadow-premium border border-neutral-stone/50 overflow-hidden p-3 flex flex-col md:flex-row items-stretch gap-3">
-            <div className="flex-1 flex flex-col px-6 py-2 gap-1.5 border-b md:border-b-0 md:border-r border-neutral-stone/20 group/input hover:bg-primary/5 transition-soft rounded-xl">
-                <label className="text-[10px] font-bold text-neutral-charcoal/40 uppercase tracking-[0.15em] flex items-center gap-2">
-                    <Search className="w-3.5 h-3.5" strokeWidth={2} />
-                    Cœur de métier
-                </label>
-                <input
-                    type="text"
-                    value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                    placeholder="ex: Ostéopathe, Dentiste..."
-                    className="w-full bg-transparent border-none focus:ring-0 text-neutral-charcoal placeholder:text-neutral-charcoal/40 font-semibold py-1 px-0 text-lg"
-                />
-            </div>
-            <div className="flex-1 flex flex-col px-6 py-2 gap-1.5 group/input hover:bg-primary/5 transition-soft rounded-xl relative">
-                <label className="text-[10px] font-bold text-neutral-charcoal/40 uppercase tracking-[0.15em] flex items-center gap-2">
-                    <MapPin className="w-3.5 h-3.5" strokeWidth={2} />
-                    Localisation
-                </label>
-                <div className="flex items-center">
+        <div id="search-section" className="w-full max-w-5xl mx-auto bg-white rounded-2xl shadow-premium border border-neutral-stone/50 overflow-hidden p-2 sm:p-3 flex flex-col gap-2 sm:gap-3">
+            <div className="flex flex-col md:flex-row items-stretch gap-2 sm:gap-3">
+                <div className="flex-1 flex flex-col px-4 sm:px-6 py-2 gap-1 border-b md:border-b-0 md:border-r border-neutral-stone/20 group/input hover:bg-primary/5 transition-soft rounded-xl">
+                    <label className="text-[10px] font-bold text-neutral-charcoal/40 uppercase tracking-[0.15em] flex items-center gap-2">
+                        <Search className="w-3.5 h-3.5" strokeWidth={2} />
+                        Cœur de métier
+                    </label>
                     <input
                         type="text"
-                        value={location}
-                        onChange={(e) => {
-                            setLocation(e.target.value);
-                            if (e.target.value !== "📍 Ma position") setCoords(null);
-                        }}
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
                         onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-                        placeholder="Région, ville ou CP"
-                        className="w-full bg-transparent border-none focus:ring-0 text-neutral-charcoal placeholder:text-neutral-charcoal/40 font-semibold py-1 px-0 text-lg"
+                        placeholder="ex: Ostéopathe, Dentiste..."
+                        className="w-full bg-transparent border-none focus:ring-0 text-neutral-charcoal placeholder:text-neutral-charcoal/40 font-semibold py-1 px-0 text-base sm:text-lg"
                     />
-                    <button
-                        onClick={handleGeolocation}
-                        title="Autour de moi"
-                        className={`p-2 rounded-full hover:bg-neutral-stone/20 transition-colors ${isLocating ? 'animate-pulse text-primary' : 'text-neutral-charcoal/40'}`}
-                    >
-                        <MapPin className="w-5 h-5" />
-                    </button>
+                </div>
+                <div className="flex-1 flex flex-col px-4 sm:px-6 py-2 gap-1 group/input hover:bg-primary/5 transition-soft rounded-xl relative">
+                    <label className="text-[10px] font-bold text-neutral-charcoal/40 uppercase tracking-[0.15em] flex items-center gap-2">
+                        <MapPin className="w-3.5 h-3.5" strokeWidth={2} />
+                        Localisation
+                    </label>
+                    <div className="flex items-center">
+                        <input
+                            type="text"
+                            value={location}
+                            onChange={(e) => {
+                                setLocation(e.target.value);
+                                if (e.target.value !== "📍 Ma position") setCoords(null);
+                            }}
+                            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+                            placeholder="Région, ville ou CP"
+                            className="w-full bg-transparent border-none focus:ring-0 text-neutral-charcoal placeholder:text-neutral-charcoal/40 font-semibold py-1 px-0 text-base sm:text-lg"
+                        />
+                        <button
+                            onClick={handleGeolocation}
+                            title="Autour de moi"
+                            className={`p-2.5 -mr-1 rounded-full hover:bg-neutral-stone/20 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center ${isLocating ? 'animate-pulse text-primary' : 'text-neutral-charcoal/40'}`}
+                        >
+                            <MapPin className="w-5 h-5" />
+                        </button>
+                    </div>
                 </div>
             </div>
             <Button
                 onClick={handleSearch}
-                className="px-10 py-5 rounded-xl text-lg font-bold shadow-xl active:scale-[0.97] transition-all whitespace-nowrap"
+                className="w-full md:w-auto px-8 sm:px-10 py-4 sm:py-5 rounded-xl text-base sm:text-lg font-bold shadow-xl active:scale-[0.97] transition-all whitespace-nowrap min-h-[48px]"
             >
                 Rechercher
             </Button>
