@@ -53,7 +53,7 @@ export function SearchBar() {
     };
 
     return (
-        <div id="search-section" className="w-full max-w-5xl mx-auto bg-white rounded-2xl shadow-premium border border-neutral-stone/50 overflow-hidden p-2 sm:p-3 flex flex-col gap-2 sm:gap-3">
+        <div id="search-section" className="w-full max-w-5xl mx-auto backdrop-blur-xl bg-white/80 rounded-2xl shadow-premium ring-1 ring-white/50 border border-neutral-stone/30 overflow-hidden p-2 sm:p-3 flex flex-col gap-2 sm:gap-3 hover:shadow-[0_8px_40px_-8px_rgba(31,61,43,0.15)] transition-all duration-300">
             <div className="flex flex-col md:flex-row items-stretch gap-2 sm:gap-3">
                 <div className="flex-1 flex flex-col px-4 sm:px-6 py-2 gap-1 border-b md:border-b-0 md:border-r border-neutral-stone/20 group/input hover:bg-primary/5 transition-soft rounded-xl">
                     <label className="text-[10px] font-bold text-neutral-charcoal/40 uppercase tracking-[0.15em] flex items-center gap-2">
@@ -98,7 +98,7 @@ export function SearchBar() {
             </div>
             <Button
                 onClick={handleSearch}
-                className="w-full md:w-auto px-8 sm:px-10 py-4 sm:py-5 rounded-xl text-base sm:text-lg font-bold shadow-xl active:scale-[0.97] transition-all whitespace-nowrap min-h-[48px]"
+                className="w-full md:w-auto px-8 sm:px-10 py-4 sm:py-5 rounded-xl text-base sm:text-lg font-bold shadow-xl active:scale-[0.97] transition-all whitespace-nowrap min-h-[48px] bg-gradient-to-br from-primary via-primary to-primary-soft hover:shadow-[0_0_24px_rgba(31,61,43,0.3)]"
             >
                 Rechercher
             </Button>

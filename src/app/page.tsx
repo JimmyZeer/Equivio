@@ -26,9 +26,9 @@ export default async function Home() {
                 {/* 🏇 Hero Section Upgrade — Premium Animated */}
                 <section className="bg-neutral-offwhite pt-12 pb-20 lg:pt-20 lg:pb-32 px-6 overflow-hidden relative">
                     {/* Animated gradient orbs background */}
-                    <div className="absolute top-10 left-10 w-64 h-64 lg:w-96 lg:h-96 bg-primary/5 rounded-full blur-3xl animate-pulse-glow will-animate" />
-                    <div className="absolute bottom-20 right-10 w-48 h-48 lg:w-80 lg:h-80 bg-primary-soft/5 rounded-full blur-3xl animate-pulse-glow will-animate [animation-delay:2s]" />
-                    <div className="absolute top-1/2 left-1/3 w-32 h-32 bg-leather/5 rounded-full blur-2xl animate-pulse-glow will-animate [animation-delay:4s]" />
+                    <div className="absolute -top-20 -left-20 w-80 h-80 lg:w-[500px] lg:h-[500px] bg-gradient-to-br from-primary/8 to-primary-soft/5 rounded-full blur-3xl animate-pulse-glow will-animate" />
+                    <div className="absolute -bottom-10 -right-10 w-64 h-64 lg:w-96 lg:h-96 bg-gradient-to-br from-primary-soft/10 to-transparent rounded-full blur-3xl animate-pulse-glow will-animate [animation-delay:2s]" />
+                    <div className="absolute top-1/3 right-1/4 w-40 h-40 lg:w-56 lg:h-56 bg-gradient-to-br from-leather/8 to-leather-light/10 rounded-full blur-3xl animate-pulse-glow will-animate [animation-delay:4s]" />
 
                     <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-center relative z-10">
                         <div className="space-y-8 md:space-y-12 text-center lg:text-left">
@@ -71,27 +71,27 @@ export default async function Home() {
                 {/* 🛡 3 Pillars of Trust (Reference Design) */}
                 <section className="py-16 lg:py-24 bg-white reveal [animation-delay:200ms]">
                     <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-                        <div className="space-y-6 p-8 md:p-10 rounded-3xl bg-neutral-offwhite/50 border border-neutral-stone/30 group hover:bg-white hover:shadow-premium transition-all duration-300">
-                            <div className="w-12 h-12 md:w-14 md:h-14 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-soft">
-                                <Database className="w-6 h-6 md:w-8 md:h-8" strokeWidth={1.5} />
+                        <div className="space-y-6 p-8 md:p-10 rounded-3xl bg-gradient-to-br from-white to-neutral-offwhite/80 border border-neutral-stone/20 group hover:shadow-[0_20px_50px_-12px_rgba(31,61,43,0.15)] hover:-translate-y-1 transition-all duration-300">
+                            <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-primary/10 to-primary-soft/20 rounded-2xl flex items-center justify-center text-primary group-hover:bg-gradient-to-br group-hover:from-primary group-hover:to-primary-soft group-hover:text-white transition-all duration-300 group-hover:scale-110">
+                                <Database className="w-7 h-7 md:w-8 md:h-8" strokeWidth={1.5} />
                             </div>
                             <h3 className="text-xl font-bold tracking-tight">Présence Terrain Vérifiée</h3>
                             <p className="text-neutral-charcoal/60 leading-relaxed text-sm">
                                 Nous validons que le praticien intervient régulièrement et récemment dans votre secteur géographique.
                             </p>
                         </div>
-                        <div className="space-y-6 p-8 md:p-10 rounded-3xl bg-neutral-offwhite/50 border border-neutral-stone/30 group hover:bg-white hover:shadow-premium transition-all duration-300">
-                            <div className="w-12 h-12 md:w-14 md:h-14 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-soft">
-                                <Globe className="w-6 h-6 md:w-8 md:h-8" strokeWidth={1.5} />
+                        <div className="space-y-6 p-8 md:p-10 rounded-3xl bg-gradient-to-br from-white to-neutral-offwhite/80 border border-neutral-stone/20 group hover:shadow-[0_20px_50px_-12px_rgba(31,61,43,0.15)] hover:-translate-y-1 transition-all duration-300">
+                            <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-primary/10 to-primary-soft/20 rounded-2xl flex items-center justify-center text-primary group-hover:bg-gradient-to-br group-hover:from-primary group-hover:to-primary-soft group-hover:text-white transition-all duration-300 group-hover:scale-110">
+                                <Globe className="w-7 h-7 md:w-8 md:h-8" strokeWidth={1.5} />
                             </div>
                             <h3 className="text-xl font-bold tracking-tight">Sans Avis Clients</h3>
                             <p className="text-neutral-charcoal/60 leading-relaxed text-sm">
                                 Ici, la réputation ne s'achète pas et ne se note pas. Seule la réalité du travail effectué compte.
                             </p>
                         </div>
-                        <div className="space-y-6 p-8 md:p-10 rounded-3xl bg-neutral-offwhite/50 border border-neutral-stone/30 group hover:bg-white hover:shadow-premium transition-all duration-300">
-                            <div className="w-12 h-12 md:w-14 md:h-14 bg-primary/5 rounded-2xl flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-soft">
-                                <ShieldCheck className="w-6 h-6 md:w-8 md:h-8" strokeWidth={1.5} />
+                        <div className="space-y-6 p-8 md:p-10 rounded-3xl bg-gradient-to-br from-white to-neutral-offwhite/80 border border-neutral-stone/20 group hover:shadow-[0_20px_50px_-12px_rgba(31,61,43,0.15)] hover:-translate-y-1 transition-all duration-300">
+                            <div className="w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-primary/10 to-primary-soft/20 rounded-2xl flex items-center justify-center text-primary group-hover:bg-gradient-to-br group-hover:from-primary group-hover:to-primary-soft group-hover:text-white transition-all duration-300 group-hover:scale-110">
+                                <ShieldCheck className="w-7 h-7 md:w-8 md:h-8" strokeWidth={1.5} />
                             </div>
                             <h3 className="text-xl font-bold tracking-tight">Expertise Certifiée</h3>
                             <p className="text-neutral-charcoal/60 leading-relaxed text-sm">
