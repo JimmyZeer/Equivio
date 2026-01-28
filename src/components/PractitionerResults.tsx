@@ -36,14 +36,14 @@ export function PractitionerResults({ practitioners, count, error }: Practitione
                     <div className="flex gap-1 bg-white p-1 rounded-lg border border-neutral-stone/50 shadow-sm w-full sm:w-auto">
                         <button
                             onClick={() => setViewMode("list")}
-                            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-md text-xs font-bold transition-all ${viewMode === "list" ? "bg-primary text-white shadow-sm" : "text-neutral-charcoal/60 hover:bg-neutral-offwhite"}`}
+                            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-md text-xs font-bold transition-all press-effect ${viewMode === "list" ? "bg-primary text-white shadow-sm" : "text-neutral-charcoal/60 hover:bg-neutral-offwhite"}`}
                         >
                             <List className="w-4 h-4" />
                             Liste
                         </button>
                         <button
                             onClick={() => setViewMode("map")}
-                            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-md text-xs font-bold transition-all ${viewMode === "map" ? "bg-primary text-white shadow-sm" : "text-neutral-charcoal/60 hover:bg-neutral-offwhite"}`}
+                            className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 py-2 rounded-md text-xs font-bold transition-all press-effect ${viewMode === "map" ? "bg-primary text-white shadow-sm" : "text-neutral-charcoal/60 hover:bg-neutral-offwhite"}`}
                         >
                             <MapIcon className="w-4 h-4" />
                             Carte
@@ -52,7 +52,8 @@ export function PractitionerResults({ practitioners, count, error }: Practitione
                 </div>
             </div>
 
-            <div className="transition-all duration-300">
+            {/* Animated view container - key forces remount for animation */}
+            <div key={viewMode} className="animate-view-switch">
                 {viewMode === "list" ? (
                     <PractitionersList practitioners={practitioners} error={error} />
                 ) : (
@@ -64,3 +65,4 @@ export function PractitionerResults({ practitioners, count, error }: Practitione
         </section>
     );
 }
+
