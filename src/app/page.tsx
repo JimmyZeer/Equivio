@@ -56,6 +56,7 @@ export default async function Home() {
                                         alt="Portrait d'un cheval - Equivio"
                                         width={800}
                                         height={800}
+                                        sizes="(max-width: 1024px) 100vw, 50vw"
                                         className="object-cover transition-transform duration-1000 group-hover:scale-105"
                                         priority
                                     />

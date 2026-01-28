@@ -248,3 +248,26 @@ body {
 .leaflet-marker-custom {
   filter: hue-rotate(100deg) saturate(0.8);
 }
+
+/* Accessibility: Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-float,
+  .animate-pulse-glow,
+  .animate-slide-up,
+  .animate-scale-in,
+  .animate-view-switch {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
