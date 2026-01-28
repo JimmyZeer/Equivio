@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Button } from "./ui/Button";
 import { PhoneNumberReveal } from "./PhoneNumberReveal";
-import { Stethoscope, Hammer, Zap, Heart, Activity, MapPin } from "lucide-react";
+import { Stethoscope, Hammer, Zap, Heart, Activity, MapPin, BadgeCheck } from "lucide-react";
 
 interface PractitionerCardProps {
     id: string;
@@ -15,20 +15,13 @@ interface PractitionerCardProps {
     slug_seo: string;
 }
 
-// Map specialty to icon
-const getSpecialtyIcon = (specialty: string) => {
-    if (specialty.includes("Ostéopathe")) return Stethoscope;
-    if (specialty.includes("Maréchal")) return Hammer;
-    if (specialty.includes("Dentist")) return Zap;
-    if (specialty.includes("Vétérinaire")) return Heart;
-    return Activity;
-};
-
-// Map specialty display name
-const getSpecialtyDisplay = (specialty: string) => {
-    if (specialty === "Ostéopathe animalier") return "Ostéopathe équin";
-    if (specialty === "Dentisterie équine") return "Dentiste équin";
-    return specialty;
+// Map specialty to icon and color
+const getSpecialtyConfig = (specialty: string) => {
+    if (specialty.includes("Ostéopathe")) return { icon: Stethoscope, color: "bg-emerald-500", label: "Ostéopathe équin" };
+    if (specialty.includes("Maréchal")) return { icon: Hammer, color: "bg-amber-500", label: "Maréchal-ferrant" };
+    if (specialty.includes("Dentist")) return { icon: Zap, color: "bg-sky-500", label: "Dentiste équin" };
+    if (specialty.includes("Vétérinaire")) return { icon: Heart, color: "bg-rose-500", label: "Vétérinaire" };
+    return { icon: Activity, color: "bg-violet-500", label: specialty };
 };
 
 export function PractitionerCard({
@@ -49,40 +42,55 @@ export function PractitionerCard({
     };
 
     const displayCity = city || getFallbackCity(address_full);
-    const displaySpecialty = getSpecialtyDisplay(specialty);
-    const SpecialtyIcon = getSpecialtyIcon(specialty);
+    const specialtyConfig = getSpecialtyConfig(specialty);
+    const SpecialtyIcon = specialtyConfig.icon;
 
     return (
-        <div className="bg-white rounded-2xl border border-neutral-stone/40 p-4 sm:p-6 transition-all duration-300 hover:shadow-premium-hover hover:-translate-y-1 hover:border-primary/30 group">
-            <div className="flex flex-col sm:flex-row justify-between items-start gap-4 sm:gap-6">
-                <div className="space-y-2 sm:space-y-3 flex-1 min-w-0">
-                    <Link href={`/praticien/${slug_seo}`} className="block">
-                        <h3 className="text-lg sm:text-xl font-bold text-primary group-hover:text-primary-soft transition-colors truncate">
+        <div className="bg-white rounded-2xl border border-neutral-stone/30 p-5 sm:p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-primary/20 group relative overflow-hidden">
+            {/* Subtle gradient accent */}
+            <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary-soft to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+            <div className="flex flex-col gap-4">
+                {/* Header: Name + Badge */}
+                <div className="flex items-start justify-between gap-3">
+                    <Link href={`/praticien/${slug_seo}`} className="block flex-1 min-w-0">
+                        <h3 className="text-lg sm:text-xl font-bold text-primary group-hover:text-primary-soft transition-colors leading-tight">
                             {name}
                         </h3>
                     </Link>
-
-                    <div className="flex items-center gap-2">
-                        <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all">
-                            <SpecialtyIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                    {isVerified && (
+                        <div className="shrink-0 flex items-center gap-1 px-2 py-1 bg-primary/10 text-primary rounded-full text-[10px] font-bold uppercase tracking-wider">
+                            <BadgeCheck className="w-3 h-3" />
+                            Vérifié
                         </div>
-                        <p className="text-sm sm:text-base text-neutral-charcoal font-medium">
-                            {displaySpecialty}
-                        </p>
-                    </div>
-
-                    <p className="text-neutral-charcoal/60 text-xs sm:text-sm font-medium capitalize flex items-center gap-2">
-                        <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-neutral-charcoal/40" />
-                        {displayCity}
-                    </p>
+                    )}
                 </div>
 
-                <div className="flex flex-col gap-2 sm:gap-3 w-full sm:w-auto">
+                {/* Specialty Badge */}
+                <div className="flex items-center gap-3">
+                    <div className={`w-9 h-9 rounded-xl ${specialtyConfig.color} flex items-center justify-center text-white shadow-lg`}>
+                        <SpecialtyIcon className="w-4 h-4" />
+                    </div>
+                    <div>
+                        <p className="text-sm font-semibold text-neutral-charcoal">
+                            {specialtyConfig.label}
+                        </p>
+                        <p className="text-xs text-neutral-charcoal/50 flex items-center gap-1.5 mt-0.5">
+                            <MapPin className="w-3 h-3" />
+                            {displayCity}
+                        </p>
+                    </div>
+                </div>
+
+                {/* CTAs */}
+                <div className="flex flex-col sm:flex-row gap-2 pt-2 border-t border-neutral-stone/20">
                     {phone_norm && (
-                        <PhoneNumberReveal phoneNumber={phone_norm} practitionerId={id} />
+                        <div className="flex-1">
+                            <PhoneNumberReveal phoneNumber={phone_norm} practitionerId={id} />
+                        </div>
                     )}
-                    <Link href={`/praticien/${slug_seo}`} className="w-full sm:w-auto">
-                        <Button variant="outline" className="w-full min-h-[44px] border-neutral-stone hover:bg-primary hover:text-white hover:border-primary text-neutral-charcoal/80 font-medium transition-all press-effect">
+                    <Link href={`/praticien/${slug_seo}`} className="flex-1">
+                        <Button variant="outline" className="w-full min-h-[44px] border-neutral-stone/50 hover:bg-neutral-charcoal hover:text-white hover:border-neutral-charcoal text-neutral-charcoal font-semibold transition-all">
                             Voir le profil
                         </Button>
                     </Link>
@@ -91,4 +99,3 @@ export function PractitionerCard({
         </div>
     );
 }
-
