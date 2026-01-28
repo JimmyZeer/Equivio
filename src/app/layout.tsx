@@ -19,11 +19,20 @@ export const metadata: Metadata = {
         siteName: "Equivio",
         locale: "fr_FR",
         type: "website",
+        images: [
+            {
+                url: "https://equivio.fr/og-image.png",
+                width: 1200,
+                height: 630,
+                alt: "Equivio - Le réseau de confiance des praticiens équins",
+            },
+        ],
     },
     twitter: {
         card: "summary_large_image",
         title: "Equivio | Réseau de confiance équin",
         description: "Activité réelle, traçabilité, neutralité.",
+        images: ["https://equivio.fr/og-image.png"],
     },
     robots: {
         index: true,
