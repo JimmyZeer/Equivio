@@ -6,6 +6,7 @@ import { PractitionerCard } from "@/components/PractitionerCard";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { Pagination } from "@/components/ui/Pagination";
 import { SearchBar } from "@/components/SearchBar";
+import { ScrollToTop } from "@/components/ScrollToTop";
 
 // ... imports
 import { fetchPractitioners } from "@/lib/practitioners";
@@ -146,6 +147,7 @@ export default async function SearchPage({
                 </div>
             </main>
 
+            <ScrollToTop />
             <Footer />
         </div>
     );

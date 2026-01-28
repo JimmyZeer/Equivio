@@ -46,7 +46,7 @@ export function PractitionerCard({
     const SpecialtyIcon = specialtyConfig.icon;
 
     return (
-        <div className="bg-white rounded-2xl border border-neutral-stone/30 p-5 sm:p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-primary/20 group relative overflow-hidden">
+        <div className="bg-white rounded-2xl border border-neutral-stone/30 p-5 sm:p-6 transition-all duration-300 hover:shadow-[0_20px_50px_-12px_rgba(31,61,43,0.15)] hover:-translate-y-1.5 hover:border-primary/20 group relative overflow-hidden">
             {/* Subtle gradient accent */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary-soft to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
