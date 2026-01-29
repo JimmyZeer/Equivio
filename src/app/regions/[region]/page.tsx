@@ -4,9 +4,17 @@ import { Footer } from "@/components/Footer";
 import { Breadcrumb } from "@/components/ui/Breadcrumb";
 import { SearchBar } from "@/components/SearchBar";
 import { PractitionerCard } from "@/components/PractitionerCard";
-import { Info, ShieldCheck } from "lucide-react";
+import { Info, ShieldCheck, Stethoscope, Scissors, Heart } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { Metadata } from 'next';
+import Link from "next/link";
+
+const SPECIALTIES = [
+    { key: "all", label: "Tous", icon: null },
+    { key: "osteopathe", label: "Ostéopathes", icon: Heart },
+    { key: "dentiste", label: "Dentistes", icon: Scissors },
+    { key: "veterinaire", label: "Vétérinaires", icon: Stethoscope },
+];
 
 export async function generateMetadata({ params }: { params: Promise<{ region: string }> }): Promise<Metadata> {
     const resolvedParams = await params;
@@ -18,20 +26,40 @@ export async function generateMetadata({ params }: { params: Promise<{ region: s
     };
 }
 
-export default async function RegionPage({ params }: { params: Promise<{ region: string }> }) {
+interface PageProps {
+    params: Promise<{ region: string }>;
+    searchParams: Promise<{ specialite?: string }>;
+}
+
+export default async function RegionPage({ params, searchParams }: PageProps) {
     const resolvedParams = await params;
+    const resolvedSearchParams = await searchParams;
     const regionName = resolvedParams.region.charAt(0).toUpperCase() + resolvedParams.region.slice(1);
+    const specialtyFilter = resolvedSearchParams.specialite || "all";
 
     let practitioners: any[] = [];
     let error: any = null;
 
     try {
-        const { data, error: fetchError } = await supabase
+        let query = supabase
             .from('practitioners')
             .select('id, name, specialty, city, address_full, slug_seo, status')
             .ilike('region', `%${resolvedParams.region}%`)
             .eq('status', 'active')
             .order('name', { ascending: true });
+
+        // Apply specialty filter
+        if (specialtyFilter && specialtyFilter !== "all") {
+            if (specialtyFilter === "osteopathe") {
+                query = query.or('specialty.ilike.%ostéopathe%,specialty.ilike.%osteopathe%');
+            } else if (specialtyFilter === "dentiste") {
+                query = query.or('specialty.ilike.%dentiste%,specialty.ilike.%dentisterie%');
+            } else if (specialtyFilter === "veterinaire") {
+                query = query.or('specialty.ilike.%vétérinaire%,specialty.ilike.%veterinaire%');
+            }
+        }
+
+        const { data, error: fetchError } = await query;
 
         if (fetchError) throw fetchError;
         practitioners = data || [];
@@ -69,11 +97,36 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
                         <SearchBar />
                     </div>
 
+                    {/* Specialty Filter Buttons */}
+                    <div className="flex flex-wrap gap-3 reveal [animation-delay:250ms]">
+                        {SPECIALTIES.map((spec) => {
+                            const isActive = specialtyFilter === spec.key;
+                            const Icon = spec.icon;
+                            return (
+                                <Link
+                                    key={spec.key}
+                                    href={`/regions/${resolvedParams.region}${spec.key !== "all" ? `?specialite=${spec.key}` : ""}`}
+                                    className={`
+                                        flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium
+                                        transition-all duration-200 border
+                                        ${isActive
+                                            ? "bg-primary text-white border-primary shadow-md"
+                                            : "bg-white text-neutral-charcoal/70 border-neutral-stone/40 hover:border-primary/40 hover:bg-primary/5"
+                                        }
+                                    `}
+                                >
+                                    {Icon && <Icon className="w-4 h-4" />}
+                                    {spec.label}
+                                </Link>
+                            );
+                        })}
+                    </div>
+
                     <section className="space-y-10 reveal [animation-delay:300ms]">
                         <div className="flex justify-between items-center bg-stone-100/50 p-6 rounded-xl border border-neutral-stone/30">
                             <h2 className="font-bold text-primary uppercase tracking-[0.15em] text-xs flex items-center gap-3">
                                 <ShieldCheck className="w-4 h-4 text-primary-soft" />
-                                Professionnels vérifiés en {regionName}
+                                {practitioners.length} professionnel{practitioners.length > 1 ? "s" : ""} en {regionName}
                             </h2>
                             <span className="text-[10px] text-neutral-charcoal/40 font-bold uppercase tracking-[0.2em]">Réseau certifié</span>
                         </div>
@@ -101,7 +154,7 @@ export default async function RegionPage({ params }: { params: Promise<{ region:
                             </div>
                         ) : (
                             <div className="bg-white p-12 rounded-2xl border border-dashed border-neutral-stone/40 text-center text-neutral-charcoal/40 italic">
-                                Aucun praticien trouvé dans cette région.
+                                Aucun praticien trouvé {specialtyFilter !== "all" ? "avec ce filtre" : "dans cette région"}.
                             </div>
                         )}
                     </section>

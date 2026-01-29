@@ -7,6 +7,7 @@ import { PhoneNumberReveal } from "@/components/PhoneNumberReveal";
 import { TransparencyIndex } from "@/components/TransparencyIndex";
 import { ContactButton } from "@/components/ContactButton";
 import { ProfileFavoriteButton } from "@/components/ProfileFavoriteButton";
+import { ShareButtons } from "@/components/ShareButtons";
 import { LocalBusinessSchema, BreadcrumbSchema } from "@/components/StructuredData";
 import { MapPin, ShieldCheck, ExternalLink, Info } from "lucide-react";
 import { supabase } from "@/lib/supabase";
@@ -94,7 +95,14 @@ export default async function PractitionerProfile({ params }: { params: Promise<
                                 <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-primary tracking-tight leading-tight">
                                     {practitioner.name} <span className="hidden sm:inline text-neutral-charcoal/40 font-light">–</span> <br className="sm:hidden" /><span className="text-primary-soft">{displaySpecialty}</span>
                                 </h1>
-                                <ProfileFavoriteButton practitionerId={practitioner.id} />
+                                <div className="flex items-center gap-2">
+                                    <ShareButtons
+                                        url={`/praticien/${resolvedParams.slug}`}
+                                        title={`${practitioner.name} - ${displaySpecialty}`}
+                                        description={`Découvrez ${practitioner.name}, ${displaySpecialty.toLowerCase()}${practitioner.city ? ` à ${practitioner.city}` : ''} sur Equivio`}
+                                    />
+                                    <ProfileFavoriteButton practitionerId={practitioner.id} />
+                                </div>
                             </div>
                             <div className="flex items-center gap-2 text-lg text-neutral-charcoal font-medium">
                                 <MapPin className="w-5 h-5 text-neutral-charcoal/50" />
