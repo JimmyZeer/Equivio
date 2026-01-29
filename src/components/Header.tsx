@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "./ui/Button";
+import { FavoritesHeaderLink } from "./FavoritesHeaderLink";
 import { Menu, X, Search } from "lucide-react";
 import { useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
@@ -43,6 +44,7 @@ export function Header() {
                     </nav>
 
                     <div className="flex items-center gap-4">
+                        <FavoritesHeaderLink className="hidden sm:flex" />
                         <Link href="/revendiquer" className="hidden sm:inline-flex">
                             <Button variant="outline" className="border-primary/30 text-primary hover:bg-primary/5 hover:border-primary/50 transition-all press-effect">
                                 Revendiquer ma fiche
@@ -81,6 +83,7 @@ export function Header() {
                     <Link href="/praticiens/dentistes" onClick={() => setIsMenuOpen(false)} className="text-lg font-bold text-primary py-3 border-b border-neutral-stone/10 active:bg-neutral-offwhite transition-colors">Dentistes</Link>
                     <Link href="/praticiens/veterinaires" onClick={() => setIsMenuOpen(false)} className="text-lg font-bold text-primary py-3 border-b border-neutral-stone/10 active:bg-neutral-offwhite transition-colors">Vétérinaires</Link>
                     <div className="pt-4 flex flex-col gap-4">
+                        <FavoritesHeaderLink showLabel className="py-3 border-b border-neutral-stone/10" />
                         <Link href="/revendiquer" onClick={() => setIsMenuOpen(false)}>
                             <Button variant="outline" className="w-full py-6 text-base">Revendiquer ma fiche</Button>
                         </Link>

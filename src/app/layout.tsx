@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { OrganizationSchema, WebsiteSchema } from "@/components/StructuredData";
+import { FavoritesProvider } from "@/lib/favorites";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -51,14 +52,16 @@ export default function RootLayout({
     return (
         <html lang="fr">
             <body className={`${inter.className} bg-neutral-offwhite text-neutral-charcoal antialiased`}>
-                {/* Global Structured Data */}
-                <OrganizationSchema />
-                <WebsiteSchema />
+                <FavoritesProvider>
+                    {/* Global Structured Data */}
+                    <OrganizationSchema />
+                    <WebsiteSchema />
 
-                <div className="fixed inset-0 bg-grain pointer-events-none z-[9999]"></div>
-                <main className="min-h-screen">
-                    {children}
-                </main>
+                    <div className="fixed inset-0 bg-grain pointer-events-none z-[9999]"></div>
+                    <main className="min-h-screen">
+                        {children}
+                    </main>
+                </FavoritesProvider>
             </body>
         </html>
     );

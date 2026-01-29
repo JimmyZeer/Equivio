@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "./ui/Button";
 import { PhoneNumberReveal } from "./PhoneNumberReveal";
+import { FavoriteButton } from "./FavoriteButton";
 import { Stethoscope, Hammer, Zap, Heart, Activity, MapPin, BadgeCheck } from "lucide-react";
 
 interface PractitionerCardProps {
@@ -51,19 +54,22 @@ export function PractitionerCard({
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary-soft to-primary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
             <div className="flex flex-col gap-4">
-                {/* Header: Name + Badge */}
+                {/* Header: Name + Badge + Favorite */}
                 <div className="flex items-start justify-between gap-3">
                     <Link href={`/praticien/${slug_seo}`} className="block flex-1 min-w-0">
                         <h3 className="text-lg sm:text-xl font-bold text-primary group-hover:text-primary-soft transition-colors leading-tight">
                             {name}
                         </h3>
                     </Link>
-                    {isVerified && (
-                        <div className="shrink-0 flex items-center gap-1 px-2 py-1 bg-primary/10 text-primary rounded-full text-[10px] font-bold uppercase tracking-wider">
-                            <BadgeCheck className="w-3 h-3" />
-                            Vérifié
-                        </div>
-                    )}
+                    <div className="shrink-0 flex items-center gap-2">
+                        {isVerified && (
+                            <div className="flex items-center gap-1 px-2 py-1 bg-primary/10 text-primary rounded-full text-[10px] font-bold uppercase tracking-wider">
+                                <BadgeCheck className="w-3 h-3" />
+                                Vérifié
+                            </div>
+                        )}
+                        <FavoriteButton practitionerId={id} size="sm" />
+                    </div>
                 </div>
 
                 {/* Specialty Badge */}
