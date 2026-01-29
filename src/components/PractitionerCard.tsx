@@ -52,7 +52,7 @@ export function PractitionerCard({
     return (
         <Link
             href={profileUrl}
-            className="group block bg-white rounded-xl border border-neutral-stone/30 p-4 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 hover:border-primary/30 relative overflow-hidden"
+            className="group block bg-white rounded-xl border border-neutral-stone/50 shadow-md p-4 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 hover:border-primary/30 relative overflow-hidden"
         >
             {/* Top gradient accent on hover */}
             <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-primary-soft to-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
