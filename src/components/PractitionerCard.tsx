@@ -15,7 +15,7 @@ interface PractitionerCardProps {
     phone_norm?: string | null;
     isClaimed?: boolean;
     isVerified?: boolean;
-    slug_seo: string;
+    slug_seo?: string;
 }
 
 // Map specialty to icon and color
@@ -56,7 +56,7 @@ export function PractitionerCard({
             <div className="flex flex-col gap-4">
                 {/* Header: Name + Badge + Favorite */}
                 <div className="flex items-start justify-between gap-3">
-                    <Link href={`/praticien/${slug_seo}`} className="block flex-1 min-w-0">
+                    <Link href={`/praticien/${slug_seo || id}`} className="block flex-1 min-w-0">
                         <h3 className="text-lg sm:text-xl font-bold text-primary group-hover:text-primary-soft transition-colors leading-tight">
                             {name}
                         </h3>
@@ -95,7 +95,7 @@ export function PractitionerCard({
                             <PhoneNumberReveal phoneNumber={phone_norm} practitionerId={id} />
                         </div>
                     )}
-                    <Link href={`/praticien/${slug_seo}`} className="flex-1">
+                    <Link href={`/praticien/${slug_seo || id}`} className="flex-1">
                         <Button variant="outline" className="w-full min-h-[44px] border-neutral-stone/50 hover:bg-neutral-charcoal hover:text-white hover:border-neutral-charcoal text-neutral-charcoal font-semibold transition-all">
                             Voir le profil
                         </Button>

@@ -36,11 +36,11 @@ export default function FavorisPage() {
             if (error) {
                 console.error("Error fetching favorites:", error);
                 setPractitioners([]);
-            } else {
+            } else if (data) {
                 // Maintain the order of favorites
                 const orderedData = favorites
-                    .map((id) => data?.find((p) => p.id === id))
-                    .filter((p): p is Practitioner => p !== undefined);
+                    .map((id) => data.find((p) => p.id === id))
+                    .filter((p): p is NonNullable<typeof p> => p !== undefined) as Practitioner[];
                 setPractitioners(orderedData);
             }
             setLoading(false);
