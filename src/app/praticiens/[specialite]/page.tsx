@@ -79,7 +79,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
         <div className="flex flex-col min-h-screen">
             <Header />
 
-            <main className="flex-grow bg-neutral-offwhite pt-12 pb-32 px-6">
+            <main className="flex-grow bg-[#F7F7F7] pt-12 pb-32 px-6">
                 <div className="max-w-7xl mx-auto space-y-16">
                     <div className="reveal">
                         <Breadcrumb items={breadcrumbItems} />
@@ -91,7 +91,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
                         </h1>
 
                         {/* 1. Bloc éditorial « Méthodologie Equivio » (OBLIGATOIRE) */}
-                        <div className="bg-white border-l-4 border-primary p-6 rounded-r-xl shadow-sm max-w-3xl">
+                        <div className="bg-white border-l-4 border-primary p-6 sm:p-8 rounded-r-2xl shadow-card-rest max-w-3xl">
                             <h2 className="text-lg font-bold text-primary mb-2">Méthodologie Equivio</h2>
                             <p className="text-neutral-charcoal/80 text-sm leading-relaxed">
                                 Les praticiens listés sur Equivio sont issus de bases professionnelles publiques, croisées et vérifiées manuellement.
@@ -100,7 +100,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
                         </div>
                     </div>
 
-                    <div className="bg-white p-8 rounded-2xl border border-neutral-stone/40 shadow-premium reveal [animation-delay:200ms]">
+                    <div className="bg-white p-8 sm:p-10 rounded-[20px] border border-[#EBEBEB] shadow-content reveal [animation-delay:100ms]">
                         <SearchBar />
                     </div>
 
@@ -108,7 +108,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
                         <PractitionerResults practitioners={practitioners} count={dbCount} error={error} />
                     </div>
 
-                    <section className="bg-leather-light/20 p-8 rounded-2xl border border-leather-light">
+                    <section className="bg-[#F9F7F5] p-8 rounded-[20px] border border-[#E8E1D6]">
                         <h3 className="text-xl font-bold mb-6">Rechercher par région</h3>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 text-sm">
                             {["Normandie", "Bretagne", "Nouvelle-Aquitaine", "Pays de la Loire", "Hauts-de-France", "Grand Est", "Occitanie"].map(r => (

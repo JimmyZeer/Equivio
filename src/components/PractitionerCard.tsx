@@ -52,35 +52,35 @@ export function PractitionerCard({
     return (
         <Link
             href={profileUrl}
-            className="group block bg-white rounded-xl border border-neutral-stone/50 shadow-md p-4 transition-all duration-300 hover:shadow-xl hover:shadow-primary/10 hover:-translate-y-1 hover:border-primary/30 relative overflow-hidden"
+            className="group block bg-white rounded-[20px] shadow-card-rest p-6 transition-all duration-300 hover:shadow-card-hover hover-lift relative overflow-hidden ring-1 ring-black/[0.03]"
         >
-            {/* Top gradient accent on hover */}
-            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-primary-soft to-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
+            {/* Top gradient accent on hover - Refined opacity */}
+            <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-primary-soft to-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left opacity-80" />
 
             {/* Header: Specialty icon + Name */}
-            <div className="flex items-start gap-3">
-                {/* Specialty Icon */}
-                <div className={`shrink-0 w-10 h-10 rounded-lg ${specialtyConfig.color} flex items-center justify-center text-white shadow-md group-hover:scale-110 transition-transform duration-300`}>
-                    <SpecialtyIcon className="w-5 h-5" />
+            <div className="flex items-start gap-5">
+                {/* Specialty Icon - Larger & Rounder */}
+                <div className={`shrink-0 w-12 h-12 rounded-2xl ${specialtyConfig.color} flex items-center justify-center text-white shadow-sm group-hover:scale-110 transition-transform duration-300`}>
+                    <SpecialtyIcon className="w-6 h-6" />
                 </div>
 
                 {/* Content */}
-                <div className="flex-1 min-w-0">
-                    {/* Name */}
-                    <h3 className="font-bold text-primary group-hover:text-primary-soft transition-colors line-clamp-2 leading-tight text-[15px]">
+                <div className="flex-1 min-w-0 pt-0.5">
+                    {/* Name - Cleaner font weight */}
+                    <h3 className="font-semibold text-lg text-primary group-hover:text-primary-soft transition-colors line-clamp-2 leading-tight">
                         {name}
                     </h3>
 
-                    {/* Tags row */}
-                    <div className="flex flex-wrap items-center gap-2 mt-2">
+                    {/* Tags row - Pill shapes */}
+                    <div className="flex flex-wrap items-center gap-2 mt-3">
                         {/* Specialty tag */}
-                        <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold ${specialtyConfig.bgLight} ${specialtyConfig.textColor}`}>
+                        <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${specialtyConfig.bgLight} ${specialtyConfig.textColor}`}>
                             {specialtyConfig.label}
                         </span>
 
                         {/* Location tag */}
                         {displayCity && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-medium bg-neutral-100 text-neutral-600">
+                            <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium bg-neutral-100 text-neutral-600">
                                 <MapPin className="w-3 h-3" />
                                 {displayCity}
                             </span>
@@ -89,32 +89,32 @@ export function PractitionerCard({
                 </div>
 
                 {/* Right side: Verified + Favorite */}
-                <div className="shrink-0 flex flex-col items-end gap-2">
+                <div className="shrink-0 flex flex-col items-end gap-3">
                     {isVerified && (
-                        <span className="flex items-center gap-1 px-1.5 py-0.5 bg-primary/10 text-primary rounded text-[10px] font-bold uppercase tracking-wide">
+                        <span className="flex items-center gap-1 px-2 py-0.5 bg-primary/5 text-primary rounded-full text-[10px] font-bold uppercase tracking-wide border border-primary/10">
                             <BadgeCheck className="w-3 h-3" />
                             Vérifié
                         </span>
                     )}
-                    <div onClick={(e) => e.preventDefault()}>
+                    <div onClick={(e) => e.preventDefault()} className="hover:scale-110 transition-transform">
                         <FavoriteButton practitionerId={id} size="sm" />
                     </div>
                 </div>
             </div>
 
-            {/* CTA Row */}
-            <div className="flex items-center justify-between mt-4 pt-3 border-t border-neutral-stone/20">
+            {/* CTA Row - Ghost button style */}
+            <div className="flex items-center justify-between mt-6 pt-5 border-t border-neutral-100">
                 {/* Phone (if available) */}
                 {phone_norm ? (
-                    <div onClick={(e) => e.preventDefault()} className="flex-1 max-w-[180px]">
+                    <div onClick={(e) => e.preventDefault()} className="flex-1 max-w-[200px]">
                         <PhoneNumberReveal phoneNumber={phone_norm} practitionerId={id} compact />
                     </div>
                 ) : (
                     <div className="flex-1" />
                 )}
 
-                {/* View Profile CTA */}
-                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary group-hover:text-primary-soft transition-colors">
+                {/* View Profile CTA - Animated Arrow */}
+                <span className="inline-flex items-center gap-2 text-sm font-semibold text-primary group-hover:text-primary-soft transition-colors">
                     Voir le profil
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </span>

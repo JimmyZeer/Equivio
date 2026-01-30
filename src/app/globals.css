@@ -10,6 +10,14 @@
   --color-neutral-offwhite: #FAFAF8;
   --color-neutral-stone: #E5E7EB;
   --color-neutral-charcoal: #1F2937;
+  --color-neutral-background: #F7F7F7;
+  --color-neutral-border: #EBEBEB;
+  --color-neutral-divider: #F0F0F0;
+
+  /* Add semantic color names for easier use */
+  --color-gray-bg: #F7F7F7;
+  --color-gray-border: #EBEBEB;
+  --color-gray-hover: #E0E0E0;
 
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 
@@ -41,7 +49,7 @@
 
 :root {
   --foreground-rgb: 31, 41, 55;
-  --background-rgb: 250, 250, 248;
+  --background-rgb: 247, 247, 247;
 }
 
 body {
@@ -49,6 +57,8 @@ body {
   background: rgb(var(--background-rgb));
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  letter-spacing: -0.011em;
   line-height: 1.625;
 }
 
@@ -60,32 +70,63 @@ body {
   h4,
   h5,
   h6 {
-    @apply font-semibold text-primary tracking-tight;
+    @apply font-bold text-primary;
+    letter-spacing: -0.022em;
     line-height: 1.15;
   }
 
   p {
-    @apply text-neutral-charcoal/80 text-[0.9375rem];
+    @apply text-neutral-charcoal/80 text-[15px];
+    line-height: 1.6;
+    letter-spacing: -0.01em;
   }
 }
 
 @layer utilities {
+
+  /* iOS-inspired Diffuse Shadow System (Reskin) */
+  .shadow-card-rest {
+    box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.04), 0 0 1px rgba(0, 0, 0, 0.08);
+    /* Airbnb style: soft + slight outline */
+  }
+
+  .shadow-card-hover {
+    box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.08), 0 4px 8px -4px rgba(0, 0, 0, 0.04), 0 0 1px rgba(0, 0, 0, 0.08);
+  }
+
+  .shadow-float {
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+  }
+
+  .shadow-content {
+    box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.05), 0 4px 12px -3px rgba(0, 0, 0, 0.04);
+  }
+
+  .shadow-modal {
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Legacy shadows - kept for compatibility but softened */
   .shadow-premium {
-    box-shadow: 0 2px 10px -2px rgba(31, 61, 43, 0.04), 0 4px 20px -4px rgba(31, 61, 43, 0.04);
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+    /* Desaturated */
   }
 
   .shadow-premium-hover {
-    box-shadow: 0 10px 40px -6px rgba(31, 61, 43, 0.07);
+    box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.08);
+    /* Desaturated */
   }
 
   .transition-soft {
-    transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    /* Apple-like easing */
   }
 
   .bg-grain {
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
     background-repeat: repeat;
-    opacity: 0.02;
+    opacity: 0.015;
+    /* More subtle */
     pointer-events: none;
   }
 
@@ -116,39 +157,49 @@ body {
     animation: scale-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
-  /* Stagger delays for sequential animations */
+  /* Stagger delays for sequential animations - optimized for snappier feel */
   .stagger-1 {
-    animation-delay: 100ms;
+    animation-delay: 50ms;
   }
 
   .stagger-2 {
-    animation-delay: 200ms;
+    animation-delay: 100ms;
   }
 
   .stagger-3 {
-    animation-delay: 300ms;
+    animation-delay: 150ms;
   }
 
   .stagger-4 {
-    animation-delay: 400ms;
+    animation-delay: 200ms;
   }
 
   .stagger-5 {
-    animation-delay: 500ms;
+    animation-delay: 250ms;
   }
 
   /* Card lift on hover */
   .hover-lift {
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+    will-change: transform, box-shadow;
   }
 
   .hover-lift:hover {
     transform: translateY(-4px);
+    /* Shadow is handled by combining with hover:shadow-card-hover utility */
   }
 
-  /* Button press effect */
+  /* Button press effect - iOS Style */
+  .press-effect {
+    transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
   .press-effect:active {
-    transform: scale(0.97);
+    transform: scale(0.96);
+  }
+
+  .press-subtle:active {
+    transform: scale(0.98);
   }
 
   /* Performance hint for animated elements */
@@ -211,7 +262,7 @@ body {
 @keyframes view-switch {
   from {
     opacity: 0;
-    transform: translateY(8px) scale(0.98);
+    transform: translateY(4px) scale(0.99);
   }
 
   to {
@@ -222,21 +273,21 @@ body {
 
 /* View switch animation utility */
 .animate-view-switch {
-  animation: view-switch 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: view-switch 0.3s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
 }
 
 /* Favorite button pop animation */
 @keyframes favorite-pop {
   0% {
-    transform: scale(1);
+    transform: scale(1) rotate(0deg);
   }
 
   50% {
-    transform: scale(1.3);
+    transform: scale(1.3) rotate(-10deg);
   }
 
   100% {
-    transform: scale(1);
+    transform: scale(1) rotate(0deg);
   }
 }
 
