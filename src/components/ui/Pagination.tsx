@@ -9,10 +9,10 @@ interface PaginationProps {
 
 export function Pagination({ currentPage, totalPages, className }: PaginationProps) {
     return (
-        <div className={cn("flex items-center justify-center gap-2", className)}>
+        <div className={cn("flex items-center justify-center gap-3", className)}>
             <button
                 disabled={currentPage === 1}
-                className="p-2 rounded-md border border-neutral-stone text-neutral-charcoal/60 hover:bg-neutral-stone/50 disabled:opacity-30 transition-colors"
+                className="p-3 rounded-xl border border-neutral-stone/60 text-neutral-charcoal/60 hover:bg-neutral-offwhite hover:shadow-card-rest disabled:opacity-30 transition-all press-subtle"
             >
                 <ChevronLeft className="w-5 h-5" />
             </button>
@@ -21,10 +21,10 @@ export function Pagination({ currentPage, totalPages, className }: PaginationPro
                 <button
                     key={i}
                     className={cn(
-                        "w-10 h-10 rounded-md border font-medium transition-all",
+                        "min-w-10 h-10 px-4 rounded-xl font-medium transition-all press-subtle",
                         currentPage === i + 1
-                            ? "bg-primary text-white border-primary"
-                            : "border-neutral-stone text-neutral-charcoal hover:bg-neutral-stone/50"
+                            ? "bg-gradient-to-br from-primary to-primary-soft text-white shadow-card-rest"
+                            : "border border-neutral-stone/60 text-neutral-charcoal hover:bg-neutral-offwhite hover:shadow-card-rest"
                     )}
                 >
                     {i + 1}
@@ -33,7 +33,7 @@ export function Pagination({ currentPage, totalPages, className }: PaginationPro
 
             <button
                 disabled={currentPage === totalPages}
-                className="p-2 rounded-md border border-neutral-stone text-neutral-charcoal/60 hover:bg-neutral-stone/50 disabled:opacity-30 transition-colors"
+                className="p-3 rounded-xl border border-neutral-stone/60 text-neutral-charcoal/60 hover:bg-neutral-offwhite hover:shadow-card-rest disabled:opacity-30 transition-all press-subtle"
             >
                 <ChevronRight className="w-5 h-5" />
             </button>

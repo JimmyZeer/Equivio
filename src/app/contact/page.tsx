@@ -33,7 +33,7 @@ export default function ContactPage() {
 
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 reveal [animation-delay:200ms]">
                         <div className="lg:col-span-1 space-y-8">
-                            <div className="bg-white p-8 rounded-2xl border border-neutral-stone/30 shadow-premium space-y-6">
+                            <div className="bg-white p-8 rounded-[24px] shadow-card-rest hover:shadow-card-hover transition-all duration-300 border border-neutral-stone/30 space-y-6">
                                 <div className="flex items-center gap-4 text-primary">
                                     <div className="bg-primary/5 p-3 rounded-xl border border-primary/10">
                                         <Mail className="w-6 h-6" />
@@ -63,7 +63,7 @@ export default function ContactPage() {
                                 </div>
                             </div>
 
-                            <div className="bg-primary p-8 rounded-2xl text-white space-y-4">
+                            <div className="bg-gradient-to-br from-primary via-primary to-primary-soft p-8 rounded-[24px] text-white space-y-4 shadow-lg">
                                 <MessageCircle className="w-10 h-10 text-leather-light/60" />
                                 <h3 className="text-xl font-bold tracking-tight">Support Praticiens</h3>
                                 <p className="text-sm text-white/70 leading-relaxed">
@@ -72,7 +72,7 @@ export default function ContactPage() {
                             </div>
                         </div>
 
-                        <div className="lg:col-span-2 bg-white rounded-3xl border border-neutral-stone/40 shadow-premium overflow-hidden">
+                        <div className="lg:col-span-2 bg-white rounded-[32px] shadow-card-rest hover:shadow-card-hover transition-all duration-300 border border-neutral-stone/30 overflow-hidden">
                             <form className="p-10 md:p-16 space-y-10">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                                     <div className="space-y-4">
@@ -97,7 +97,7 @@ export default function ContactPage() {
                                     <label className="text-[10px] font-bold uppercase tracking-[0.15em] text-neutral-charcoal/40">Message</label>
                                     <textarea rows={6} className="w-full bg-neutral-offwhite border border-neutral-stone/60 rounded-xl py-4 px-6 focus:ring-1 focus:ring-primary focus:border-primary outline-none font-medium transition-all" placeholder="Décrivez votre demande en quelques mots..."></textarea>
                                 </div>
-                                <Button className="w-full py-5 text-lg font-bold shadow-xl active:scale-[0.98] transition-all">
+                                <Button className="w-full py-5 text-lg font-bold shadow-lg press-effect">
                                     Envoyer le message
                                 </Button>
                             </form>

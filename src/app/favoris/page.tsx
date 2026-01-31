@@ -74,20 +74,20 @@ export default function FavorisPage() {
                             <Loader2 className="w-8 h-8 text-primary animate-spin" />
                         </div>
                     ) : practitioners.length === 0 ? (
-                        <div className="text-center py-16 space-y-6">
-                            <div className="w-24 h-24 mx-auto bg-neutral-stone/30 rounded-full flex items-center justify-center">
-                                <Heart className="w-10 h-10 text-neutral-charcoal/30" />
+                        <div className="bg-white p-16 rounded-[24px] shadow-card-rest text-center space-y-6">
+                            <div className="w-24 h-24 mx-auto bg-rose-50 rounded-full flex items-center justify-center">
+                                <Heart className="w-10 h-10 text-rose-400" />
                             </div>
-                            <div className="space-y-2">
-                                <h2 className="text-xl font-bold text-neutral-charcoal">
+                            <div className="space-y-3">
+                                <h2 className="text-2xl font-bold text-primary">
                                     Aucun favori pour le moment
                                 </h2>
-                                <p className="text-neutral-charcoal/60 max-w-md mx-auto">
+                                <p className="text-neutral-charcoal/60 max-w-md mx-auto leading-relaxed">
                                     Explorez notre annuaire et cliquez sur l'icône cœur pour sauvegarder vos praticiens préférés.
                                 </p>
                             </div>
                             <Link href="/search">
-                                <Button className="gap-2 px-8">
+                                <Button className="gap-2 px-8 press-effect">
                                     <Search className="w-4 h-4" />
                                     Explorer les praticiens
                                 </Button>

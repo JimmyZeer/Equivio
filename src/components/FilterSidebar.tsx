@@ -65,7 +65,7 @@ export function FilterSidebar() {
             </button>
 
             <aside
-                className={`w-full lg:w-64 space-y-8 bg-leather-light/30 p-6 rounded-xl border border-leather-light lg:block overflow-hidden transition-all duration-300 ease-out ${isOpen ? "max-h-[600px] opacity-100 mt-4" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100 p-0 lg:p-6 border-0 lg:border"}`}
+                className={`w-full lg:w-64 space-y-8 bg-white p-6 rounded-[20px] shadow-card-rest border border-neutral-stone/30 lg:block overflow-hidden transition-all duration-300 ease-out hover:shadow-card-hover ${isOpen ? "max-h-[600px] opacity-100 mt-4" : "max-h-0 lg:max-h-none opacity-0 lg:opacity-100 p-0 lg:p-6 border-0 lg:border"}`}
             >
                 <div className="flex items-center justify-between lg:hidden mb-2">
                     <h3 className="font-bold text-primary">Filtres</h3>
@@ -140,7 +140,7 @@ export function FilterSidebar() {
 
                 <button
                     onClick={clearFilters}
-                    className="hidden lg:flex w-full items-center justify-center gap-2 py-3 border border-primary/20 rounded-xl text-xs font-bold text-primary/60 hover:bg-primary/5 hover:text-primary transition-all"
+                    className="hidden lg:flex w-full items-center justify-center gap-2 py-3 border border-primary/20 rounded-xl text-xs font-bold text-primary/60 hover:bg-primary/5 hover:text-primary transition-all press-subtle"
                 >
                     <RotateCcw className="w-3.5 h-3.5" />
                     Réinitialiser les filtres

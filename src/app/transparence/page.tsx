@@ -70,7 +70,7 @@ export default function TransparencePage() {
                             </div>
                         </div>
 
-                        <div className="bg-primary p-12 rounded-3xl text-white space-y-10 relative overflow-hidden shadow-2xl">
+                        <div className="bg-gradient-to-br from-primary via-primary to-primary-soft p-12 rounded-[32px] text-white space-y-10 relative overflow-hidden shadow-lg hover:shadow-card-hover transition-all duration-300">
                             <div className="absolute inset-0 bg-grain opacity-5"></div>
                             <h3 className="text-2xl font-bold tracking-tight relative z-10">L'Algorithme de Cohérence</h3>
                             <div className="space-y-8 relative z-10">

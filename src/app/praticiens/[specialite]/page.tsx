@@ -79,7 +79,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
         <div className="flex flex-col min-h-screen">
             <Header />
 
-            <main className="flex-grow bg-[#F7F7F7] pt-12 pb-32 px-6">
+            <main className="flex-grow bg-neutral-offwhite pt-12 pb-32 px-6">
                 <div className="max-w-7xl mx-auto space-y-16">
                     <div className="reveal">
                         <Breadcrumb items={breadcrumbItems} />
@@ -91,8 +91,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
                         </h1>
 
                         {/* 1. Bloc éditorial « Méthodologie Equivio » (OBLIGATOIRE) */}
-                        <div className="bg-white border-l-4 border-primary p-6 sm:p-8 rounded-r-2xl shadow-card-rest max-w-3xl">
-                            <h2 className="text-lg font-bold text-primary mb-2">Méthodologie Equivio</h2>
+                        <div className="bg-white border-l-4 border-primary p-8 sm:p-10 rounded-r-[24px] shadow-card-rest hover:shadow-card-hover transition-all duration-300 max-w-3xl">
+                            <h2 className="text-lg font-bold text-primary mb-3">Méthodologie Equivio</h2>
                             <p className="text-neutral-charcoal/80 text-sm leading-relaxed">
                                 Les praticiens listés sur Equivio sont issus de bases professionnelles publiques, croisées et vérifiées manuellement.
                                 La présence sur la plateforme repose sur une activité professionnelle constatée, sans notation, sans avis clients et sans classement sponsorisé.
@@ -100,7 +100,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
                         </div>
                     </div>
 
-                    <div className="bg-white p-8 sm:p-10 rounded-[20px] border border-[#EBEBEB] shadow-content reveal [animation-delay:100ms]">
+                    <div className="bg-white p-8 sm:p-10 rounded-[24px] shadow-card-rest hover:shadow-card-hover transition-all duration-300 reveal [animation-delay:100ms]">
                         <SearchBar />
                     </div>
 
@@ -108,11 +108,11 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
                         <PractitionerResults practitioners={practitioners} count={dbCount} error={error} />
                     </div>
 
-                    <section className="bg-[#F9F7F5] p-8 rounded-[20px] border border-[#E8E1D6]">
-                        <h3 className="text-xl font-bold mb-6">Rechercher par région</h3>
+                    <section className="bg-white p-8 sm:p-10 rounded-[24px] shadow-card-rest hover:shadow-card-hover transition-all duration-300 border border-neutral-stone/20">
+                        <h3 className="text-xl font-bold text-primary mb-6">Rechercher par région</h3>
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 text-sm">
                             {["Normandie", "Bretagne", "Nouvelle-Aquitaine", "Pays de la Loire", "Hauts-de-France", "Grand Est", "Occitanie"].map(r => (
-                                <Link key={r} href={`/regions/${r.toLowerCase()}`} className="text-neutral-charcoal/60 hover:text-primary transition-all">
+                                <Link key={r} href={`/regions/${r.toLowerCase()}`} className="text-neutral-charcoal/60 hover:text-primary hover:underline transition-all">
                                     {currentDisplayTitle} en {r}
                                 </Link>
                             ))}

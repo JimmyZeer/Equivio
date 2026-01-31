@@ -41,7 +41,7 @@ export default function AboutPage() {
                                 Equivio ne vend pas de visibilité. Nous mettons en lumière la régularité, l'expertise territoriale et l'engagement des praticiens équins à travers toute la France.
                             </p>
                         </div>
-                        <div className="bg-white p-12 rounded-3xl border border-neutral-stone/40 shadow-premium relative overflow-hidden">
+                        <div className="bg-white p-12 rounded-[32px] shadow-card-rest hover:shadow-card-hover transition-all duration-300 border border-neutral-stone/30 relative overflow-hidden">
                             <div className="absolute inset-0 bg-leather-light/10 opacity-50"></div>
                             <div className="relative z-10 grid grid-cols-2 gap-8">
                                 <div className="space-y-2">
@@ -72,7 +72,7 @@ export default function AboutPage() {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            <div className="bg-white p-10 rounded-2xl border border-neutral-stone/30 space-y-6 hover:shadow-xl transition-all duration-500 group">
+                            <div className="bg-white p-10 rounded-[24px] shadow-card-rest border border-neutral-stone/30 space-y-6 hover:shadow-card-hover transition-all duration-300 group">
                                 <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-colors">
                                     <Shield className="w-6 h-6" />
                                 </div>

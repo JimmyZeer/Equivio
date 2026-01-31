@@ -29,7 +29,7 @@ export default function ClaimPage() {
                     </div>
 
                     {/* Form Container */}
-                    <div className="bg-white rounded-2xl border border-neutral-stone/60 shadow-xl overflow-hidden">
+                    <div className="bg-white rounded-[32px] shadow-card-rest hover:shadow-card-hover transition-all duration-300 border border-neutral-stone/30 overflow-hidden">
                         <div className="p-8 md:p-10">
                             <ClaimForm />
                         </div>

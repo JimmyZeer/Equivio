@@ -83,7 +83,7 @@ export default async function SearchPage({
                         <Breadcrumb items={breadcrumbItems} />
                     </div>
 
-                    <div className="bg-white p-8 rounded-2xl border border-neutral-stone/40 shadow-premium reveal [animation-delay:100ms]">
+                    <div className="bg-white p-8 sm:p-10 rounded-[24px] shadow-card-rest hover:shadow-card-hover transition-all duration-300 reveal [animation-delay:100ms]">
                         <SearchBar />
                     </div>
 
@@ -95,7 +95,7 @@ export default async function SearchPage({
                         <div className="flex-1 space-y-10 reveal [animation-delay:300ms]">
                             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6">
                                 <div className="space-y-1">
-                                    <h1 className="text-2xl font-extrabold tracking-tight">
+                                    <h1 className="text-2xl font-extrabold tracking-tight text-primary">
                                         {count} praticiens trouvés
                                     </h1>
                                     <p className="text-sm text-neutral-charcoal/50 font-medium tracking-wide">
@@ -112,8 +112,8 @@ export default async function SearchPage({
 
                             <div className="space-y-6">
                                 {error ? (
-                                    <div className="bg-red-50 p-8 rounded-2xl border border-red-200 text-center text-red-800">
-                                        Une erreur est survenue lors du chargement des praticiens.
+                                    <div className="bg-red-50 p-10 rounded-[24px] shadow-card-rest border border-red-200 text-center">
+                                        <p className="text-red-800 font-medium">Une erreur est survenue lors du chargement des praticiens.</p>
                                     </div>
                                 ) : practitioners.length > 0 ? (
                                     practitioners.map((p) => (
@@ -131,8 +131,9 @@ export default async function SearchPage({
                                         />
                                     ))
                                 ) : (
-                                    <div className="bg-white p-12 rounded-2xl border border-dashed border-neutral-stone/40 text-center text-neutral-charcoal/40 italic">
-                                        Aucun praticien trouvé pour cette recherche.
+                                    <div className="bg-white p-16 rounded-[24px] shadow-card-rest border border-dashed border-neutral-stone/40 text-center space-y-3">
+                                        <p className="text-lg text-neutral-charcoal/60 font-medium">Aucun praticien trouvé</p>
+                                        <p className="text-sm text-neutral-charcoal/40">Essayez d'élargir vos critères de recherche</p>
                                     </div>
                                 )}
                             </div>

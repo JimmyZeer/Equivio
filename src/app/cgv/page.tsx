@@ -20,34 +20,36 @@ export default function CGVPage() {
                     <div className="space-y-8">
                         <h1 className="text-4xl md:text-5xl font-extrabold text-primary tracking-tight">CGV / CGU</h1>
 
-                        <div className="prose prose-neutral max-w-none space-y-10 text-neutral-charcoal/80 leading-relaxed font-medium">
-                            <section className="space-y-4">
-                                <h2 className="text-2xl font-bold text-primary">1. Objet</h2>
-                                <p>
-                                    Les présentes Conditions Générales d'Utilisation (CGU) ont pour objet de définir les modalités de mise à disposition des services du site EQUIVIO et les conditions d'utilisation du service par l'Utilisateur.
-                                </p>
-                            </section>
+                        <div className="bg-white p-10 md:p-16 rounded-[32px] shadow-card-rest hover:shadow-card-hover transition-all duration-300 border border-neutral-stone/20">
+                            <div className="prose prose-neutral max-w-none space-y-10 text-neutral-charcoal/80 leading-relaxed font-medium">
+                                <section className="space-y-4">
+                                    <h2 className="text-2xl font-bold text-primary">1. Objet</h2>
+                                    <p>
+                                        Les présentes Conditions Générales d'Utilisation (CGU) ont pour objet de définir les modalités de mise à disposition des services du site EQUIVIO et les conditions d'utilisation du service par l'Utilisateur.
+                                    </p>
+                                </section>
 
-                            <section className="space-y-4">
-                                <h2 className="text-2xl font-bold text-primary">2. Accès au service</h2>
-                                <p>
-                                    Le service est accessible gratuitement à tout Utilisateur disposant d'un accès à internet. Tous les frais supportés par l'Utilisateur pour accéder au service (matériel informatique, logiciels, connexion internet, etc.) sont à sa charge.
-                                </p>
-                            </section>
+                                <section className="space-y-4">
+                                    <h2 className="text-2xl font-bold text-primary">2. Accès au service</h2>
+                                    <p>
+                                        Le service est accessible gratuitement à tout Utilisateur disposant d'un accès à internet. Tous les frais supportés par l'Utilisateur pour accéder au service (matériel informatique, logiciels, connexion internet, etc.) sont à sa charge.
+                                    </p>
+                                </section>
 
-                            <section className="space-y-4">
-                                <h2 className="text-2xl font-bold text-primary">3. Responsabilité de l'Utilisateur</h2>
-                                <p>
-                                    L'Utilisateur est responsable des risques liés à l'utilisation de son identifiant de connexion et de son mot de passe. Tout usage du service par l'Utilisateur ayant directement ou indirectement pour conséquence des dommages doit faire l'objet d'une indemnisation au profit du site.
-                                </p>
-                            </section>
+                                <section className="space-y-4">
+                                    <h2 className="text-2xl font-bold text-primary">3. Responsabilité de l'Utilisateur</h2>
+                                    <p>
+                                        L'Utilisateur est responsable des risques liés à l'utilisation de son identifiant de connexion et de son mot de passe. Tout usage du service par l'Utilisateur ayant directement ou indirectement pour conséquence des dommages doit faire l'objet d'une indemnisation au profit du site.
+                                    </p>
+                                </section>
 
-                            <section className="space-y-4">
-                                <h2 className="text-2xl font-bold text-primary">4. Données d'activité</h2>
-                                <p>
-                                    Le site permet aux Utilisateurs de déclarer des interventions. L'Utilisateur s'engage à fournir des informations exactes. EQUIVIO se réserve le droit de vérifier les informations fournies et de supprimer tout contenu jugé mensonger ou inapproprié.
-                                </p>
-                            </section>
+                                <section className="space-y-4">
+                                    <h2 className="text-2xl font-bold text-primary">4. Données d'activité</h2>
+                                    <p>
+                                        Le site permet aux Utilisateurs de déclarer des interventions. L'Utilisateur s'engage à fournir des informations exactes. EQUIVIO se réserve le droit de vérifier les informations fournies et de supprimer tout contenu jugé mensonger ou inapproprié.
+                                    </p>
+                                </section>
+                            </div>
                         </div>
                     </div>
                 </div>
