@@ -56,27 +56,27 @@ export function SearchBar() {
             id="search-section"
             className={`
                 w-full max-w-3xl mx-auto
-                bg-white rounded-full
+                bg-white rounded-3xl sm:rounded-full
                 border-2 border-neutral-stone/60
-                flex items-center
+                flex flex-col sm:flex-row items-stretch sm:items-center
                 transition-all duration-300 ease-out
                 ${isFocused
-                    ? 'shadow-[0_8px_30px_rgba(31,61,43,0.18),0_4px_12px_rgba(0,0,0,0.08)] scale-[1.02] border-primary/40'
+                    ? 'shadow-[0_8px_30px_rgba(31,61,43,0.18),0_4px_12px_rgba(0,0,0,0.08)] scale-[1.01] sm:scale-[1.02] border-primary/40'
                     : 'shadow-[0_3px_12px_rgba(0,0,0,0.1),0_8px_24px_rgba(31,61,43,0.12)] hover:shadow-[0_6px_20px_rgba(31,61,43,0.2),0_12px_32px_rgba(0,0,0,0.1)] hover:border-primary/30'
                 }
             `}
         >
             {/* Specialty Field */}
             <div
-                className="flex-1 flex items-center gap-3 px-6 py-5 border-r-2 border-neutral-stone/40 hover:bg-primary/5 transition-colors rounded-l-full"
+                className="flex-1 flex items-center gap-3 px-5 sm:px-6 py-4 sm:py-5 border-r-0 sm:border-r-2 border-b-2 sm:border-b-0 border-neutral-stone/40 hover:bg-primary/5 transition-colors rounded-t-3xl sm:rounded-l-full sm:rounded-tr-none"
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
             >
-                <div className="w-8 h-8 bg-gradient-to-br from-primary/10 to-primary-soft/20 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-primary/10 to-primary-soft/20 rounded-full flex items-center justify-center flex-shrink-0">
                     <Search className="w-4 h-4 text-primary" strokeWidth={2} />
                 </div>
-                <div className="flex-1">
-                    <label className="block text-[10px] font-bold text-neutral-charcoal/50 uppercase tracking-wider mb-0.5">
+                <div className="flex-1 min-w-0">
+                    <label className="block text-[11px] sm:text-[10px] font-bold text-neutral-charcoal/50 uppercase tracking-wider mb-0.5">
                         Spécialité
                     </label>
                     <input
@@ -94,15 +94,15 @@ export function SearchBar() {
 
             {/* Location Field */}
             <div
-                className="flex-1 flex items-center gap-3 px-6 py-5 hover:bg-primary/5 transition-colors"
+                className="flex-1 flex items-center gap-3 px-5 sm:px-6 py-4 sm:py-5 hover:bg-primary/5 transition-colors"
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
             >
-                <div className="w-8 h-8 bg-gradient-to-br from-leather/10 to-leather-light/30 rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-leather/10 to-leather-light/30 rounded-full flex items-center justify-center flex-shrink-0">
                     <MapPin className="w-4 h-4 text-leather" strokeWidth={2} />
                 </div>
-                <div className="flex-1">
-                    <label className="block text-[10px] font-bold text-neutral-charcoal/50 uppercase tracking-wider mb-0.5">
+                <div className="flex-1 min-w-0">
+                    <label className="block text-[11px] sm:text-[10px] font-bold text-neutral-charcoal/50 uppercase tracking-wider mb-0.5">
                         Localisation
                     </label>
                     <input
@@ -132,12 +132,13 @@ export function SearchBar() {
             <button
                 onClick={handleSearch}
                 className="
-                    m-2 p-4
+                    m-2 p-4 sm:p-4
                     bg-gradient-to-br from-primary via-primary to-primary-soft
                     text-white rounded-full
                     transition-all duration-300
                     hover:scale-110 active:scale-95
                     shadow-[0_4px_14px_rgba(31,61,43,0.4)] hover:shadow-[0_8px_24px_rgba(31,61,43,0.5)]
+                    self-end sm:self-auto
                 "
                 aria-label="Rechercher"
             >

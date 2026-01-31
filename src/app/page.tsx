@@ -20,7 +20,7 @@ export default async function Home() {
         <div className="flex flex-col min-h-screen bg-neutral-offwhite">
             <Header />
 
-            <main className="flex-grow">
+            <main className="flex-grow pb-24 lg:pb-0">
                 {/* 🏠 Hero Section — With Depth & Geolocation Badge */}
                 <section className="pt-12 pb-10 lg:pt-20 lg:pb-16 px-6 bg-gradient-to-b from-white via-white to-neutral-offwhite relative overflow-hidden">
                     {/* Subtle gradient orbs for depth */}
@@ -50,7 +50,7 @@ export default async function Home() {
 
                 {/* 🐴 Categories — With Active Colors */}
                 <section className="bg-white border-y border-neutral-stone/30 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
-                    <div className="max-w-7xl mx-auto px-6">
+                    <div className="max-w-7xl mx-auto px-6 relative">
                         <div className="flex items-center gap-10 overflow-x-auto py-5 scrollbar-hide">
                             {[
                                 { name: "Ostéopathes", icon: Stethoscope, slug: "osteopathes", color: "from-primary to-primary-soft" },
@@ -73,6 +73,8 @@ export default async function Home() {
                                 </Link>
                             ))}
                         </div>
+                        {/* Fade-out indicator for scroll on mobile */}
+                        <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none md:hidden" />
                     </div>
                 </section>
 
