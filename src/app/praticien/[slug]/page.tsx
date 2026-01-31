@@ -15,6 +15,7 @@ import { notFound } from "next/navigation";
 import { Metadata } from 'next';
 import Link from "next/link";
 import { OsteopathTemplate } from "@/components/templates/OsteopathTemplate";
+import { DentistTemplate } from "@/components/templates/DentistTemplate";
 
 function normalizeSpecialty(specialty: string) {
     if (specialty === "Ostéopathe animalier") return "Ostéopathe équin";
@@ -64,6 +65,10 @@ export default async function PractitionerProfile({ params }: { params: Promise<
 
     if (displaySpecialty.toLowerCase().includes("ostéopathe")) {
         return <OsteopathTemplate practitioner={practitioner} />;
+    }
+
+    if (displaySpecialty.toLowerCase().includes("dentiste") || displaySpecialty.toLowerCase().includes("dentisterie")) {
+        return <DentistTemplate practitioner={practitioner} />;
     }
 
     return (
