@@ -143,41 +143,37 @@ export function OsteopathTemplate({ practitioner }: OsteopathTemplateProps) {
                                 </h2>
                                 <div className="prose prose-neutral max-w-none text-lg text-neutral-charcoal/80 leading-relaxed">
                                     <p>
-                                        <strong className="text-primary font-semibold">{practitioner.name}</strong> est un professionnel exerçant l'ostéopathie animale,
-                                        {practitioner.city ? (
-                                            <>basé à <span className="font-medium text-neutral-800">{practitioner.city}</span></>
-                                        ) : (
-                                            <>intervenant en secteur <span className="font-medium text-neutral-800">{displayRegion}</span></>
-                                        )}.
+                                        <strong className="text-primary font-semibold">{practitioner.name} – Ostéopathe pour animaux</strong> est un professionnel exerçant l’ostéopathie animale, intervenant auprès des équidés (chevaux de sport, de loisir ou d’élevage).
                                     </p>
                                     <p>
-                                        Spécialisé dans le suivi des équidés (chevaux de sport, loisir, élevage), ce praticien intervient pour
-                                        accompagner l'animal et contribuer à son confort fonctionnel. L'approche ostéopathique vise à
-                                        optimiser la mobilité et soutenir l'équilibre corporel.
+                                        L’ostéopathie animale repose sur une approche manuelle globale visant à évaluer et améliorer la mobilité fonctionnelle du corps de l’animal. Elle s’inscrit dans une démarche de confort et d’accompagnement, en complément des autres professionnels du monde équin lorsque la situation le nécessite.
                                     </p>
-                                    {practitioner.region && practitioner.region !== "unknown" && (
+                                    {practitioner.region && practitioner.region !== "unknown" ? (
                                         <p>
-                                            Sa zone d'intervention principale couvre la région <span className="font-medium text-neutral-800">{practitioner.region}</span> et ses alentours.
+                                            Sa zone d’intervention principale couvre la région <span className="font-medium text-neutral-800">{practitioner.region}</span>, avec des déplacements possibles selon les secteurs et l’organisation des tournées.
+                                        </p>
+                                    ) : (
+                                        <p>
+                                            Sa zone d’intervention varie selon les demandes. Veuillez contacter le praticien pour plus de détails.
                                         </p>
                                     )}
                                 </div>
                             </section>
 
-                            {/* 3. Bloc "Quand faire appel ?" (SEO Generic) */}
+                            {/* 3. Bloc "Quand consulter ?" */}
                             <section className="bg-white rounded-[24px] p-8 border border-neutral-100 space-y-6 shadow-sm reveal [animation-delay:300ms]">
                                 <h2 className="text-xl font-bold text-primary">Quand consulter un ostéopathe équin ?</h2>
                                 <p className="text-neutral-charcoal/70 leading-relaxed">
-                                    L'ostéopathie est recommandée en préventif (check-up annuel) ou en curatif.
-                                    Voici les signes fréquents nécessitant une consultation :
+                                    L’ostéopathie équine peut être envisagée à titre préventif ou ponctuel, notamment dans les situations suivantes :
                                 </p>
                                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {[
-                                        "Baisse de performance inexpliquée",
-                                        "Raideur ou boiterie légère",
-                                        "Défense au sanglage ou au montoir",
-                                        "Changement de comportement soudain",
-                                        "Après un traumatisme (chute, glissade)",
-                                        "Suivi de croissance du poulain"
+                                        "baisse de confort ou de performance inexpliquée",
+                                        "raideurs, asymétries ou gêne locomotrice légère",
+                                        "défenses au sanglage, au montoir ou au travail",
+                                        "changement de comportement inhabituel",
+                                        "suivi après un effort important ou un événement traumatique",
+                                        "accompagnement de la croissance chez le poulain"
                                     ].map((item, i) => (
                                         <li key={i} className="flex items-start gap-3">
                                             <CheckCircle2 className="w-5 h-5 text-emerald-500 mt-0.5 shrink-0" />
@@ -185,37 +181,40 @@ export function OsteopathTemplate({ practitioner }: OsteopathTemplateProps) {
                                         </li>
                                     ))}
                                 </ul>
+                                <p className="text-sm text-neutral-500 italic border-t border-neutral-100 pt-4 mt-2">
+                                    L’ostéopathie ne se substitue pas à un diagnostic vétérinaire et n’intervient pas en cas d’urgence médicale.
+                                </p>
                             </section>
 
-                            {/* 4. Bloc Déroulement (SEO Generic) */}
+                            {/* 4. Bloc Déroulement */}
                             <section className="space-y-6 reveal [animation-delay:400ms]">
                                 <h2 className="text-2xl font-bold text-primary flex items-center gap-3">
                                     <Clock className="w-6 h-6 text-primary/40" />
-                                    Déroulement d'une séance type
+                                    Déroulement d’une séance type
                                 </h2>
                                 <div className="space-y-6 relative border-l-2 border-neutral-200 ml-3 pl-8 py-2">
                                     <div className="relative">
                                         <div className="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-white border-4 border-primary shadow-sm" />
-                                        <h3 className="font-bold text-lg text-neutral-800 mb-2">Anamnèse & Observation</h3>
+                                        <h3 className="font-bold text-lg text-neutral-800 mb-2">Anamnèse & observation</h3>
                                         <p className="text-neutral-600">
-                                            Échange sur le contexte de vie du cheval, ses antécédents et le motif de la visite.
-                                            Observation statique et dynamique pour apprécier la locomotion globale.
+                                            Échange avec le propriétaire ou le cavalier afin de comprendre l’historique de l’animal, son activité et le motif de consultation.
+                                            Observation statique et dynamique (au pas, au trot) afin d’identifier d’éventuelles restrictions de mobilité.
                                         </p>
                                     </div>
                                     <div className="relative">
                                         <div className="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-white border-4 border-primary/60 shadow-sm" />
-                                        <h3 className="font-bold text-lg text-neutral-800 mb-2">Tests & Mobilisations</h3>
+                                        <h3 className="font-bold text-lg text-neutral-800 mb-2">Évaluation & techniques manuelles</h3>
                                         <p className="text-neutral-600">
-                                            Palpation minutieuse de l'ensemble du corps. Le praticien utilise des mobilisations manuelles adaptées
-                                            pour restaurer la liberté de mouvement.
+                                            Palpation de l’ensemble du corps et réalisation de tests de mobilité.
+                                            L’ostéopathe utilise des techniques manuelles adaptées (structurelles, tissulaires, viscérales), choisies en fonction de l’animal et de la situation.
                                         </p>
                                     </div>
                                     <div className="relative">
                                         <div className="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-white border-4 border-primary/30 shadow-sm" />
-                                        <h3 className="font-bold text-lg text-neutral-800 mb-2">Conseils & Repos</h3>
+                                        <h3 className="font-bold text-lg text-neutral-800 mb-2">Conseils & suivi</h3>
                                         <p className="text-neutral-600">
-                                            Un repos de 48h à quelques jours est généralement préconisé après la séance.
-                                            Le praticien partage des conseils de rééducation ou d'adaptation du travail.
+                                            À l’issue de la séance, des recommandations peuvent être données concernant le repos, la reprise de l’activité ou l’adaptation du travail.
+                                            Un temps de récupération est généralement conseillé afin de permettre à l’animal de s’adapter aux ajustements réalisés.
                                         </p>
                                     </div>
                                 </div>
@@ -223,23 +222,22 @@ export function OsteopathTemplate({ practitioner }: OsteopathTemplateProps) {
 
                             {/* 5. Zone d'intervention */}
                             <section className="bg-neutral-900 text-white rounded-[24px] p-8 space-y-6 reveal [animation-delay:500ms]">
-                                <h2 className="text-xl font-bold text-white">Zone d'intervention</h2>
+                                <h2 className="text-xl font-bold text-white">Zone d’intervention</h2>
                                 <p className="text-neutral-300 leading-relaxed">
-                                    <strong className="text-white">{practitioner.name}</strong> se déplace principalement pour les consultations.
+                                    <strong className="text-white">{practitioner.name} – Ostéopathe pour animaux</strong> intervient principalement pour des consultations dans la région {displayRegion}.
                                 </p>
                                 {practitioner.region && practitioner.region !== "unknown" ? (
                                     <div className="inline-flex items-center gap-3 px-4 py-3 bg-white/10 rounded-xl border border-white/10 backdrop-blur-sm">
                                         <MapPin className="w-5 h-5 text-emerald-400" />
-                                        <span className="font-medium text-emerald-50">Secteur : {practitioner.region}</span>
+                                        <span className="font-medium text-emerald-50">Secteur : {displayRegion}</span>
                                     </div>
-                                ) : (
-                                    <p className="text-sm text-neutral-400 italic">
-                                        Veuillez contacter le praticien pour confirmer s'il se déplace dans votre secteur.
-                                    </p>
-                                )}
+                                ) : null}
+                                <p className="text-sm text-neutral-400 italic">
+                                    Les modalités de déplacement peuvent varier selon la localisation et les regroupements de rendez-vous.
+                                </p>
                             </section>
 
-                            {/* 7. FAQ (Generic) */}
+                            {/* 7. FAQ */}
                             <section className="space-y-8 reveal [animation-delay:600ms]">
                                 <h2 className="text-2xl font-bold text-primary flex items-center gap-3">
                                     <HelpCircle className="w-6 h-6 text-primary/40" />
@@ -247,16 +245,16 @@ export function OsteopathTemplate({ practitioner }: OsteopathTemplateProps) {
                                 </h2>
                                 <div className="grid gap-4">
                                     <div className="bg-white p-6 rounded-2xl border border-neutral-100 shadow-sm">
-                                        <h3 className="font-bold text-neutral-800 mb-2">Quelle est la durée moyenne d'une consultation ?</h3>
-                                        <p className="text-neutral-600">Une séance d'ostéopathie équine dure généralement entre 45 minutes et 1 heure, selon la complexité du cas et la coopération de l'animal.</p>
+                                        <h3 className="font-bold text-neutral-800 mb-2">Quelle est la durée moyenne d’une consultation ?</h3>
+                                        <p className="text-neutral-600">Une séance d’ostéopathie équine dure en général entre 45 minutes et 1 heure, selon le contexte et la coopération de l’animal.</p>
                                     </div>
                                     <div className="bg-white p-6 rounded-2xl border border-neutral-100 shadow-sm">
                                         <h3 className="font-bold text-neutral-800 mb-2">Faut-il une ordonnance vétérinaire ?</h3>
-                                        <p className="text-neutral-600">Non, l'ostéopathe peut être consulté en première intention. Toutefois, en cas de pathologie aigüe ou d'urgence, l'avis du vétérinaire traitant reste prioritaire.</p>
+                                        <p className="text-neutral-600">Non. L’ostéopathe animalier peut être consulté sans ordonnance. <br /> En revanche, en cas de pathologie aiguë ou de doute médical, l’avis du vétérinaire reste prioritaire.</p>
                                     </div>
                                     <div className="bg-white p-6 rounded-2xl border border-neutral-100 shadow-sm">
                                         <h3 className="font-bold text-neutral-800 mb-2">Combien coûte une séance ?</h3>
-                                        <p className="text-neutral-600">Les tarifs sont variables selon le praticien et les frais de déplacement. Il est recommandé de demander des précisions lors de la prise de rendez-vous.</p>
+                                        <p className="text-neutral-600">Les tarifs peuvent varier selon le praticien et les frais de déplacement. Il est recommandé de se renseigner directement lors de la prise de contact.</p>
                                     </div>
                                 </div>
                             </section>
@@ -264,29 +262,36 @@ export function OsteopathTemplate({ practitioner }: OsteopathTemplateProps) {
 
                         {/* Sidebar Column */}
                         <div className="space-y-8">
-                            {/* 6. Pourquoi ce pro (Methodology) */}
+                            {/* 6. Pourquoi ce pro (Transparence) */}
                             <div className="bg-blue-50/50 p-6 rounded-[24px] border border-blue-100 space-y-4">
                                 <h3 className="font-bold text-blue-900 text-sm uppercase tracking-wide">Transparence Equivio</h3>
                                 <p className="text-sm text-blue-800/80 leading-relaxed">
-                                    Cette fiche pratique a été générée à partir de données publiques et professionnelles vérifiées.
-                                    Equivio ne classe pas les praticiens, ne vend pas de publicité et n'accepte pas de paiement pour modifier le référencement naturel.
+                                    Cette fiche a été générée à partir de données publiques et professionnelles disponibles.
+                                    Equivio ne classe pas les praticiens, ne vend pas de publicité et n’accepte aucun paiement pour modifier le référencement naturel.
                                 </p>
                                 <p className="text-sm text-blue-800/80 leading-relaxed">
-                                    Notre mission est de vous fournir une information brute, neutre et fiable.
+                                    Notre mission est de fournir une information neutre, structurée et fiable aux propriétaires de chevaux.
                                 </p>
                             </div>
 
                             {/* 8. CTA Praticien */}
                             <div className="bg-white p-6 rounded-[24px] border border-neutral-100 text-center space-y-4 shadow-sm">
-                                <p className="font-bold text-neutral-800">C'est vous, {practitioner.name} ?</p>
-                                <p className="text-sm text-neutral-500">
-                                    Prenez le contrôle de votre fiche gratuitement. Ajoutez une photo, vos diplômes et vos tarifs.
-                                </p>
-                                <Link href="/revendiquer" className="block w-full">
+                                <p className="font-bold text-neutral-800">Vous êtes ce praticien ?</p>
+                                <div className="text-sm text-neutral-500 text-left space-y-2">
+                                    <p>Si vous êtes <strong>{practitioner.name} – Ostéopathe pour animaux</strong>, vous pouvez :</p>
+                                    <ul className="list-disc pl-5 space-y-1">
+                                        <li>compléter ou corriger certaines informations</li>
+                                        <li>ajouter une photo, vos diplômes ou vos modalités d’intervention</li>
+                                    </ul>
+                                </div>
+                                <Link href="/revendiquer" className="block w-full pt-2">
                                     <Button variant="outline" className="w-full text-primary hover:bg-primary/5 hover:text-primary font-medium border-transparent">
                                         Revendiquer ce profil
                                     </Button>
                                 </Link>
+                                <p className="text-xs text-neutral-400 mt-4 leading-normal">
+                                    👉 La revendication de fiche est gratuite et vise uniquement à garantir une information fidèle et à jour.
+                                </p>
                             </div>
                         </div>
                     </div>
