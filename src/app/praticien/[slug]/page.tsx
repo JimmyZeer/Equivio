@@ -14,6 +14,7 @@ import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
 import { Metadata } from 'next';
 import Link from "next/link";
+import { OsteopathTemplate } from "@/components/templates/OsteopathTemplate";
 
 function normalizeSpecialty(specialty: string) {
     if (specialty === "Ostéopathe animalier") return "Ostéopathe équin";
@@ -60,6 +61,10 @@ export default async function PractitionerProfile({ params }: { params: Promise<
 
     const displaySpecialty = normalizeSpecialty(practitioner.specialty);
     const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${practitioner.address_full || practitioner.city}`)}`;
+
+    if (displaySpecialty.toLowerCase().includes("ostéopathe")) {
+        return <OsteopathTemplate practitioner={practitioner} />;
+    }
 
     return (
         <div className="flex flex-col min-h-screen font-sans">
