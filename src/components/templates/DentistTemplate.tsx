@@ -143,7 +143,7 @@ export function DentistTemplate({ practitioner }: DentistTemplateProps) {
                                 </h2>
                                 <div className="prose prose-neutral max-w-none text-lg text-neutral-charcoal/80 leading-relaxed">
                                     <p>
-                                        <strong className="text-primary font-semibold">{practitioner.name} – Dentiste équin</strong> est un professionnel spécialisé dans l'entretien de la table dentaire et le confort masticatoire du cheval.
+                                        <strong className="text-primary font-semibold">Ce praticien</strong> est un professionnel spécialisé dans l'entretien de la table dentaire et le confort masticatoire du cheval.
                                     </p>
                                     <p>
                                         Le dentiste équin joue un rôle clé dans la santé générale de l’animal. Son intervention vise à prévenir l’apparition de surdents, d’inconforts au mors ou de troubles digestifs liés à une mauvaise mastication. Il accompagne aussi bien les chevaux de loisir que de sport.
@@ -197,7 +197,7 @@ export function DentistTemplate({ practitioner }: DentistTemplateProps) {
                                         <div className="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-white border-4 border-primary shadow-sm" />
                                         <h3 className="font-bold text-lg text-neutral-800 mb-2">Examen de la cavité buccale</h3>
                                         <p className="text-neutral-600">
-                                            Après un échange sur les antécédents du cheval, le praticien examine la bouche (souvent à l'aide d'un pas-d'âne) pour identifier les surdents, pointes d'émail ou anomalies.
+                                            Après un échange sur les antécédents du cheval, le praticien examine la bouche (à l’aide d’un matériel adapté) pour identifier les surdents, pointes d'émail ou anomalies.
                                         </p>
                                     </div>
                                     <div className="relative">
@@ -230,7 +230,7 @@ export function DentistTemplate({ practitioner }: DentistTemplateProps) {
                                     </div>
                                 ) : null}
                                 <p className="text-sm text-neutral-400 italic">
-                                    Les modalités de déplacement peuvent varier selon la localisation et les regroupements de rendez-vous.
+                                    Les modalités de déplacement peuvent varier selon la localisation, la fréquence des tournées et les regroupements de rendez-vous.
                                 </p>
                             </section>
 
