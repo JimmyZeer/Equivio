@@ -144,12 +144,16 @@ export function OsteopathTemplate({ practitioner }: OsteopathTemplateProps) {
                                 <div className="prose prose-neutral max-w-none text-lg text-neutral-charcoal/80 leading-relaxed">
                                     <p>
                                         <strong className="text-primary font-semibold">{practitioner.name}</strong> est un professionnel exerçant l'ostéopathie animale,
-                                        basé à <span className="font-medium text-neutral-800">{displayCity}</span>.
+                                        {practitioner.city ? (
+                                            <>basé à <span className="font-medium text-neutral-800">{practitioner.city}</span></>
+                                        ) : (
+                                            <>intervenant en secteur <span className="font-medium text-neutral-800">{displayRegion}</span></>
+                                        )}.
                                     </p>
                                     <p>
                                         Spécialisé dans le suivi des équidés (chevaux de sport, loisir, élevage), ce praticien intervient pour
-                                        prévenir et traiter les troubles fonctionnels du corps de l'animal. L'approche ostéopathique vise à
-                                        restaurer la mobilité et l'équilibre tissulaire.
+                                        accompagner l'animal et contribuer à son confort fonctionnel. L'approche ostéopathique vise à
+                                        optimiser la mobilité et soutenir l'équilibre corporel.
                                     </p>
                                     {practitioner.region && practitioner.region !== "unknown" && (
                                         <p>
@@ -194,16 +198,16 @@ export function OsteopathTemplate({ practitioner }: OsteopathTemplateProps) {
                                         <div className="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-white border-4 border-primary shadow-sm" />
                                         <h3 className="font-bold text-lg text-neutral-800 mb-2">Anamnèse & Observation</h3>
                                         <p className="text-neutral-600">
-                                            Échange sur l'historique du cheval, ses antécédents et le motif de consultation.
-                                            Observation statique et dynamique (au pas, au trot) pour identifier les zones de tension.
+                                            Échange sur le contexte de vie du cheval, ses antécédents et le motif de la visite.
+                                            Observation statique et dynamique pour apprécier la locomotion globale.
                                         </p>
                                     </div>
                                     <div className="relative">
                                         <div className="absolute -left-[41px] top-0 w-6 h-6 rounded-full bg-white border-4 border-primary/60 shadow-sm" />
-                                        <h3 className="font-bold text-lg text-neutral-800 mb-2">Tests & Manipulations</h3>
+                                        <h3 className="font-bold text-lg text-neutral-800 mb-2">Tests & Mobilisations</h3>
                                         <p className="text-neutral-600">
-                                            Palpation précise de l'ensemble du corps. Le praticien utilise des techniques manuelles douces
-                                            (structurelles, tissulaires, viscérales) pour libérer les blocages.
+                                            Palpation minutieuse de l'ensemble du corps. Le praticien utilise des mobilisations manuelles adaptées
+                                            pour restaurer la liberté de mouvement.
                                         </p>
                                     </div>
                                     <div className="relative">
