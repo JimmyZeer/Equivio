@@ -31,7 +31,7 @@ export default function AboutPage() {
                                 </h2>
                                 <p>
                                     Trouver un <strong className="font-semibold text-primary">praticien équin compétent</strong>, disponible et fiable reste aujourd’hui étonnamment complexe.
-                                    Entre le bouche-à-oreille limité, les informations éparpillées et les profils incomplets sur les moteurs de recherche, de nombreux propriétaires de chevaux perdent du temps… et parfois prennent de mauvaises décisions.
+                                    Entre le bouche-à-oreille limité, les informations éparpillées et les profils incomplets sur les moteurs de recherche, de nombreux propriétaires de chevaux perdent du temps — et parfois prennent de mauvaises décisions pour la santé ou le bien-être de leur animal.
                                 </p>
                                 <p>
                                     Equivio est né de ce constat simple : <br />
@@ -54,15 +54,15 @@ export default function AboutPage() {
                                 Equivio n’est ni une plateforme publicitaire, ni un comparateur sponsorisé.
                             </p>
                             <p>
-                                Notre objectif est simple :
+                                Notre objectif est volontairement simple :
                             </p>
                             <ul className="list-disc pl-6 space-y-2 marker:text-primary">
                                 <li>centraliser les praticiens équins</li>
-                                <li>structurer l’information</li>
-                                <li>rendre la recherche plus fiable et plus transparente</li>
+                                <li>structurer une information aujourd’hui dispersée</li>
+                                <li>rendre la recherche plus fiable, plus lisible et plus transparente</li>
                             </ul>
                             <p className="pt-2">
-                                Chaque fiche est conçue pour répondre à une question précise : <br />
+                                Chaque fiche est conçue pour répondre à une question essentielle : <br />
                                 <em className="text-primary font-medium">“Puis-je faire confiance à ce professionnel pour mon cheval ?”</em>
                             </p>
                         </section>
@@ -80,13 +80,13 @@ export default function AboutPage() {
                             <ul className="list-disc pl-6 space-y-2 marker:text-primary">
                                 <li>identifiés à partir de sources publiques, professionnelles ou spécialisées</li>
                                 <li>classés par spécialité (dentisterie équine, ostéopathie, maréchalerie, vétérinaire, etc.)</li>
-                                <li>localisés par zone d’intervention réelle lorsque l’information est disponible</li>
+                                <li>localisés selon leur zone d’intervention réelle lorsque l’information est disponible</li>
                             </ul>
                             <p>
                                 Lorsque certaines données ne peuvent pas être vérifiées avec certitude, elles sont volontairement non affichées.
                             </p>
                             <p className="font-medium text-primary-soft">
-                                👉 Aucune information n’est inventée ou extrapolée.
+                                👉 Aucune information n’est inventée, extrapolée ou surinterprétée.
                             </p>
                         </section>
 
@@ -98,13 +98,13 @@ export default function AboutPage() {
                                 Pour préserver la crédibilité de la plateforme, Equivio fait le choix de refuser :
                             </p>
                             <ul className="list-disc pl-6 space-y-2 marker:text-primary/60">
-                                <li>les fiches sur-optimisées sans fond réel</li>
+                                <li>les fiches sur-optimisées sans fond professionnel réel</li>
                                 <li>les faux avis ou notations artificielles</li>
-                                <li>les mises en avant payantes non signalées</li>
+                                <li>les mises en avant payantes non clairement signalées</li>
                                 <li>les données approximatives ou trompeuses</li>
                             </ul>
                             <p className="italic text-neutral-charcoal/70 border-l-4 border-neutral-stone/30 pl-4 py-1">
-                                La confiance se construit dans le temps, pas à coup de badges marketing.
+                                La confiance se construit dans la durée, pas à coup de badges marketing.
                             </p>
                         </section>
 
@@ -119,16 +119,16 @@ export default function AboutPage() {
                                 Equivio est un projet vivant.
                             </p>
                             <p>
-                                La base de praticiens s’enrichit progressivement, les fiches sont améliorées au fil du temps, et de nouvelles fonctionnalités seront ajoutées uniquement lorsqu’elles apportent une vraie valeur :
+                                La base de praticiens s’enrichit progressivement, les fiches sont améliorées au fil du temps, et de nouvelles fonctionnalités seront ajoutées uniquement lorsqu’elles apportent une valeur concrète :
                             </p>
                             <ul className="list-disc pl-6 space-y-2 marker:text-primary">
-                                <li>meilleure lisibilité</li>
+                                <li>meilleure lisibilité de l’information</li>
                                 <li>meilleure mise en relation</li>
                                 <li>meilleure compréhension des métiers équins</li>
                             </ul>
                             <div className="bg-primary/5 p-6 rounded-2xl mt-8">
                                 <p className="font-medium text-primary">
-                                    Notre priorité reste la même : <br />
+                                    Notre priorité reste inchangée : <br />
                                     <span className="font-normal text-neutral-charcoal/90">mettre en relation des propriétaires de chevaux avec des professionnels sérieux, sur des bases saines et transparentes.</span>
                                 </p>
                             </div>
@@ -150,7 +150,7 @@ export default function AboutPage() {
                                 Une démarche dédiée sera prochainement disponible.
                                 <br />
                                 <span className="text-sm text-neutral-charcoal/60 mt-2 block">
-                                    L’objectif n’est pas de vendre une vitrine, mais de garantir une information juste.
+                                    L’objectif n’est pas de vendre une vitrine, mais de garantir une information juste et utile.
                                 </span>
                             </p>
                         </section>
