@@ -38,7 +38,8 @@ export async function submitListingRequest(formData: FormData) {
     const result = schema.safeParse(rawData);
 
     if (!result.success) {
-        return { success: false, error: result.error.errors[0].message };
+        // ZodError has an errors array
+        return { success: false, error: result.error.issues[0]?.message || "Données invalides" };
     }
 
     try {
