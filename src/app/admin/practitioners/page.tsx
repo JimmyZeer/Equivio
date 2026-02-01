@@ -1,6 +1,7 @@
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { Search, MapPin, Filter, AlertTriangle } from "lucide-react";
 import Link from 'next/link';
+import { PractitionersTable } from "./PractitionersTable";
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
@@ -90,77 +91,8 @@ export default async function AdminPractitionersPage({ searchParams }: { searchP
                 </Link>
             </div>
 
-            {/* Table */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div className="overflow-x-auto">
-                    <table className="w-full text-left text-sm text-gray-600">
-                        <thead className="bg-gray-50 text-gray-900 font-bold uppercase text-xs tracking-wider border-b border-gray-200">
-                            <tr>
-                                <th className="p-4">Nom / Slug</th>
-                                <th className="p-4">Spécialité</th>
-                                <th className="p-4">Localisation</th>
-                                <th className="p-4">Statut</th>
-                                <th className="p-4 text-right">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100">
-                            {practitioners?.map((p) => (
-                                <tr key={p.id} className="hover:bg-gray-50 transition-colors">
-                                    <td className="p-4">
-                                        <div className="font-bold text-gray-900">{p.name}</div>
-                                        <div className="text-xs text-gray-400 font-mono truncate max-w-[200px]">{p.slug_seo}</div>
-                                    </td>
-                                    <td className="p-4">
-                                        <span className="inline-block px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-semibold">
-                                            {p.job_title || "N/A"}
-                                        </span>
-                                    </td>
-                                    <td className="p-4">
-                                        <div className="flex items-center gap-1.5">
-                                            <MapPin className={`w-4 h-4 ${!p.lat ? 'text-orange-400' : 'text-gray-400'}`} />
-                                            <span>{p.city || <span className="text-red-400 italic">Ville manquante</span>}</span>
-                                        </div>
-                                        <div className="text-xs text-gray-400 pl-5.5">{p.postcode}</div>
-                                    </td>
-                                    <td className="p-4">
-                                        {p.status === 'active' ? (
-                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold">
-                                                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                                                Actif
-                                            </span>
-                                        ) : (
-                                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-gray-100 text-gray-600 text-xs font-bold">
-                                                Inactif
-                                            </span>
-                                        )}
-                                        {p.is_claimed && (
-                                            <span className="ml-2 inline-flex items-center gap-1 px-2 py-1 rounded-full bg-blue-50 text-blue-600 text-[10px] font-bold border border-blue-100">
-                                                Revendiqué
-                                            </span>
-                                        )}
-                                    </td>
-                                    <td className="p-4 text-right">
-                                        <a
-                                            href={`/praticien/${p.slug_seo}`}
-                                            target="_blank"
-                                            className="text-blue-600 hover:text-blue-800 font-bold text-xs"
-                                        >
-                                            Voir
-                                        </a>
-                                    </td>
-                                </tr>
-                            ))}
-                            {practitioners?.length === 0 && (
-                                <tr>
-                                    <td colSpan={5} className="p-8 text-center text-gray-400 italic">
-                                        Aucun praticien trouvé avec ces critères.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            {/* Client Component for Table & Drawer */}
+            <PractitionersTable practitioners={practitioners || []} />
         </div>
     );
 }
