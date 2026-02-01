@@ -18,6 +18,7 @@ export interface Practitioner {
     intervention_count?: number | null;
     region?: string | null;
     is_claimed?: boolean;
+    is_verified?: boolean;
     claimed_at?: string | null;
     claimed_contact?: any | null; // Using any for JSONB, or could define a stricter type
 }
