@@ -2,16 +2,14 @@
 
 import { useState } from 'react';
 import { Search, ChevronRight, UserPlus } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
+import { supabase } from '@/lib/supabase';
 
 export function JoinSearch() {
     const [query, setQuery] = useState('');
     const [results, setResults] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const [hasSearched, setHasSearched] = useState(false);
-    const supabase = createClientComponentClient();
 
     const handleSearch = async (term: string) => {
         setQuery(term);

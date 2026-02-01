@@ -1,7 +1,6 @@
 'use server';
 
-import { createServerActionClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
+import { supabase } from '@/lib/supabase';
 import { z } from 'zod';
 
 const schema = z.object({
@@ -27,8 +26,6 @@ const schema = z.object({
 });
 
 export async function submitListingRequest(formData: FormData) {
-    const supabase = createServerActionClient({ cookies });
-
     const rawData = {
         name: formData.get('name'),
         specialty: formData.get('specialty'),

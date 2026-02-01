@@ -14,18 +14,10 @@ create table if not exists public.listing_requests (
 -- RLS Policies
 alter table public.listing_requests enable row level security;
 
--- Only admins can view/edit
-create policy "Admins can view listing_requests"
-    on public.listing_requests for select
-    to authenticated
-    using ( public.is_admin() );
+-- Only service_role can view/update (implicit bypass), so we don't need specific policies for admin if they use the admin key.
+-- We ONLY need to allow public inserts.
 
-create policy "Admins can update listing_requests"
-    on public.listing_requests for update
-    to authenticated
-    using ( public.is_admin() );
-
--- Anyone can insert (public form)
+-- Public can insert listing_requests
 create policy "Public can insert listing_requests"
     on public.listing_requests for insert
     to anon, authenticated
