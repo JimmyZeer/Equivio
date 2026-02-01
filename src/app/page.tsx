@@ -279,7 +279,7 @@ export default async function Home() {
 
             {/* CTA Sticky Praticiens (Mobile/Tablet) */}
             <div className="lg:hidden fixed bottom-6 left-6 right-6 z-50 reveal [animation-delay:600ms]">
-                <Link href="/revendiquer">
+                <Link href="/rejoindre">
                     <Button className="w-full bg-gradient-to-r from-primary to-primary-soft text-white font-bold py-4 rounded-2xl shadow-[0_8px_24px_rgba(31,61,43,0.4)] hover:shadow-[0_12px_32px_rgba(31,61,43,0.5)] flex items-center justify-center gap-2 press-effect">
                         <Users className="w-5 h-5" />
                         Rejoindre Equivio
