@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
         // 🔍 Verify Practitioner Exists (UUID)
         const { data: practitioner, error: pError } = await supabase
             .from('practitioners')
-            .select('id, slug_seo')
+            .select('id, slug_seo, name')
             .eq('id', practitionerId)
             .single();
 
@@ -37,6 +37,12 @@ export async function POST(request: NextRequest) {
                 { status: 404 }
             );
         }
+
+        // ... (rest of code)
+
+        // 5. Send Admin Notification
+        const pName = practitioner.name || "Praticien Inconnu";
+        sendAdminNotificationEmail(pName, claimData.claimer_email, practitionerId).catch(console.error);
 
         // 🛡️ 2. Rate Limiting (Database Backed)
         // Check submissions from IP in last 15 mins
@@ -105,7 +111,7 @@ export async function POST(request: NextRequest) {
         await sendClaimConfirmationEmail(claimData.claimer_email, claimData.claimer_name || "Praticien");
 
         // 5. Send Admin Notification
-        const pName = claimData.claimer_name || "Inconnu";
+        // pName is already fetched above
         sendAdminNotificationEmail(pName, claimData.claimer_email, practitionerId).catch(console.error);
 
         return NextResponse.json({
