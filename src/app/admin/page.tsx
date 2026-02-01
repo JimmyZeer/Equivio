@@ -138,7 +138,7 @@ export default async function AdminDashboardPage() {
                             <h3 className="font-bold text-gray-800">Profils Incomplets</h3>
                         </div>
                         <p className="text-3xl font-black text-gray-900 mb-2">--</p>
-                        <p className="text-sm text-gray-500 mb-4">Critère: >2 infos manquantes</p>
+                        <p className="text-sm text-gray-500 mb-4">Critère: &gt;2 infos manquantes</p>
                         <Link href="/admin/practitioners?warning=incomplete" className="text-sm font-bold text-blue-600 hover:underline flex items-center gap-1">
                             Explorer <span>→</span>
                         </Link>
