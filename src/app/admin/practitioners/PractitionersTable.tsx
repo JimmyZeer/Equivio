@@ -119,7 +119,7 @@ export function PractitionersTable({ practitioners }: PractitionersTableProps) {
                                         </td>
                                         <td className="p-4">
                                             <span className="inline-block px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-semibold">
-                                                {p.job_title || "N/A"}
+                                                {p.specialty || "N/A"}
                                             </span>
                                         </td>
                                         <td className="p-4">

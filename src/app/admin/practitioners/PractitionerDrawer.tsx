@@ -48,7 +48,7 @@ export function PractitionerDrawer({ isOpen, onClose, practitioner }: Practition
 
             const result = await updatePractitioner(practitioner.id, {
                 name: formData.name,
-                job_title: formData.job_title,
+                specialty: formData.specialty,
                 city: formData.city,
                 address_full: formData.address_full,
                 postcode: formData.postcode,
@@ -113,8 +113,8 @@ export function PractitionerDrawer({ isOpen, onClose, practitioner }: Practition
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Spécialité</label>
                                 <select
-                                    value={formData.job_title || ''}
-                                    onChange={(e) => handleChange('job_title', e.target.value)}
+                                    value={formData.specialty || ''}
+                                    onChange={(e) => handleChange('specialty', e.target.value)}
                                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none"
                                 >
                                     <option value="">Sélectionner...</option>
