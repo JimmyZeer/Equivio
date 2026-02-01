@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { LayoutDashboard, FileText, Users, Shield } from 'lucide-react';
+import { LayoutDashboard, FileText, Users, Shield, FileUp } from 'lucide-react';
 
 export default function AdminLayout({
     children,
@@ -33,9 +33,14 @@ export default function AdminLayout({
                         <span>Logs System</span>
                     </Link>
 
-                    <Link href="/admin/practitioners" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-slate-800 transition-colors text-slate-300 hover:text-white">
+                    <Link href="/admin/practitioners" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-emerald-700 rounded-lg transition-colors">
                         <Users className="w-5 h-5" />
-                        <span>Annuaire Praticiens</span>
+                        Praticiens
+                    </Link>
+
+                    <Link href="/admin/import" className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-emerald-700 rounded-lg transition-colors">
+                        <FileUp className="w-5 h-5" />
+                        Import CSV
                     </Link>
 
                     <div className="pt-8 mt-8 border-t border-slate-800">
