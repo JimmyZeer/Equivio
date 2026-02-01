@@ -87,6 +87,8 @@ export function ClaimForm() {
                 body: JSON.stringify({
                     practitionerId: targetId,
                     slug: slug,
+                    // Honeypot field (should be empty)
+                    _gotcha: (document.getElementById('job_title_field') as HTMLInputElement)?.value || "",
                     claimData: {
                         claimer_name: formData.name,
                         claimer_email: formData.email,
@@ -101,6 +103,9 @@ export function ClaimForm() {
             const result = await response.json();
 
             if (!response.ok) {
+                if (response.status === 429) {
+                    throw new Error(result.error || "Trop de demandes. Réessayez plus tard.");
+                }
                 throw new Error(result.error || "Erreur inconnue");
             }
 
@@ -135,6 +140,12 @@ export function ClaimForm() {
 
     return (
         <form onSubmit={handleSubmit} className="space-y-8 relative">
+            {/* Honeypot field - hidden from users, visible to bots */}
+            <div className="hidden" aria-hidden="true">
+                <label htmlFor="job_title_field">Job Title</label>
+                <input type="text" id="job_title_field" name="job_title_field" tabIndex={-1} autoComplete="off" />
+            </div>
+
             {status === "loading" && (
                 <div className="absolute inset-0 bg-white/80 z-20 flex items-center justify-center rounded-xl">
                     <div className="flex flex-col items-center gap-3">
