@@ -42,48 +42,65 @@ export async function rejectClaim(claimId: string) {
 // Practitioner Management Actions
 
 export async function updatePractitioner(id: string, data: any) {
-    // Basic validation / cleaning
-    const updateData = { ...data };
+    try {
+        // Basic validation / cleaning
+        const updateData = { ...data };
 
-    // Normalize phone (strip spaces/symbols if needed, but keeping it flexible for now or specific regex)
-    if (updateData.phone_norm) {
-        updateData.phone_norm = updateData.phone_norm.replace(/\s/g, '');
-    }
+        // Normalize phone (strip spaces/symbols if needed)
+        if (updateData.phone_norm) {
+            updateData.phone_norm = updateData.phone_norm.replace(/\s/g, '');
+        }
 
-    // Ensure slug isn't empty if provided
-    if (updateData.slug_seo === '') {
-        delete updateData.slug_seo;
-    }
+        // Ensure slug isn't empty if provided
+        if (updateData.slug_seo === '') {
+            delete updateData.slug_seo;
+        }
 
-    const { error } = await supabaseAdmin
-        .from('practitioners')
-        .update(updateData)
-        .eq('id', id);
+        // Clean undefined values
+        Object.keys(updateData).forEach(key => updateData[key] === undefined && delete updateData[key]);
 
-    if (error) {
-        throw new Error(`Failed to update practitioner: ${error.message}`);
-    }
+        const { error } = await supabaseAdmin
+            .from('practitioners')
+            .update(updateData)
+            .eq('id', id);
 
-    revalidatePath('/admin/practitioners');
-    if (data.slug_seo) {
-        revalidatePath(`/praticien/${data.slug_seo}`);
-    } else {
-        revalidatePath('/praticien/[slug]', 'page'); // Generic revalidate
+        if (error) {
+            console.error("Update Error:", error);
+            return { success: false, error: error.message };
+        }
+
+        revalidatePath('/admin/practitioners');
+        if (data.slug_seo) {
+            revalidatePath(`/praticien/${data.slug_seo}`);
+        } else {
+            revalidatePath('/praticien/[slug]', 'page');
+        }
+
+        return { success: true };
+    } catch (err: any) {
+        console.error("Unexpected Error:", err);
+        return { success: false, error: err.message || "Une erreur inattendue est survenue" };
     }
 }
 
 export async function bulkUpdateStatus(ids: string[], status: 'active' | 'inactive') {
-    if (!ids || ids.length === 0) return;
+    if (!ids || ids.length === 0) return { success: false, error: "Aucun élément sélectionné" };
 
-    const { error } = await supabaseAdmin
-        .from('practitioners')
-        .update({ status })
-        .in('id', ids);
+    try {
+        const { error } = await supabaseAdmin
+            .from('practitioners')
+            .update({ status })
+            .in('id', ids);
 
-    if (error) {
-        throw new Error(`Failed to bulk update status: ${error.message}`);
+        if (error) {
+            console.error("Bulk Update Error:", error);
+            return { success: false, error: error.message };
+        }
+
+        revalidatePath('/admin/practitioners');
+        return { success: true };
+    } catch (err: any) {
+        console.error("Unexpected Bulk Error:", err);
+        return { success: false, error: err.message || "Erreur inattendue" };
     }
-
-    revalidatePath('/admin/practitioners');
 }
-

@@ -37,12 +37,12 @@ export function PractitionerDrawer({ isOpen, onClose, practitioner }: Practition
         setError('');
 
         try {
-            await updatePractitioner(practitioner.id, {
+            const result = await updatePractitioner(practitioner.id, {
                 name: formData.name,
                 job_title: formData.job_title,
                 city: formData.city,
                 address_full: formData.address_full,
-                postcode: formData.postcode, // Ensure this is preserved or edited
+                postcode: formData.postcode,
                 lat: formData.lat ? parseFloat(formData.lat) : null,
                 lng: formData.lng ? parseFloat(formData.lng) : null,
                 phone_norm: formData.phone_norm,
@@ -52,9 +52,14 @@ export function PractitionerDrawer({ isOpen, onClose, practitioner }: Practition
                 is_verified: formData.is_verified,
                 slug_seo: formData.slug_seo
             });
-            onClose();
+
+            if (!result.success) {
+                setError(result.error || 'Erreur lors de la sauvegarde');
+            } else {
+                onClose();
+            }
         } catch (err: any) {
-            setError(err.message || 'Erreur lors de la sauvegarde');
+            setError(err.message || 'Erreur inattendue');
         } finally {
             setIsSaving(false);
         }

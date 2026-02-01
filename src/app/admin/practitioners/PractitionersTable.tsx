@@ -34,10 +34,15 @@ export function PractitionersTable({ practitioners }: PractitionersTableProps) {
 
         setIsProcessing(true);
         try {
-            await bulkUpdateStatus(Array.from(selectedIds), status);
-            setSelectedIds(new Set()); // Clear selection
+            const result = await bulkUpdateStatus(Array.from(selectedIds), status);
+            if (!result.success) {
+                alert("Erreur: " + result.error);
+            } else {
+                setSelectedIds(new Set());
+            }
         } catch (err) {
-            alert("Erreur lors de la mise à jour");
+            console.error(err);
+            alert("Erreur inattendue lors de la mise à jour");
         } finally {
             setIsProcessing(false);
         }
