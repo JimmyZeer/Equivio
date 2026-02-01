@@ -55,30 +55,51 @@ export function PractitionersTable({ practitioners }: PractitionersTableProps) {
         setEditingPractitioner(p);
     };
 
+    const handleExport = () => {
+        const params = new URLSearchParams(window.location.search);
+        window.location.href = `/api/admin/export?${params.toString()}`;
+    };
+
     return (
-        <>
-            {/* Bulk Actions Header */}
-            {selectedIds.size > 0 && (
-                <div className="bg-slate-900 text-white p-3 rounded-lg mb-4 flex items-center justify-between animate-in slide-in-from-top duration-200">
-                    <span className="font-bold text-sm ml-2">{selectedIds.size} sélectionné(s)</span>
-                    <div className="flex gap-2">
-                        <button
-                            onClick={() => handleBulkStatus('active')}
-                            disabled={isProcessing}
-                            className="flex items-center gap-1 bg-emerald-600 hover:bg-emerald-500 px-3 py-1.5 rounded text-xs font-bold transition-colors"
-                        >
-                            <Check className="w-3 h-3" /> Activer
-                        </button>
-                        <button
-                            onClick={() => handleBulkStatus('inactive')}
-                            disabled={isProcessing}
-                            className="flex items-center gap-1 bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded text-xs font-bold transition-colors"
-                        >
-                            <Power className="w-3 h-3" /> Désactiver
-                        </button>
-                    </div>
+        <div className="space-y-4">
+            {/* Toolbar */}
+            <div className="flex items-center justify-between gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                <div className="flex items-center gap-2">
+                    {selectedIds.size > 0 && (
+                        <>
+                            <span className="text-sm font-medium text-gray-700">{selectedIds.size} sélectionné(s)</span>
+                            <div className="h-4 w-px bg-gray-300 mx-2" />
+                            <button
+                                onClick={() => handleBulkAction('active')}
+                                disabled={isProcessing}
+                                className="text-sm text-emerald-600 hover:text-emerald-700 font-medium flex items-center gap-1"
+                            >
+                                <Check className="w-4 h-4" /> Activer
+                            </button>
+                            <button
+                                onClick={() => handleBulkAction('inactive')}
+                                disabled={isProcessing}
+                                className="text-sm text-gray-500 hover:text-gray-700 font-medium flex items-center gap-1"
+                            >
+                                <Power className="w-4 h-4" /> Désactiver
+                            </button>
+                        </>
+                    )}
                 </div>
-            )}
+
+                <div className="flex items-center gap-3">
+                    <button
+                        onClick={handleExport}
+                        className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2 transition-colors"
+                    >
+                        <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        </svg>
+                        Exporter CSV
+                    </button>
+                    {/* Could add columns toggle here later */}
+                </div>
+            </div>
 
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                 <div className="overflow-x-auto">

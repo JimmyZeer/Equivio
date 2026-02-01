@@ -2,9 +2,13 @@
 
 import { supabaseAdmin } from "@/lib/supabase-admin";
 import { revalidatePath } from "next/cache";
+import { logAdminAction } from "@/lib/audit";
 
 export async function approveClaim(claimId: string, practitionerId: string, contactInfo: any) {
     // 1. Update Practitioner: set is_claimed=true, claimed_at=now, claimed_contact=info
+    // Get before data for audit
+    const { data: beforeData } = await supabaseAdmin.from('practitioners').select('*').eq('id', practitionerId).single();
+
     const { error: pError } = await supabaseAdmin
         .from('practitioners')
         .update({
@@ -15,6 +19,10 @@ export async function approveClaim(claimId: string, practitionerId: string, cont
         .eq('id', practitionerId);
 
     if (pError) throw new Error(`Failed to update practitioner: ${pError.message}`);
+
+    // Audit Log
+    await logAdminAction('claim.approve', 'practitioner', practitionerId, beforeData, { is_claimed: true, claimed_contact: contactInfo });
+    await logAdminAction('claim.approve', 'claim_request', claimId, { status: 'pending' }, { status: 'approved' });
 
     // 2. Update Request Status: approved
     const { error: rError } = await supabaseAdmin
@@ -35,6 +43,9 @@ export async function rejectClaim(claimId: string) {
         .eq('id', claimId);
 
     if (error) throw new Error(`Failed to reject request: ${error.message}`);
+
+    // Audit Log
+    await logAdminAction('claim.reject', 'claim_request', claimId, { status: 'pending' }, { status: 'rejected' });
 
     revalidatePath('/admin/claims');
 }
@@ -59,6 +70,9 @@ export async function updatePractitioner(id: string, data: any) {
         // Clean undefined values
         Object.keys(updateData).forEach(key => updateData[key] === undefined && delete updateData[key]);
 
+        // Get before data
+        const { data: beforeData } = await supabaseAdmin.from('practitioners').select('*').eq('id', id).single();
+
         const { error } = await supabaseAdmin
             .from('practitioners')
             .update(updateData)
@@ -67,6 +81,11 @@ export async function updatePractitioner(id: string, data: any) {
         if (error) {
             console.error("Update Error:", error);
             return { success: false, error: error.message };
+        }
+
+        // Audit Log
+        if (beforeData) {
+            await logAdminAction('practitioner.update', 'practitioner', id, beforeData, updateData);
         }
 
         revalidatePath('/admin/practitioners');
@@ -96,6 +115,9 @@ export async function bulkUpdateStatus(ids: string[], status: 'active' | 'inacti
             console.error("Bulk Update Error:", error);
             return { success: false, error: error.message };
         }
+
+        // Audit Log (Bulk)
+        await logAdminAction('practitioner.bulk_status', 'practitioner', 'bulk', { count: ids.length, ids }, { status });
 
         revalidatePath('/admin/practitioners');
         return { success: true };
