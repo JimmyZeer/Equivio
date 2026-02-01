@@ -1,19 +1,31 @@
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// Configure SMTP Transporter
+const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST || 'mail.equivio.fr',
+    port: parseInt(process.env.SMTP_PORT || '465'),
+    secure: process.env.SMTP_SECURE === 'true', // true for 465, false for other ports
+    auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD,
+    },
+});
 
-const SENDER_EMAIL = 'contact@equivio.fr'; // Or 'ne-pas-repondre@equivio.fr' if configured, but user asked for contact@equivio.fr
-const ADMIN_EMAIL = 'contact@equivio.fr'; // Where admin notifications go
+const SENDER_EMAIL = '"Equivio" <contact@equivio.fr>';
+const ADMIN_EMAIL = 'contact@equivio.fr';
 
+/**
+ * Sends a confirmation email to the practitioner claiming their profile.
+ */
 export async function sendClaimConfirmationEmail(toEmail: string, practitionerName: string) {
-    if (!process.env.RESEND_API_KEY) {
-        console.warn("⚠️ RESEND_API_KEY missing. Email not sent.");
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASSWORD) {
+        console.warn("⚠️ SMTP credentials missing. Email not sent.");
         return;
     }
 
     try {
-        await resend.emails.send({
-            from: `Equivio <${SENDER_EMAIL}>`,
+        await transporter.sendMail({
+            from: SENDER_EMAIL,
             to: toEmail,
             subject: 'Reçu : Votre demande de revendication sur Equivio',
             html: `
@@ -36,30 +48,43 @@ export async function sendClaimConfirmationEmail(toEmail: string, practitionerNa
                 </div>
             `
         });
-        console.log(`📧 Confirmation email sent to ${toEmail}`);
+        console.log(`📧 Confirmation email sent to ${toEmail} via SMTP`);
     } catch (error) {
         console.error("❌ Failed to send confirmation email:", error);
     }
 }
 
+/**
+ * Sends a notification email to the admin.
+ */
 export async function sendAdminNotificationEmail(practitionerName: string, claimerEmail: string, practitionerId: string) {
-    if (!process.env.RESEND_API_KEY) return;
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASSWORD) return;
 
     try {
-        await resend.emails.send({
-            from: `System Equivio <${SENDER_EMAIL}>`,
+        await transporter.sendMail({
+            from: SENDER_EMAIL,
             to: ADMIN_EMAIL,
             subject: `[ADMIN] Nouvelle revendication : ${practitionerName}`,
             html: `
-                <p>Nouvelle demande de revendication.</p>
-                <ul>
-                    <li><strong>Praticien :</strong> ${practitionerName}</li>
-                    <li><strong>Demandeur :</strong> ${claimerEmail}</li>
-                    <li><strong>ID :</strong> ${practitionerId}</li>
-                </ul>
-                <p>Vérifier dans Supabase > Practitioners.</p>
+                <div style="font-family: sans-serif;">
+                    <h3>Nouvelle demande de revendication</h3>
+                    <ul>
+                        <li><strong>Praticien :</strong> ${practitionerName}</li>
+                        <li><strong>Demandeur :</strong> ${claimerEmail}</li>
+                        <li><strong>ID Praticien :</strong> ${practitionerId}</li>
+                    </ul>
+                    <p>
+                        <a href="https://equivio.fr/admin" style="background: #000; color: #fff; padding: 10px 15px; text-decoration: none; border-radius: 5px;">
+                            Accéder au dashboard (ou vérifier Supabase)
+                        </a>
+                    </p>
+                    <p style="font-size: 12px; color: #666; margin-top: 20px;">
+                        Vérifiez la table <code>practitioner_claim_requests</code>.
+                    </p>
+                </div>
             `
         });
+        console.log(`📧 Admin notification sent via SMTP`);
     } catch (error) {
         console.error("❌ Failed to send admin notification:", error);
     }

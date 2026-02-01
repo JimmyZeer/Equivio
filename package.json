@@ -18,16 +18,17 @@
     "leaflet": "^1.9.4",
     "lucide-react": "latest",
     "next": "latest",
+    "nodemailer": "^7.0.13",
     "react": "latest",
     "react-dom": "latest",
     "react-leaflet": "^5.0.0",
     "react-leaflet-cluster": "^4.0.0",
-    "resend": "^6.9.1",
     "tailwind-merge": "latest"
   },
   "devDependencies": {
     "@opennextjs/cloudflare": "^1.16.0",
     "@types/node": "latest",
+    "@types/nodemailer": "^7.0.9",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "autoprefixer": "latest",
