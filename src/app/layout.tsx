@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { OrganizationSchema, WebsiteSchema } from "@/components/StructuredData";
 import { FavoritesProvider } from "@/lib/favorites";
+import { Suspense } from "react";
 import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
 import CookieConsent from "@/components/analytics/CookieConsent";
 
@@ -55,7 +56,9 @@ export default function RootLayout({
         <html lang="fr">
             <body className={`${inter.className} bg-neutral-offwhite text-neutral-charcoal antialiased`}>
                 <FavoritesProvider>
-                    <GoogleAnalytics />
+                    <Suspense fallback={null}>
+                        <GoogleAnalytics />
+                    </Suspense>
                     <CookieConsent />
                     {/* Global Structured Data */}
                     <OrganizationSchema />
