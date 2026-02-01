@@ -125,9 +125,8 @@ export function PractitionersTable({ practitioners }: PractitionersTableProps) {
                                         <td className="p-4">
                                             <div className="flex items-center gap-1.5">
                                                 <MapPin className={`w-4 h-4 ${!p.lat ? 'text-orange-400' : 'text-gray-400'}`} />
-                                                <span className="truncate max-w-[150px]">{p.city || <span className="text-red-400 italic">Ville manquante</span>}</span>
+                                                <span>{p.city || <span className="text-red-400 italic">Ville manquante</span>}</span>
                                             </div>
-                                            <div className="text-xs text-gray-400 pl-5.5">{p.postcode}</div>
                                         </td>
                                         <td className="p-4">
                                             {p.status === 'active' ? (

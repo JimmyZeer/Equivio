@@ -51,7 +51,6 @@ export function PractitionerDrawer({ isOpen, onClose, practitioner }: Practition
                 specialty: formData.specialty,
                 city: formData.city,
                 address_full: formData.address_full,
-                postcode: formData.postcode,
                 lat: parseNum(formData.lat),
                 lng: parseNum(formData.lng),
                 phone_norm: formData.phone_norm,
@@ -153,22 +152,13 @@ export function PractitionerDrawer({ isOpen, onClose, practitioner }: Practition
                     <div className="space-y-4">
                         <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest border-b pb-1">Localisation</h3>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 gap-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Ville</label>
                                 <input
                                     type="text"
                                     value={formData.city || ''}
                                     onChange={(e) => handleChange('city', e.target.value)}
-                                    className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Code Postal</label>
-                                <input
-                                    type="text"
-                                    value={formData.postcode || ''}
-                                    onChange={(e) => handleChange('postcode', e.target.value)}
                                     className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm"
                                 />
                             </div>
