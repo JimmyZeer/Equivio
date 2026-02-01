@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { MapPin, Edit, Eye, MoreHorizontal, Check, Trash2, Power } from 'lucide-react';
 import { PractitionerDrawer } from './PractitionerDrawer';
 import { bulkUpdateStatus } from '@/app/admin/actions';
@@ -10,6 +11,7 @@ interface PractitionersTableProps {
 }
 
 export function PractitionersTable({ practitioners }: PractitionersTableProps) {
+    const router = useRouter();
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
     const [editingPractitioner, setEditingPractitioner] = useState<any | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
@@ -39,6 +41,7 @@ export function PractitionersTable({ practitioners }: PractitionersTableProps) {
                 alert("Erreur: " + result.error);
             } else {
                 setSelectedIds(new Set());
+                router.refresh();
             }
         } catch (err) {
             console.error(err);

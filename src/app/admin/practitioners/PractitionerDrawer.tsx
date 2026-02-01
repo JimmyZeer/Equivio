@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { X, Save, Lock, Unlock, MapPin, Loader2, AlertTriangle } from 'lucide-react';
 import { updatePractitioner } from '../actions';
 import { Button } from '@/components/ui/Button';
@@ -12,6 +13,7 @@ interface PractitionerDrawerProps {
 }
 
 export function PractitionerDrawer({ isOpen, onClose, practitioner }: PractitionerDrawerProps) {
+    const router = useRouter();
     const [formData, setFormData] = useState<any>({});
     const [isSaving, setIsSaving] = useState(false);
     const [slugLocked, setSlugLocked] = useState(true);
@@ -37,14 +39,21 @@ export function PractitionerDrawer({ isOpen, onClose, practitioner }: Practition
         setError('');
 
         try {
+            // Helper to parse numbers safely (preserve 0, null if empty/NaN)
+            const parseNum = (v: any) => {
+                if (v === '' || v === null || v === undefined) return null;
+                const n = parseFloat(v);
+                return isNaN(n) ? null : n;
+            };
+
             const result = await updatePractitioner(practitioner.id, {
                 name: formData.name,
                 job_title: formData.job_title,
                 city: formData.city,
                 address_full: formData.address_full,
                 postcode: formData.postcode,
-                lat: formData.lat ? parseFloat(formData.lat) : null,
-                lng: formData.lng ? parseFloat(formData.lng) : null,
+                lat: parseNum(formData.lat),
+                lng: parseNum(formData.lng),
                 phone_norm: formData.phone_norm,
                 website: formData.website,
                 profile_url: formData.profile_url,
@@ -57,6 +66,7 @@ export function PractitionerDrawer({ isOpen, onClose, practitioner }: Practition
                 setError(result.error || 'Erreur lors de la sauvegarde');
             } else {
                 onClose();
+                router.refresh(); // Refresh server data
             }
         } catch (err: any) {
             setError(err.message || 'Erreur inattendue');
