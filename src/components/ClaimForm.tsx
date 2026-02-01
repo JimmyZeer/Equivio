@@ -75,30 +75,34 @@ export function ClaimForm() {
             }
 
             if (!targetId) {
-                // Determine if this is a general contact or specific claim
-                // ideally we should require it.
                 setErrorMessage("Impossible de retrouver la fiche concernée. Veuillez réessayer depuis la fiche du praticien.");
                 setStatus("error");
                 return;
             }
 
-            const { error } = await supabase
-                .from('practitioners')
-                .update({
-                    claimed_contact: {
+            // Call API endpoint
+            const response = await fetch('/api/claim', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    practitionerId: targetId,
+                    slug: slug,
+                    claimData: {
                         claimer_name: formData.name,
                         claimer_email: formData.email,
                         claimer_phone: formData.phone,
                         claimer_website: formData.website,
                         claimer_message: formData.message,
                         consent: true
-                    },
-                    claimed_at: new Date().toISOString(),
-                    // is_claimed remains false until admin validation
+                    }
                 })
-                .eq('id', targetId);
+            });
 
-            if (error) throw error;
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.error || "Erreur inconnue");
+            }
 
             setStatus("success");
         } catch (error) {
@@ -117,9 +121,9 @@ export function ClaimForm() {
                 <div className="space-y-4">
                     <h3 className="text-xl font-bold text-neutral-charcoal">Demande transmise avec succès</h3>
                     <div className="text-neutral-charcoal/70 text-sm space-y-2">
-                        <p>Votre demande de revendication pour <strong>{practitionerName || "cette fiche"}</strong> a bien été enregistrée.</p>
-                        <p>Une vérification manuelle sera effectuée par notre équipe sous 48h.</p>
-                        <p>Vous recevrez une confirmation par email à <strong>{formData.email}</strong> dès validation.</p>
+                        <p>Votre demande a bien été transmise.</p>
+                        <p>Les informations fournies ne sont pas visibles tant qu’elles n’ont pas été validées par notre équipe.</p>
+                        <p>Vous avez reçu un email de confirmation à <strong>{formData.email}</strong>.</p>
                     </div>
                 </div>
                 <Button variant="outline" onClick={() => window.location.href = '/'} className="mt-4 text-sm">

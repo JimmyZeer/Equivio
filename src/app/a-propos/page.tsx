@@ -154,6 +154,20 @@ export default function AboutPage() {
                                 </span>
                             </p>
                         </section>
+
+                        <section className="space-y-6 text-lg text-neutral-charcoal/80 leading-relaxed pt-8 border-t border-neutral-stone/30 mt-12">
+                            <h2 className="text-2xl font-bold text-primary tracking-tight">
+                                Une question, une remarque ?
+                            </h2>
+                            <p>
+                                Equivio est à l’écoute des propriétaires et des professionnels.
+                                <br />
+                                Pour toute question sur le fonctionnement du site ou demande de rectification :
+                            </p>
+                            <p className="font-bold text-primary text-xl">
+                                <a href="mailto:contact@equivio.fr" className="hover:underline">contact@equivio.fr</a>
+                            </p>
+                        </section>
                     </article>
                 </div>
             </main>

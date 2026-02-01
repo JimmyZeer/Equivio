@@ -39,7 +39,7 @@ export function Footer() {
                     <ul className="space-y-2">
                         <li><Link href="/a-propos" className="hover:text-primary transition-colors">À propos</Link></li>
                         <li><Link href="/transparence" className="hover:text-primary transition-colors">Note de transparence</Link></li>
-                        <li><Link href="/contact" className="hover:text-primary transition-colors">Contact</Link></li>
+                        <li><a href="mailto:contact@equivio.fr" className="hover:text-primary transition-colors">contact@equivio.fr</a></li>
                     </ul>
                 </div>
 
