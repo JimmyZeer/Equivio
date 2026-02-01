@@ -18,7 +18,6 @@ export async function generateMetadata({ params }: { params: Promise<{ specialit
         osteopathes: { plural: "Ostéopathes équins", singular: "ostéopathe équin", db: "Ostéopathe animalier" },
         marechaux: { plural: "Maréchaux-ferrants", singular: "maréchal-ferrant", db: "Maréchal-ferrant" },
         dentistes: { plural: "Dentistes équins", singular: "dentiste équin", db: "Dentisterie équine" },
-        veterinaires: { plural: "Vétérinaires équins", singular: "vétérinaire équin", db: "Vétérinaire équin" },
         "bien-etre": { plural: "Praticiens bien-être", singular: "praticien bien-être", db: "Praticien bien-être" },
     };
 
@@ -53,7 +52,6 @@ export default async function CategoryPage({ params, searchParams }: { params: P
         osteopathes: "Ostéopathe animalier",
         marechaux: "Maréchal-ferrant",
         dentistes: "Dentisterie équine",
-        veterinaires: "Vétérinaire équin",
         "bien-etre": "Praticien bien-être",
     };
 
@@ -62,7 +60,6 @@ export default async function CategoryPage({ params, searchParams }: { params: P
         osteopathes: "Ostéopathes équins",
         marechaux: "Maréchaux-ferrants",
         dentistes: "Dentistes équins",
-        veterinaires: "Vétérinaires équins",
         "bien-etre": "Praticiens bien-être",
     };
 

@@ -40,7 +40,6 @@ export function Header() {
                         <Link href="/praticiens/osteopathes" className="hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full">Ostéopathes</Link>
                         <Link href="/praticiens/marechaux" className="hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full">Maréchaux</Link>
                         <Link href="/praticiens/dentistes" className="hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full">Dentistes</Link>
-                        <Link href="/praticiens/veterinaires" className="hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full">Vétérinaires</Link>
                     </nav>
 
                     <div className="flex items-center gap-4">
@@ -81,7 +80,6 @@ export function Header() {
                     <Link href="/praticiens/osteopathes" onClick={() => setIsMenuOpen(false)} className="text-lg font-bold text-primary py-3 border-b border-neutral-stone/10 active:bg-neutral-offwhite transition-colors">Ostéopathes</Link>
                     <Link href="/praticiens/marechaux" onClick={() => setIsMenuOpen(false)} className="text-lg font-bold text-primary py-3 border-b border-neutral-stone/10 active:bg-neutral-offwhite transition-colors">Maréchaux</Link>
                     <Link href="/praticiens/dentistes" onClick={() => setIsMenuOpen(false)} className="text-lg font-bold text-primary py-3 border-b border-neutral-stone/10 active:bg-neutral-offwhite transition-colors">Dentistes</Link>
-                    <Link href="/praticiens/veterinaires" onClick={() => setIsMenuOpen(false)} className="text-lg font-bold text-primary py-3 border-b border-neutral-stone/10 active:bg-neutral-offwhite transition-colors">Vétérinaires</Link>
                     <div className="pt-4 flex flex-col gap-4">
                         <FavoritesHeaderLink showLabel className="py-3 border-b border-neutral-stone/10" />
                         <Link href="/revendiquer" onClick={() => setIsMenuOpen(false)}>

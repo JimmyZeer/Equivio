@@ -39,7 +39,7 @@ export default async function Home() {
                                 Trouvez le bon praticien équin
                             </h1>
                             <p className="text-base sm:text-lg text-neutral-charcoal/60 max-w-xl mx-auto">
-                                Ostéopathes, maréchaux, dentistes et vétérinaires <span className="text-primary font-semibold">vérifiés</span> près de chez vous.
+                                Ostéopathes, maréchaux et dentistes <span className="text-primary font-semibold">vérifiés</span> près de chez vous.
                             </p>
                         </div>
                         <div className="pt-6 reveal [animation-delay:200ms]">
@@ -56,7 +56,6 @@ export default async function Home() {
                                 { name: "Ostéopathes", icon: Stethoscope, slug: "osteopathes", color: "from-primary to-primary-soft" },
                                 { name: "Maréchaux", icon: Hammer, slug: "marechaux", color: "from-leather to-leather-light" },
                                 { name: "Dentistes", icon: Zap, slug: "dentistes", color: "from-amber-500 to-amber-400" },
-                                { name: "Vétérinaires", icon: Heart, slug: "veterinaires", color: "from-rose-500 to-rose-400" },
                                 { name: "Bien-être", icon: Activity, slug: "bien-etre", color: "from-violet-500 to-violet-400" },
                             ].map((cat) => (
                                 <Link

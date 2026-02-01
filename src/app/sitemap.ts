@@ -4,11 +4,9 @@ import { supabase } from '@/lib/supabase'
 const baseUrl = 'https://equivio.fr'
 
 // All specialty slugs for category pages
-const SPECIALTIES = [
-    'osteopathes',
+'osteopathes',
     'marechaux-ferrants',
-    'dentistes',
-    'veterinaires'
+    'dentistes'
 ] as const
 
 // French regions for regional pages

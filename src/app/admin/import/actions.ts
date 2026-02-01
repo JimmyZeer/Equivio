@@ -54,7 +54,6 @@ const ALLOWED_SPECIALTIES = [
     "Ostéopathe animalier",
     "Dentisterie équine",
     "Maréchal-ferrant",
-    "Vétérinaire équin",
     "Pareur",
     "Shiatsu",
     "Saddle fitter",
