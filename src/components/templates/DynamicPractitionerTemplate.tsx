@@ -12,6 +12,8 @@ import { LocalBusinessSchema, BreadcrumbSchema } from "@/components/StructuredDa
 import { MapPin, ShieldCheck, CheckCircle2, Clock, HelpCircle, Info, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { TransparencyIndex } from "@/components/TransparencyIndex";
+import { TrackPractitioner } from "@/components/analytics/TrackPractitioner";
+import { ClaimButton } from "@/components/analytics/ClaimButton";
 
 export type PractitionerTemplateType = 'osteo' | 'dentist' | 'farrier' | 'generic';
 
@@ -421,11 +423,6 @@ export function DynamicPractitionerTemplate({ practitioner, templateType }: Prop
                                     Cette fiche a été générée à partir de données publiques. Equivio ne classe pas les praticiens et ne vend pas de visibilité.
                                 </p>
                             </div>
-
-                            import {TrackPractitioner} from "@/components/analytics/TrackPractitioner";
-                            import {ClaimButton} from "@/components/analytics/ClaimButton";
-
-                            // ... inside the component return ...
 
                             <TrackPractitioner practitioner={{
                                 id: practitioner.id,
