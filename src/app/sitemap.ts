@@ -64,6 +64,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 0.6,
         },
         {
+            url: `${baseUrl}/rejoindre`,
+            lastModified: now,
+            changeFrequency: 'monthly',
+            priority: 0.7,
+        },
+        {
+            url: `${baseUrl}/rejoindre/nouveau`,
+            lastModified: now,
+            changeFrequency: 'monthly',
+            priority: 0.6,
+        },
+        {
             url: `${baseUrl}/a-propos`,
             lastModified: now,
             changeFrequency: 'monthly',
