@@ -3,6 +3,7 @@ import { Footer } from "@/components/Footer";
 import { TransparencySeal } from "@/components/TransparencySeal";
 import { ClaimForm } from "@/components/ClaimForm";
 import { Metadata } from 'next';
+import { Suspense } from "react";
 
 export const metadata: Metadata = {
     title: "Revendiquer votre fiche professionnelle | Equivio",
@@ -31,7 +32,9 @@ export default function ClaimPage() {
                     {/* Form Container */}
                     <div className="bg-white rounded-[32px] shadow-card-rest hover:shadow-card-hover transition-all duration-300 border border-neutral-stone/30 overflow-hidden">
                         <div className="p-8 md:p-10">
-                            <ClaimForm />
+                            <Suspense fallback={<div className="p-8 text-center text-neutral-400">Chargement...</div>}>
+                                <ClaimForm />
+                            </Suspense>
                         </div>
 
                         {/* Transparency Block inside the card or below? Prompt says "Bloc Transparence (Inchangé) Toujours afficher" */}

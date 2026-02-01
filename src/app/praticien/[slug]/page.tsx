@@ -9,7 +9,7 @@ import { ContactButton } from "@/components/ContactButton";
 import { ProfileFavoriteButton } from "@/components/ProfileFavoriteButton";
 import { ShareButtons } from "@/components/ShareButtons";
 import { LocalBusinessSchema, BreadcrumbSchema } from "@/components/StructuredData";
-import { MapPin, ShieldCheck, ExternalLink, Info } from "lucide-react";
+import { MapPin, ShieldCheck, ExternalLink, Info, CheckCircle2 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { notFound } from "next/navigation";
 import { Metadata } from 'next';
@@ -177,11 +177,23 @@ export default async function PractitionerProfile({ params }: { params: Promise<
                             hasDiploma={false}
                         />
 
-                        {/* Legacy badges for SEO/accessibility - Modernized containers */}
-                        <div className="px-4 py-2 bg-white border border-primary/10 rounded-full flex items-center gap-2 text-primary font-bold text-sm shadow-sm">
-                            <ShieldCheck className="w-4 h-4 text-emerald-500" />
-                            Profil vérifié
-                        </div>
+                        {/* Badges de confiance */}
+                        {practitioner.status === 'active' ? (
+                            <div className="px-4 py-2 bg-emerald-50 border border-emerald-100 rounded-full flex items-center gap-2 text-emerald-700 font-bold text-sm shadow-sm">
+                                <ShieldCheck className="w-4 h-4 text-emerald-500" />
+                                Profil vérifié
+                            </div>
+                        ) : practitioner.is_claimed ? (
+                            <div className="px-4 py-2 bg-blue-50 border border-blue-100 rounded-full flex items-center gap-2 text-blue-700 font-bold text-sm shadow-sm">
+                                <CheckCircle2 className="w-4 h-4 text-blue-500" />
+                                Profil revendiqué par le praticien
+                            </div>
+                        ) : (
+                            <div className="px-4 py-2 bg-neutral-50 border border-neutral-100 rounded-full flex items-center gap-2 text-neutral-500 font-bold text-sm shadow-sm">
+                                <Info className="w-4 h-4 text-neutral-400" />
+                                Informations issues de sources publiques
+                            </div>
+                        )}
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12">
@@ -260,13 +272,21 @@ export default async function PractitionerProfile({ params }: { params: Promise<
                                 </div>
                             </section>
 
-                            {/* Claim CTA - Subtle */}
-                            <div className="bg-transparent px-4 py-2 text-center opacity-60 hover:opacity-100 transition-opacity">
-                                <p className="text-xs text-neutral-500 mb-2">Ce profil est le vôtre ?</p>
-                                <Link href="/revendiquer" className="text-xs font-bold text-primary border-b border-primary/20 pb-0.5 hover:border-primary transition-colors">
-                                    Modifier mes informations
-                                </Link>
-                            </div>
+                            {/* Claim CTA - Specific Design */}
+                            {!practitioner.is_claimed && (
+                                <div className="bg-white p-6 rounded-2xl border border-neutral-stone/60 shadow-sm space-y-4">
+                                    <h3 className="font-bold text-neutral-charcoal text-sm">Vous êtes ce praticien ?</h3>
+                                    <p className="text-xs text-neutral-charcoal/70 leading-relaxed">
+                                        Revendiquez gratuitement votre fiche pour corriger ou compléter les informations affichées.
+                                    </p>
+                                    <Link
+                                        href={`/revendiquer?slug=${practitioner.slug_seo}`}
+                                        className="flex items-center justify-center w-full py-3 bg-neutral-offwhite hover:bg-neutral-stone/30 text-primary font-bold text-sm rounded-xl transition-colors border border-neutral-stone"
+                                    >
+                                        → Revendiquer ce profil
+                                    </Link>
+                                </div>
+                            )}
                         </div>
                     </div>
 
