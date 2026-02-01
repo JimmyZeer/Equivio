@@ -1,9 +1,17 @@
 import { supabase } from "@/lib/supabase";
+import * as gtag from "@/lib/gtag";
 
 export async function trackPhoneReveal(practitionerId: string) {
     try {
-        // We identify the session anonymously or via headers if available, but for now simple increment is key.
-        // We log the event.
+        // GA4 Event
+        gtag.event({
+            action: 'phone_reveal',
+            category: 'engagement',
+            label: practitionerId,
+            value: 1
+        });
+
+        // Supabase Analytics
         const { error } = await supabase
             .from('analytics_events')
             .insert([
@@ -18,12 +26,29 @@ export async function trackPhoneReveal(practitionerId: string) {
             ]);
 
         if (error) {
-            // Silently fail or log to monitoring service in real app
-            console.warn("Analytics Error:", error.message);
-        } else {
-            console.log("Analytics: Phone reveal tracked for", practitionerId);
+            console.warn("Supabase Analytics Error:", error.message);
         }
     } catch (e) {
         console.error("Analytics Exception:", e);
     }
 }
+
+export function trackPractitionerView(practitioner: { id: string, specialty: string, region?: string }) {
+    gtag.event({
+        action: 'view_practitioner',
+        category: 'view',
+        label: practitioner.specialty,
+        practitioner_id: practitioner.id,
+        region: practitioner.region || 'unknown'
+    });
+}
+
+export function trackClaimClick(practitionerId: string, specialty: string) {
+    gtag.event({
+        action: 'claim_click',
+        category: 'conversion',
+        label: specialty,
+        practitioner_id: practitionerId
+    });
+}
+

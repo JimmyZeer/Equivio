@@ -3,6 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { OrganizationSchema, WebsiteSchema } from "@/components/StructuredData";
 import { FavoritesProvider } from "@/lib/favorites";
+import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
+import CookieConsent from "@/components/analytics/CookieConsent";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -53,6 +55,8 @@ export default function RootLayout({
         <html lang="fr">
             <body className={`${inter.className} bg-neutral-offwhite text-neutral-charcoal antialiased`}>
                 <FavoritesProvider>
+                    <GoogleAnalytics />
+                    <CookieConsent />
                     {/* Global Structured Data */}
                     <OrganizationSchema />
                     <WebsiteSchema />

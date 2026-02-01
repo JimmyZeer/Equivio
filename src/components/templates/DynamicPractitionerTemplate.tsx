@@ -422,6 +422,20 @@ export function DynamicPractitionerTemplate({ practitioner, templateType }: Prop
                                 </p>
                             </div>
 
+                            import {TrackPractitioner} from "@/components/analytics/TrackPractitioner";
+                            import {ClaimButton} from "@/components/analytics/ClaimButton";
+
+                            // ... inside the component return ...
+
+                            <TrackPractitioner practitioner={{
+                                id: practitioner.id,
+                                specialty: practitioner.specialty,
+                                region: practitioner.region,
+                                city: practitioner.city
+                            }} />
+
+                            {/* ... */}
+
                             {/* Claim CTA (Strictly with PID) */}
                             {!practitioner.is_claimed && (
                                 <div className="bg-white p-6 rounded-[24px] border border-neutral-100 text-center space-y-4 shadow-sm">
@@ -429,14 +443,10 @@ export function DynamicPractitionerTemplate({ practitioner, templateType }: Prop
                                     <div className="text-sm text-neutral-500 text-left space-y-2">
                                         <p>Si vous êtes <strong>{practitioner.name}</strong>, revendiquez cette fiche pour la mettre à jour.</p>
                                     </div>
-                                    <Link
-                                        href={`/revendiquer?pid=${practitioner.id}`}
-                                        className="block w-full pt-2"
-                                    >
-                                        <Button variant="outline" className="w-full text-primary hover:bg-primary/5 hover:text-primary font-medium border-transparent">
-                                            Revendiquer ce profil
-                                        </Button>
-                                    </Link>
+                                    <ClaimButton
+                                        practitionerId={practitioner.id}
+                                        specialty={practitioner.specialty}
+                                    />
                                     <p className="text-xs text-neutral-400 mt-4 leading-normal">
                                         Gratuit & sans engagement.
                                     </p>
