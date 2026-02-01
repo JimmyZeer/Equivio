@@ -1,9 +1,7 @@
-'use client';
-
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { X, Save, Lock, Unlock, MapPin, Loader2, AlertTriangle } from 'lucide-react';
-import { updatePractitioner } from '../actions';
+import { X, Save, Lock, Unlock, MapPin, Loader2, AlertTriangle, Search } from 'lucide-react';
+import { updatePractitioner, geocodeAddress } from '../actions';
 import { Button } from '@/components/ui/Button';
 
 interface PractitionerDrawerProps {
@@ -16,6 +14,7 @@ export function PractitionerDrawer({ isOpen, onClose, practitioner }: Practition
     const router = useRouter();
     const [formData, setFormData] = useState<any>({});
     const [isSaving, setIsSaving] = useState(false);
+    const [isGeocoding, setIsGeocoding] = useState(false);
     const [slugLocked, setSlugLocked] = useState(true);
     const [error, setError] = useState('');
 
@@ -31,6 +30,35 @@ export function PractitionerDrawer({ isOpen, onClose, practitioner }: Practition
 
     const handleChange = (field: string, value: any) => {
         setFormData((prev: any) => ({ ...prev, [field]: value }));
+    };
+
+    const handleGeocode = async () => {
+        const query = formData.address_full || (formData.city ? `${formData.city} FRANCE` : '');
+
+        if (!query) {
+            setError("Veuillez remplir l'adresse ou la ville pour géocoder.");
+            return;
+        }
+
+        setIsGeocoding(true);
+        setError('');
+
+        try {
+            const result = await geocodeAddress(query);
+            if (result.success && result.lat && result.lng) {
+                setFormData((prev: any) => ({
+                    ...prev,
+                    lat: result.lat,
+                    lng: result.lng
+                }));
+            } else {
+                setError(result.error || "Impossible de localiser cette adresse.");
+            }
+        } catch (err) {
+            setError("Erreur technique lors du géocodage.");
+        } finally {
+            setIsGeocoding(false);
+        }
     };
 
     const handleSave = async (e: React.FormEvent) => {
@@ -197,10 +225,15 @@ export function PractitionerDrawer({ isOpen, onClose, practitioner }: Practition
                             </div>
                         </div>
 
-                        {/* Fake Geo Helper for now to show intention */}
-                        {/* <button type="button" className="text-xs text-blue-600 font-bold hover:underline flex items-center gap-1">
-                            <MapPin className="w-3 h-3" /> Géocoder (Auto)
-                        </button> */}
+                        <button
+                            type="button"
+                            onClick={handleGeocode}
+                            disabled={isGeocoding || (!formData.address_full && !formData.city)}
+                            className="text-xs text-blue-600 font-bold hover:underline flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                            {isGeocoding ? <Loader2 className="w-3 h-3 animate-spin" /> : <MapPin className="w-3 h-3" />}
+                            {isGeocoding ? "Géocodage..." : "Géocoder (Auto)"}
+                        </button>
                     </div>
 
                     {/* Contact */}
