@@ -90,3 +90,42 @@ export async function sendAdminNotificationEmail(practitionerName: string, claim
         console.error("❌ Failed to send admin notification:", error);
     }
 }
+
+/**
+ * Sends a notification email to the admin for a new listing request.
+ */
+export async function sendListingRequestNotification(requestData: any) {
+    if (!process.env.SMTP_USER || !process.env.SMTP_PASSWORD) return;
+
+    try {
+        await transporter.sendMail({
+            from: SENDER_EMAIL,
+            to: ADMIN_EMAIL,
+            subject: `[ADMIN] Nouvelle demande de référencement : ${requestData.name}`,
+            html: `
+                <div style="font-family: sans-serif;">
+                    <h3>Nouvelle demande d'ajout (Listing Request)</h3>
+                    <ul>
+                        <li><strong>Nom / Structure :</strong> ${requestData.name}</li>
+                        <li><strong>Spécialité :</strong> ${requestData.specialty}</li>
+                        <li><strong>Ville :</strong> ${requestData.city}</li>
+                        <li><strong>Email :</strong> ${requestData.email}</li>
+                        <li><strong>Téléphone :</strong> ${requestData.phone || 'Non renseigné'}</li>
+                    </ul>
+                    <p><strong>Note :</strong><br/>${requestData.notes || 'Aucune note'}</p>
+                    <p>
+                        <a href="https://equivio.fr/admin" style="background: #000; color: #fff; padding: 10px 15px; text-decoration: none; border-radius: 5px;">
+                            Accéder au dashboard
+                        </a>
+                    </p>
+                    <p style="font-size: 12px; color: #666; margin-top: 20px;">
+                        Vérifiez la table <code>listing_requests</code>.
+                    </p>
+                </div>
+            `
+        });
+        console.log(`📧 Admin listing notification sent via SMTP`);
+    } catch (error) {
+        console.error("❌ Failed to send admin listing notification:", error);
+    }
+}
