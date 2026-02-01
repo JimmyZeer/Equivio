@@ -280,10 +280,10 @@ export default async function PractitionerProfile({ params }: { params: Promise<
                                         Revendiquez gratuitement votre fiche pour corriger ou compléter les informations affichées.
                                     </p>
                                     <Link
-                                        href={`/revendiquer?slug=${practitioner.slug_seo}`}
-                                        className="flex items-center justify-center w-full py-3 bg-neutral-offwhite hover:bg-neutral-stone/30 text-primary font-bold text-sm rounded-xl transition-colors border border-neutral-stone"
+                                        href={`/revendiquer?pid=${practitioner.id}`}
+                                        className="w-full bg-neutral-800 text-white font-bold text-sm py-3 px-4 rounded-xl hover:bg-neutral-900 transition-all flex items-center justify-center gap-2 group"
                                     >
-                                        → Revendiquer ce profil
+                                        <span>→ Revendiquer ce profil</span>
                                     </Link>
                                 </div>
                             )}

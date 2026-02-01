@@ -8,7 +8,7 @@ import { supabase } from "@/lib/supabase";
 
 export function ClaimForm() {
     const searchParams = useSearchParams();
-    const slug = searchParams.get("slug");
+    const pid = searchParams.get("pid"); // UUID is mandatory
 
     const [step, setStep] = useState(1);
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -16,35 +16,38 @@ export function ClaimForm() {
 
     // Practitioner data if found
     const [practitionerName, setPractitionerName] = useState<string | null>(null);
-    const [practitionerId, setPractitionerId] = useState<string | null>(null);
 
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         phone: "",
-        website: "", // Added distinct field for verifying identity via website
+        website: "",
         message: "",
         transparencyConsent: false
     });
 
     useEffect(() => {
-        if (slug) {
-            // Fetch practitioner name to confirm context
+        if (pid) {
+            // Fetch practitioner name to confirm context by ID
             const fetchPractitioner = async () => {
-                const { data } = await supabase
+                const { data, error } = await supabase
                     .from('practitioners')
-                    .select('id, name')
-                    .eq('slug_seo', slug)
+                    .select('name')
+                    .eq('id', pid)
                     .single();
 
                 if (data) {
                     setPractitionerName(data.name);
-                    setPractitionerId(data.id);
+                } else {
+                    console.error("Practitioner not found for PID:", pid, error);
+                    setErrorMessage("Impossible de retrouver la fiche concernée. Veuillez réessayer depuis la fiche du praticien.");
                 }
             };
             fetchPractitioner();
+        } else {
+            setErrorMessage("Impossible de retrouver la fiche concernée. Veuillez réessayer depuis la fiche du praticien.");
         }
-    }, [slug]);
+    }, [pid]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -63,19 +66,8 @@ export function ClaimForm() {
         setErrorMessage("");
 
         try {
-            // Find practitioner by slug if ID not already set (fallback)
-            let targetId = practitionerId;
-            if (!targetId && slug) {
-                const { data } = await supabase
-                    .from('practitioners')
-                    .select('id')
-                    .eq('slug_seo', slug)
-                    .single();
-                if (data) targetId = data.id;
-            }
-
-            if (!targetId) {
-                setErrorMessage("Impossible de retrouver la fiche concernée. Veuillez réessayer depuis la fiche du praticien.");
+            if (!pid) {
+                setErrorMessage("Identifiant du praticien manquant.");
                 setStatus("error");
                 return;
             }
@@ -85,8 +77,7 @@ export function ClaimForm() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    practitionerId: targetId,
-                    slug: slug,
+                    practitionerId: pid,
                     // Honeypot field (should be empty)
                     _gotcha: (document.getElementById('job_title_field') as HTMLInputElement)?.value || "",
                     claimData: {
@@ -131,6 +122,18 @@ export function ClaimForm() {
                         <p>Vous avez reçu un email de confirmation à <strong>{formData.email}</strong>.</p>
                     </div>
                 </div>
+                <Button variant="outline" onClick={() => window.location.href = '/'} className="mt-4 text-sm">
+                    Retour à l'accueil
+                </Button>
+            </div>
+        );
+    }
+
+    if (errorMessage && !pid) {
+        return (
+            <div className="bg-red-50 border border-red-100 p-8 rounded-xl text-center space-y-4 animate-reveal">
+                <h3 className="text-lg font-bold text-red-700">Erreur</h3>
+                <p className="text-red-600 text-sm">{errorMessage}</p>
                 <Button variant="outline" onClick={() => window.location.href = '/'} className="mt-4 text-sm">
                     Retour à l'accueil
                 </Button>

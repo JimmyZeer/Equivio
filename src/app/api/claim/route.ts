@@ -5,7 +5,7 @@ import { sendClaimConfirmationEmail, sendAdminNotificationEmail } from "@/lib/em
 export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
-        const { practitionerId, claimData, slug, _gotcha } = body;
+        const { practitionerId, claimData, _gotcha } = body;
         const ip = request.headers.get('x-forwarded-for') || 'unknown';
 
         // 🛡️ 1. Honeypot Check
@@ -20,6 +20,20 @@ export async function POST(request: NextRequest) {
             return NextResponse.json(
                 { error: "Données incomplètes ou consentement manquant" },
                 { status: 400 }
+            );
+        }
+
+        // 🔍 Verify Practitioner Exists (UUID)
+        const { data: practitioner, error: pError } = await supabase
+            .from('practitioners')
+            .select('id, slug_seo')
+            .eq('id', practitionerId)
+            .single();
+
+        if (pError || !practitioner) {
+            return NextResponse.json(
+                { error: "Praticien introuvable ou ID invalide" },
+                { status: 404 }
             );
         }
 
