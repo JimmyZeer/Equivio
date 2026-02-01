@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase-admin";
 import { sendClaimConfirmationEmail, sendAdminNotificationEmail } from "@/lib/email-utils";
 
 export async function POST(request: NextRequest) {
@@ -58,18 +59,20 @@ export async function POST(request: NextRequest) {
             );
         }
 
-        // Check submissions for this practitioner in last 1 hour
-        const { count: practCount } = await supabase
+        // Check for ANY existing PENDING request for this practitioner (Spam prevention)
+        // Use supabaseAdmin because RLS hides 'pending' requests from the public client
+        const { data: existingClaims, error: checkError } = await supabaseAdmin
             .from('practitioner_claim_requests')
-            .select('*', { count: 'exact', head: true })
+            .select('id')
             .eq('practitioner_id', practitionerId)
-            .gt('created_at', new Date(Date.now() - 60 * 60 * 1000).toISOString()); // 1 hour
+            .eq('status', 'pending')
+            .limit(1);
 
-        if ((practCount || 0) >= 2) {
-            console.warn(`🚫 Rate limit exceeded for Practitioner ${practitionerId}`);
+        if (existingClaims && existingClaims.length > 0) {
+            console.warn(`🚫 Duplicate pending claim for Practitioner ${practitionerId}`);
             return NextResponse.json(
-                { error: "Une demande est déjà en cours pour ce praticien. Contactez le support si besoin." },
-                { status: 429 }
+                { error: "Une demande est déjà en cours pour ce profil." },
+                { status: 409 } // Conflict
             );
         }
 
