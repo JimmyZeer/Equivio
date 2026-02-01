@@ -29,9 +29,9 @@ export function Header() {
                         <Image
                             src="/images/logo.png"
                             alt="Equivio"
-                            width={240}
-                            height={60}
-                            className="h-16 w-auto group-hover:opacity-80 transition-opacity"
+                            width={280}
+                            height={70}
+                            className="h-20 w-auto group-hover:opacity-80 transition-opacity"
                             priority
                         />
                     </Link>
