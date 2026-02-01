@@ -104,3 +104,37 @@ export async function bulkUpdateStatus(ids: string[], status: 'active' | 'inacti
         return { success: false, error: err.message || "Erreur inattendue" };
     }
 }
+
+export async function geocodeAddress(query: string) {
+    if (!query) return { success: false, error: "Adresse vide" };
+
+    try {
+        const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`;
+
+        const response = await fetch(url, {
+            headers: {
+                'User-Agent': 'EquivioAdmin/1.0 (admin@equivio.fr)'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Nominatim error: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        if (data && data.length > 0) {
+            const result = data[0];
+            return {
+                success: true,
+                lat: parseFloat(result.lat),
+                lng: parseFloat(result.lon)
+            };
+        } else {
+            return { success: false, error: "Aucun résultat trouvé pour cette adresse" };
+        }
+    } catch (err: any) {
+        console.error("Geocoding Error:", err);
+        return { success: false, error: "Erreur lors du géocodage" };
+    }
+}
