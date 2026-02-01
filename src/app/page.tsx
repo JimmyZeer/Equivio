@@ -198,8 +198,8 @@ export default async function Home() {
                                 <span className="inline-block px-4 py-1.5 bg-white/15 text-white/90 text-xs font-bold uppercase tracking-wider rounded-full mb-4 backdrop-blur-sm">
                                     Praticiens
                                 </span>
-                                {/* TITRE AMÉLIORÉ : Plus grand, shadow, meilleur contraste */}
-                                <h2 className="text-3xl lg:text-4xl font-extrabold leading-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.3)]">
+                                {/* TITRE AMÉLIORÉ : Plus grand, shadow max, meilleur contraste */}
+                                <h2 className="text-3xl lg:text-4xl font-extrabold leading-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
                                     Votre visibilité dépend de votre activité
                                 </h2>
                             </div>
@@ -217,9 +217,11 @@ export default async function Home() {
                                 ))}
                             </ul>
                             <div className="pt-4 relative z-10">
-                                <Button className="w-full bg-white text-primary hover:bg-white/90 font-bold py-5 rounded-2xl shadow-lg hover:shadow-xl transition-all press-effect">
-                                    Rejoindre le réseau
-                                </Button>
+                                <Link href="/rejoindre">
+                                    <Button className="w-full bg-white text-primary hover:bg-white/90 font-bold py-5 rounded-2xl shadow-lg hover:shadow-xl transition-all press-effect">
+                                        Rejoindre le réseau
+                                    </Button>
+                                </Link>
                             </div>
                         </div>
                     </div>
