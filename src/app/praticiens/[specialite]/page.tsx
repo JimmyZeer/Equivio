@@ -39,8 +39,15 @@ export async function generateMetadata({ params }: { params: Promise<{ specialit
     };
 }
 
-export default async function CategoryPage({ params }: { params: Promise<{ specialite: string }> }) {
+import { Pagination } from "@/components/ui/Pagination";
+
+// ... previous imports
+
+export default async function CategoryPage({ params, searchParams }: { params: Promise<{ specialite: string }>, searchParams: Promise<{ page?: string }> }) {
     const resolvedParams = await params;
+    const resolvedSearchParams = await searchParams;
+    const page = parseInt(resolvedSearchParams.page || '1', 10) || 1;
+    const pageSize = 50;
 
     const dbTitles: Record<string, string> = {
         osteopathes: "Ostéopathe animalier",
@@ -66,9 +73,12 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
     const { data: practitioners, count: dbCount, error } = await fetchPractitioners({
         specialty: currentDbTitle,
         sort: 'pertinence',
-        page: 1,
-        pageSize: 50
+        page: page,
+        pageSize: pageSize
     });
+
+    // Calculate total pages
+    const totalPages = Math.ceil(dbCount / pageSize);
 
     const breadcrumbItems = [
         { label: "Accueil", href: "/" },
@@ -81,6 +91,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
 
             <main className="flex-grow bg-neutral-offwhite pt-12 pb-32 px-6">
                 <div className="max-w-7xl mx-auto space-y-16">
+                    {/* ... breadcrumb, header, searchbar ... */}
+
                     <div className="reveal">
                         <Breadcrumb items={breadcrumbItems} />
                     </div>
@@ -90,7 +102,6 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
                             {currentDisplayTitle} <span className="text-primary-soft">référencés en France</span>
                         </h1>
 
-                        {/* 1. Bloc éditorial « Méthodologie Equivio » (OBLIGATOIRE) */}
                         <div className="bg-white border-l-4 border-primary p-8 sm:p-10 rounded-r-[24px] shadow-card-rest hover:shadow-card-hover transition-all duration-300 max-w-3xl">
                             <h2 className="text-lg font-bold text-primary mb-3">Méthodologie Equivio</h2>
                             <p className="text-neutral-charcoal/80 text-sm leading-relaxed">
@@ -107,6 +118,12 @@ export default async function CategoryPage({ params }: { params: Promise<{ speci
                     <div className="reveal [animation-delay:300ms]">
                         <PractitionerResults practitioners={practitioners} count={dbCount} error={error} />
                     </div>
+
+                    {totalPages > 1 && (
+                        <div className="reveal [animation-delay:400ms] pt-8 border-t border-neutral-stone/20">
+                            <Pagination currentPage={page} totalPages={totalPages} />
+                        </div>
+                    )}
 
                     <section className="bg-white p-8 sm:p-10 rounded-[24px] shadow-card-rest hover:shadow-card-hover transition-all duration-300 border border-neutral-stone/20">
                         <h3 className="text-xl font-bold text-primary mb-6">Rechercher par région</h3>
