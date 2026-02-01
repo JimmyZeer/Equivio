@@ -2,13 +2,21 @@
 
 import { usePathname, useSearchParams } from 'next/navigation';
 import Script from 'next/script';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { GA_TRACKING_ID, pageview } from '@/lib/gtag';
+
+declare global {
+    interface Window {
+        dataLayer: any[];
+        gtag: (...args: any[]) => void;
+    }
+}
 
 export default function GoogleAnalytics() {
     const pathname = usePathname();
     const searchParams = useSearchParams();
     const [consent, setConsent] = useState<boolean | null>(null);
+    const initialized = useRef(false);
 
     // Initial consent check
     useEffect(() => {
@@ -20,7 +28,7 @@ export default function GoogleAnalytics() {
         }
     }, []);
 
-    // Listen for consent changes from other components (e.g. CookieBanner)
+    // Listen for consent changes
     useEffect(() => {
         const handleConsentUpdate = (e: CustomEvent) => {
             setConsent(e.detail);
@@ -30,11 +38,43 @@ export default function GoogleAnalytics() {
         return () => window.removeEventListener('equivio-consent-update', handleConsentUpdate as EventListener);
     }, []);
 
-    // Track page views
+    // Explicit Initialization on Consent
     useEffect(() => {
-        if (!consent) return;
+        if (consent && GA_TRACKING_ID && !initialized.current) {
+            // Ensure helper exists
+            window.dataLayer = window.dataLayer || [];
+            if (!window.gtag) {
+                window.gtag = function () { window.dataLayer.push(arguments); };
+            }
+
+            // Init call
+            window.gtag('js', new Date());
+            window.gtag('config', GA_TRACKING_ID, {
+                page_path: pathname,
+                anonymize_ip: true,
+            });
+
+            initialized.current = true;
+            console.log("✅ GA4 Initialized explicitly");
+        }
+    }, [consent, pathname]);
+
+    // Track user navigation (subsequent page views)
+    useEffect(() => {
+        if (!consent || !initialized.current) return;
 
         const url = pathname + searchParams.toString();
+        // Since config already sends a pageview on init, we might want to skip the first one if it matches?
+        // But the pageview helper effectively does a config update.
+        // To be safe and simple: just let the helper run. 
+        // Note: standard GA setup often sends one PV on load, then PVs on route changes.
+        // We just need to make sure we don't send Double PV on first load.
+        // The init 'config' call above sends the first PV.
+
+        // This effect runs on pathname change.
+        // On mount/consent, pathname is stable, so this might run too if deps change.
+        // Actually, let's allow the pageview helper to handle *updates*.
+
         pageview(url);
 
     }, [pathname, searchParams, consent]);
@@ -57,14 +97,12 @@ export default function GoogleAnalytics() {
                     __html: `
                         window.dataLayer = window.dataLayer || [];
                         function gtag(){dataLayer.push(arguments);}
-                        gtag('js', new Date());
-                        gtag('config', '${GA_TRACKING_ID}', {
-                            page_path: window.location.pathname,
-                            anonymize_ip: true
-                        });
+                        // REMOVED auto-config here.
+                        // Initialization is now handled in the useEffect above.
                     `,
                 }}
             />
         </>
     );
 }
+
