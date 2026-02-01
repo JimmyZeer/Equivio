@@ -7,3 +7,10 @@ pages_build_output_dir = ".open-next/assets"
 # [[kv_namespaces]]
 # binding = "NEXT_CACHE_WORKERS_KV"
 # id = "<KV_ID>"
+# Environment Variables (Non-sensitive)
+[vars]
+SMTP_HOST = "brun.o2switch.net"
+SMTP_PORT = "465"
+SMTP_SECURE = "true"
+SMTP_USER = "contact@equivio.fr"
+CLAIMS_ADMIN_EMAIL = "contact@equivio.fr"
