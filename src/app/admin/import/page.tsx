@@ -104,6 +104,15 @@ export default function ImportPage() {
                     <div className="text-center">
                         <p className="font-bold text-lg text-gray-900">Déposer le fichier CSV ici</p>
                         <p className="text-sm text-gray-500">ou cliquer pour sélectionner</p>
+                        <div className="mt-6 p-4 bg-gray-50 rounded-lg text-left max-w-lg mx-auto border border-gray-200">
+                            <p className="text-xs font-bold text-gray-700 mb-2 uppercase tracking-wide">Colonnes attendues (en-têtes) :</p>
+                            <code className="text-xs text-emerald-700 font-mono break-words leading-relaxed">
+                                name, specialty, address_full, city, lat, lng, phone_norm, website, profile_url, status
+                            </code>
+                            <p className="text-[10px] text-gray-500 mt-2 italic">
+                                * `name` et `specialty` sont obligatoires. `lat`/`lng` recommandés pour la carte.
+                            </p>
+                        </div>
                     </div>
                     <input
                         type="file"
