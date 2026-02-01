@@ -1,8 +1,9 @@
 import nodemailer from 'nodemailer';
 
 // Configure SMTP Transporter
+// Configure SMTP Transporter
 const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST || 'mail.equivio.fr',
+    host: process.env.SMTP_HOST || 'brun.o2switch.net',
     port: parseInt(process.env.SMTP_PORT || '465'),
     secure: process.env.SMTP_SECURE === 'true', // true for 465, false for other ports
     auth: {
@@ -12,7 +13,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const SENDER_EMAIL = '"Equivio" <contact@equivio.fr>';
-const ADMIN_EMAIL = 'contact@equivio.fr';
+const ADMIN_EMAIL = process.env.CLAIMS_ADMIN_EMAIL || 'contact@equivio.fr';
 
 /**
  * Sends a confirmation email to the practitioner claiming their profile.
