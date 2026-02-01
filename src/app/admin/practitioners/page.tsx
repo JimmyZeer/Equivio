@@ -14,11 +14,14 @@ export default async function AdminPractitionersPage({ searchParams }: { searchP
     const statusFilter = typeof params.status === 'string' ? params.status : 'all';
     const warningFilter = typeof params.warning === 'string' ? params.warning : '';
 
+    const PAGE_SIZE = 50;
+    const page = parseInt(typeof params.page === 'string' ? params.page : '1', 10) || 1;
+    const from = (page - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+
     let dbQuery = supabaseAdmin
         .from('practitioners')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(50); // Pagination needed later, limit for now
+        .select('*', { count: 'exact' });
 
     // Apply Filters
     if (statusFilter !== 'all') {
@@ -36,7 +39,12 @@ export default async function AdminPractitionersPage({ searchParams }: { searchP
         dbQuery = dbQuery.is('city', null);
     }
 
-    const { data: practitioners, error } = await dbQuery;
+    // Sort and Paginate
+    const { data: practitioners, count, error } = await dbQuery
+        .order('created_at', { ascending: false })
+        .range(from, to);
+
+    const totalPages = count ? Math.ceil(count / PAGE_SIZE) : 0;
 
     return (
         <div className="space-y-6">
@@ -92,7 +100,13 @@ export default async function AdminPractitionersPage({ searchParams }: { searchP
             </div>
 
             {/* Client Component for Table & Drawer */}
-            <PractitionersTable practitioners={practitioners || []} />
+            {/* Client Component for Table & Drawer */}
+            <PractitionersTable
+                practitioners={practitioners || []}
+                currentPage={page}
+                totalPages={totalPages}
+                totalCount={count || 0}
+            />
         </div>
     );
 }
