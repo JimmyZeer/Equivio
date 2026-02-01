@@ -55,6 +55,10 @@ export async function submitListingRequest(formData: FormData) {
             return { success: false, error: "Erreur lors de l'enregistrement. Réessayez." };
         }
 
+        // Send Admin Notification (Fire & Forget)
+        const { sendListingRequestNotification } = await import('@/lib/email-utils');
+        sendListingRequestNotification(result.data).catch(console.error);
+
         return { success: true };
     } catch (e) {
         console.error(e);
