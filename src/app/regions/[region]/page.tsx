@@ -37,6 +37,25 @@ export default async function RegionPage({ params, searchParams }: PageProps) {
     const regionName = resolvedParams.region.charAt(0).toUpperCase() + resolvedParams.region.slice(1);
     const specialtyFilter = resolvedSearchParams.specialite || "all";
 
+    // Map URL slug to DB region name
+    const REGION_SLUG_MAP: Record<string, string> = {
+        "paca": "Provence-Alpes-Côte d'Azur",
+        "ile-de-france": "Île-de-France",
+        "auvergne-rhone-alpes": "Auvergne-Rhône-Alpes",
+        "bourgogne-franche-comte": "Bourgogne-Franche-Comté",
+        "centre-val-de-loire": "Centre-Val de Loire",
+        "grand-est": "Grand Est",
+        "hauts-de-france": "Hauts-de-France",
+        "normandie": "Normandie",
+        "nouvelle-aquitaine": "Nouvelle-Aquitaine",
+        "occitanie": "Occitanie",
+        "pays-de-la-loire": "Pays de la Loire",
+        "corse": "Corse",
+        "bretagne": "Bretagne"
+    };
+
+    const dbRegionName = REGION_SLUG_MAP[resolvedParams.region.toLowerCase()] || resolvedParams.region;
+
     let practitioners: any[] = [];
     let error: any = null;
 
@@ -44,7 +63,7 @@ export default async function RegionPage({ params, searchParams }: PageProps) {
         let query = supabase
             .from('practitioners')
             .select('id, name, specialty, city, address_full, slug_seo, status')
-            .ilike('region', `%${resolvedParams.region}%`)
+            .ilike('region', `%${dbRegionName}%`)
             .eq('status', 'active')
             .order('name', { ascending: true });
 
