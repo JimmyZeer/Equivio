@@ -9,15 +9,30 @@
  */
 
 import { createClient } from '@supabase/supabase-js';
-import * as dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
 
-dotenv.config({ path: '.env.local' });
+// Load env manually
+try {
+    const envPath = path.resolve(process.cwd(), '.env.local');
+    const envFile = fs.readFileSync(envPath, 'utf8');
+    envFile.split('\n').forEach(line => {
+        const match = line.match(/^([^=]+)=(.*)$/);
+        if (match) {
+            const key = match[1].trim();
+            const value = match[2].trim().replace(/^"(.*)"$/, '$1');
+            process.env[key] = value;
+        }
+    });
+} catch (e) {
+    console.warn("Could not load .env.local via fs, relying on process.env");
+}
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
-    console.error("❌ Missing Supabase credentials in .env.local");
+    console.error("❌ Missing Supabase credentials");
     process.exit(1);
 }
 
