@@ -6,6 +6,15 @@ import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { PractitionerCard } from "@/components/PractitionerCard";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "Equivio – Annuaire des praticiens équins en France (ostéo, dentiste, maréchal)",
+    description: "Trouvez un ostéopathe animalier, dentiste équin ou maréchal-ferrant près de chez vous. Annuaire national de praticiens équins en France.",
+    alternates: {
+        canonical: "https://equivio.fr/",
+    },
+};
 
 export default async function Home() {
     // Fetch latest verified profiles
@@ -36,10 +45,10 @@ export default async function Home() {
 
                         <div className="space-y-4 reveal [animation-delay:100ms]">
                             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary leading-tight tracking-tight">
-                                Trouvez le bon praticien équin
+                                Annuaire des praticiens équins en France
                             </h1>
                             <p className="text-base sm:text-lg text-neutral-charcoal/60 max-w-xl mx-auto">
-                                Ostéopathes, maréchaux et dentistes <span className="text-primary font-semibold">vérifiés</span> près de chez vous.
+                                Trouvez un ostéopathe animalier, un dentiste équin ou un maréchal-ferrant <span className="text-primary font-semibold">qualifié</span> près de chez vous.
                             </p>
                         </div>
                         <div className="pt-6 reveal [animation-delay:200ms]">
@@ -48,10 +57,30 @@ export default async function Home() {
                     </div>
                 </section>
 
+                {/* 📝 Intro SEO Text */}
+                <section className="bg-white py-12 px-6 border-b border-neutral-stone/30">
+                    <div className="max-w-3xl mx-auto text-center space-y-6 text-neutral-charcoal/80 leading-relaxed reveal">
+                        <p>
+                            <strong>Equivio est un annuaire spécialisé dédié aux praticiens équins en France.</strong><br />
+                            Il permet aux propriétaires de chevaux de trouver rapidement un ostéopathe animalier, un dentiste équin ou un maréchal-ferrant qualifié, partout sur le territoire.
+                        </p>
+                        <p className="hidden sm:block">
+                            Chaque praticien référencé intervient auprès des chevaux pour des soins de bien-être, de locomotion ou d’entretien, selon sa spécialité.
+                            L’objectif d’Equivio est de centraliser des professionnels équins par région afin de faciliter la mise en relation et d’améliorer la visibilité des praticiens de terrain.
+                        </p>
+                        <p className="text-sm text-neutral-charcoal/60">
+                            L’annuaire est organisé par spécialité et par zone géographique pour offrir une recherche simple, rapide et pertinente.
+                        </p>
+                    </div>
+                </section>
+
                 {/* 🐴 Categories — With Active Colors */}
-                <section className="bg-white border-y border-neutral-stone/30 shadow-[0_2px_8px_rgba(0,0,0,0.04)]">
+                <section className="bg-white border-b border-neutral-stone/30 shadow-[0_2px_8px_rgba(0,0,0,0.04)] pt-8 pb-5">
                     <div className="max-w-7xl mx-auto px-6 relative">
-                        <div className="flex items-center gap-10 overflow-x-auto py-5 scrollbar-hide">
+                        <h2 className="text-xl font-bold text-primary mb-6 text-center">
+                            Praticiens équins référencés par spécialité
+                        </h2>
+                        <div className="flex items-center justify-center gap-6 sm:gap-10 overflow-x-auto py-2 scrollbar-hide">
                             {[
                                 { name: "Ostéopathes", icon: Stethoscope, slug: "osteopathes", color: "from-primary to-primary-soft" },
                                 { name: "Maréchaux", icon: Hammer, slug: "marechaux", color: "from-leather to-leather-light" },
@@ -113,7 +142,7 @@ export default async function Home() {
                 <section className="py-14 lg:py-20 bg-white reveal [animation-delay:200ms]">
                     <div className="max-w-7xl mx-auto px-6">
                         <h2 className="text-2xl sm:text-3xl font-bold text-primary text-center mb-12">
-                            Notre engagement
+                            Pourquoi utiliser l’annuaire Equivio ?
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                             {[
@@ -231,7 +260,7 @@ export default async function Home() {
                 <section className="py-14 lg:py-20 bg-white reveal [animation-delay:400ms]">
                     <div className="max-w-7xl mx-auto px-6">
                         <h2 className="text-2xl sm:text-3xl font-bold text-primary text-center mb-14">
-                            Pourquoi choisir Equivio ?
+                            L'expertise à portée de main
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                             {[
@@ -256,12 +285,45 @@ export default async function Home() {
                     </div>
                 </section>
 
+                {/* ❓ FAQ Section */}
+                <section className="py-14 lg:py-20 bg-white border-t border-neutral-stone/30 reveal">
+                    <div className="max-w-3xl mx-auto px-6">
+                        <h2 className="text-2xl sm:text-3xl font-bold text-primary text-center mb-10">
+                            Questions fréquentes sur les praticiens équins
+                        </h2>
+                        <div className="space-y-8">
+                            <article className="space-y-2">
+                                <h3 className="font-bold text-lg text-primary">Comment trouver un ostéopathe animalier pour mon cheval ?</h3>
+                                <p className="text-neutral-charcoal/70 leading-relaxed">
+                                    Utilisez la barre de recherche Equivio pour sélectionner la spécialité "Ostéopathe" et votre localisation. Vous accéderez à la liste des professionnels vérifiés intervenant dans votre secteur.
+                                </p>
+                            </article>
+                            <article className="space-y-2">
+                                <h3 className="font-bold text-lg text-primary">Quelle est la différence entre dentiste équin et vétérinaire ?</h3>
+                                <p className="text-neutral-charcoal/70 leading-relaxed">
+                                    Le technicien dentaire équin (TDE) est spécialisé uniquement dans l'entretien de la table dentaire. Pour les actes chirurgicaux ou les sédations lourdes, l'intervention d'un vétérinaire est requise.
+                                </p>
+                            </article>
+                            <article className="space-y-2">
+                                <h3 className="font-bold text-lg text-primary">Les praticiens sont-ils classés par région ?</h3>
+                                <p className="text-neutral-charcoal/70 leading-relaxed">
+                                    Oui, Equivio permet de filtrer les résultats par région et département. Chaque professionnel indique sa zone d'intervention réelle pour vous garantir des résultats pertinents.
+                                </p>
+                            </article>
+                        </div>
+                    </div>
+                </section>
+
                 {/* Regions (SEO) — Minimal Footer Links */}
                 <section className="py-12 bg-neutral-offwhite border-t border-neutral-stone/30 reveal [animation-delay:500ms]">
-                    <div className="max-w-7xl mx-auto px-6">
-                        <h2 className="text-xs font-bold uppercase tracking-wider text-neutral-charcoal/40 mb-6">
-                            Trouver un expert par région
+                    <div className="max-w-7xl mx-auto px-6 text-center md:text-left">
+                        <h2 className="text-xl font-bold text-primary mb-4">
+                            Trouver un praticien équin près de chez vous
                         </h2>
+                        <p className="text-sm text-neutral-charcoal/60 mb-8 max-w-2xl">
+                            Les praticiens équins sont répartis sur l’ensemble des régions françaises.
+                            Sélectionnez votre région pour accéder aux professionnels intervenant localement.
+                        </p>
                         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-x-6 gap-y-3">
                             {["Normandie", "Bretagne", "Nouvelle-Aquitaine", "Pays de la Loire", "Hauts-de-France", "Grand Est", "Auvergne-Rhône-Alpes", "Occitanie", "PACA", "Ile-de-France", "Corse"].map((region) => (
                                 <Link

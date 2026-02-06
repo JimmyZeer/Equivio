@@ -135,6 +135,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ...staticPages,
         ...specialtyPages,
         ...regionPages,
-        ...practitionerPages,
+        // ...practitionerPages, // TODO: Uncomment when ready to index all practitioners
     ]
 }
