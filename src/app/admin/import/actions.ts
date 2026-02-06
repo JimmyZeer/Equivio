@@ -72,6 +72,11 @@ export async function previewImport(formData: FormData): Promise<{ success: bool
 
     const text = await file.text();
 
+    // Check if Supabase Admin is ready
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) {
+        return { success: false, error: "Configuration serveur manquante (SERVICE_ROLE_KEY)" };
+    }
+
     // Parse CSV
     const { data: rawRows, errors: parseErrors } = Papa.parse(text, { header: true, skipEmptyLines: true });
 
@@ -81,11 +86,16 @@ export async function previewImport(formData: FormData): Promise<{ success: bool
 
     // Fetch existing practitioners to check against
     // Optimization: fetch only relevant fields for matching
-    const { data: existingPractitioners } = await supabaseAdmin
+    const { data: existingPractitioners, error: dbError } = await supabaseAdmin
         .from('practitioners')
         .select('id, name, slug_seo, phone_norm, profile_url');
 
-    if (!existingPractitioners) return { success: false, error: "Erreur DB" };
+    if (dbError) {
+        console.error("Supabase Admin Error:", dbError);
+        return { success: false, error: "Erreur Supabase: " + dbError.message };
+    }
+
+    if (!existingPractitioners) return { success: false, error: "Erreur DB: Aucune donnée retournée" };
 
     const existingByProfile = new Map();
     const existingByPhone = new Map(); // phone -> [ids...]

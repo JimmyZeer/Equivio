@@ -27,8 +27,9 @@ export default function ImportPage() {
             } else {
                 alert(result.error || "Erreur lors de l'analyse");
             }
-        } catch (err) {
-            alert("Erreur système");
+        } catch (err: any) {
+            console.error(err);
+            alert(err.message || "Erreur système");
         } finally {
             setLoading(false);
         }
