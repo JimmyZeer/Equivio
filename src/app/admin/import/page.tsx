@@ -43,16 +43,44 @@ export default function ImportPage() {
             // Filter out errors/reviews for publish
             const toPublish = rows.filter(r => r.status === 'OK' || r.status === 'UPDATE' || r.status === 'WARNING');
 
-            const result = await publishImport(toPublish);
+            // Batch processing to avoid Cloudflare "Too many subrequests" error
+            const BATCH_SIZE = 20;
+            let processedCount = 0;
+            let finalSummary = { inserted: 0, updated: 0, skipped: 0, errors: 0, errorDetails: [] as string[] };
 
-            if (result.success) {
-                setSummary(result.summary);
-                setStep('result');
-            } else {
-                alert("Erreur lors de la publication");
+            const chunks = [];
+            for (let i = 0; i < toPublish.length; i += BATCH_SIZE) {
+                chunks.push(toPublish.slice(i, i + BATCH_SIZE));
             }
+
+            // Process chunks sequentially
+            for (const chunk of chunks) {
+                const result = await publishImport(chunk);
+                if (result.success) {
+                    finalSummary.inserted += result.summary.inserted;
+                    finalSummary.updated += result.summary.updated;
+                    finalSummary.skipped += result.summary.skipped;
+                    finalSummary.errors += result.summary.errors;
+                    if (result.summary.errorDetails) {
+                        finalSummary.errorDetails = [...finalSummary.errorDetails, ...result.summary.errorDetails];
+                    }
+                } else {
+                    finalSummary.errors += chunk.length;
+                    finalSummary.errorDetails.push(`Erreur de lot: ${result.summary?.errorDetails?.join(', ') || 'Erreur inconnue'}`);
+                }
+
+                // Small delay to be nice to the event loop if needed, though sequential await is usually enough
+            }
+
+            setSummary({
+                ...finalSummary,
+                total: toPublish.length // roughly
+            });
+            setStep('result');
+
         } catch (err) {
-            alert("Erreur système");
+            console.error(err);
+            alert("Erreur système lors de la publication par lots");
         } finally {
             setLoading(false);
         }

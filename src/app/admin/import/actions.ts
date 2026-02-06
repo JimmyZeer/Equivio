@@ -275,7 +275,8 @@ export async function publishImport(rows: ImportRow[]): Promise<{ success: boole
                 while (attempts < 3) {
                     const { error } = await supabaseAdmin.from('practitioners').insert({
                         ...row.data,
-                        slug_seo: finalSlug
+                        slug_seo: finalSlug,
+                        slug: finalSlug // Fix: Explicitly set older column name if it exists and is required
                     });
 
                     if (error && error.message.includes('unique constraint') && error.message.includes('slug')) {
