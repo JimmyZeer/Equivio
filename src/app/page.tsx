@@ -7,6 +7,7 @@ import Link from "next/link";
 import { supabase } from "@/lib/supabase";
 import { PractitionerCard } from "@/components/PractitionerCard";
 import type { Metadata } from "next";
+import { FAQSchema } from "@/components/StructuredData";
 
 export const metadata: Metadata = {
     title: "Equivio – Annuaire des praticiens équins en France (ostéo, dentiste, maréchal)",
@@ -15,6 +16,21 @@ export const metadata: Metadata = {
         canonical: "https://equivio.fr/",
     },
 };
+
+const HOMEPAGE_FAQ = [
+    {
+        question: "Comment trouver un ostéopathe animalier pour mon cheval ?",
+        answer: "Utilisez la barre de recherche Equivio pour sélectionner la spécialité \"Ostéopathe\" et votre localisation. Vous accéderez à la liste des professionnels vérifiés intervenant dans votre secteur."
+    },
+    {
+        question: "Quelle est la différence entre dentiste équin et vétérinaire ?",
+        answer: "Le technicien dentaire équin (TDE) est spécialisé uniquement dans l'entretien de la table dentaire. Pour les actes chirurgicaux ou les sédations lourdes, l'intervention d'un vétérinaire est requise."
+    },
+    {
+        question: "Les praticiens sont-ils classés par région ?",
+        answer: "Oui, Equivio permet de filtrer les résultats par région et département. Chaque professionnel indique sa zone d'intervention réelle pour vous garantir des résultats pertinents."
+    }
+];
 
 export default async function Home() {
     // Fetch latest verified profiles
@@ -292,27 +308,18 @@ export default async function Home() {
                             Questions fréquentes sur les praticiens équins
                         </h2>
                         <div className="space-y-8">
-                            <article className="space-y-2">
-                                <h3 className="font-bold text-lg text-primary">Comment trouver un ostéopathe animalier pour mon cheval ?</h3>
-                                <p className="text-neutral-charcoal/70 leading-relaxed">
-                                    Utilisez la barre de recherche Equivio pour sélectionner la spécialité "Ostéopathe" et votre localisation. Vous accéderez à la liste des professionnels vérifiés intervenant dans votre secteur.
-                                </p>
-                            </article>
-                            <article className="space-y-2">
-                                <h3 className="font-bold text-lg text-primary">Quelle est la différence entre dentiste équin et vétérinaire ?</h3>
-                                <p className="text-neutral-charcoal/70 leading-relaxed">
-                                    Le technicien dentaire équin (TDE) est spécialisé uniquement dans l'entretien de la table dentaire. Pour les actes chirurgicaux ou les sédations lourdes, l'intervention d'un vétérinaire est requise.
-                                </p>
-                            </article>
-                            <article className="space-y-2">
-                                <h3 className="font-bold text-lg text-primary">Les praticiens sont-ils classés par région ?</h3>
-                                <p className="text-neutral-charcoal/70 leading-relaxed">
-                                    Oui, Equivio permet de filtrer les résultats par région et département. Chaque professionnel indique sa zone d'intervention réelle pour vous garantir des résultats pertinents.
-                                </p>
-                            </article>
+                            {HOMEPAGE_FAQ.map((item, idx) => (
+                                <article key={idx} className="space-y-2">
+                                    <h3 className="font-bold text-lg text-primary">{item.question}</h3>
+                                    <p className="text-neutral-charcoal/70 leading-relaxed">
+                                        {item.answer}
+                                    </p>
+                                </article>
+                            ))}
                         </div>
                     </div>
                 </section>
+                <FAQSchema questions={HOMEPAGE_FAQ} />
 
                 {/* Regions (SEO) — Minimal Footer Links */}
                 <section className="py-12 bg-neutral-offwhite border-t border-neutral-stone/30 reveal [animation-delay:500ms]">

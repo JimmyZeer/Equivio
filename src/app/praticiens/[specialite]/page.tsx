@@ -10,6 +10,7 @@ import Link from "next/link";
 import { fetchPractitioners } from "@/lib/practitioners";
 import { Metadata } from 'next';
 import { SPECIALTY_CONTENT } from "@/lib/seo-content";
+import { BreadcrumbSchema, FAQSchema } from "@/components/StructuredData";
 
 export async function generateMetadata({ params }: { params: Promise<{ specialite: string }> }): Promise<Metadata> {
     const resolvedParams = await params;
@@ -89,6 +90,10 @@ export default async function CategoryPage({ params, searchParams }: { params: P
 
     return (
         <div className="flex flex-col min-h-screen">
+            {/* Structured Data */}
+            <BreadcrumbSchema items={breadcrumbItems.map(item => ({ name: item.label, url: `https://equivio.fr${item.href || ''}` }))} />
+            {seoContent?.faq && <FAQSchema questions={seoContent.faq} />}
+
             <Header />
 
             <main className="flex-grow bg-neutral-offwhite pt-12 pb-32 px-6">
