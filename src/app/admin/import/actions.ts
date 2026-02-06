@@ -21,6 +21,7 @@ export interface ImportSummary {
     updated: number;
     skipped: number;
     errors: number;
+    errorDetails: string[];
 }
 
 // Helpers
@@ -216,7 +217,6 @@ export async function previewImport(formData: FormData): Promise<{ success: bool
     return { success: true, rows: processedRows };
 }
 
-
 // --- ACTION: Publish ---
 export async function publishImport(rows: ImportRow[]): Promise<{ success: boolean, summary: ImportSummary }> {
     // Re-verify rows logic would be ideal, but for MVP we trust the client passed back what we gave them (filtered)
@@ -227,6 +227,7 @@ export async function publishImport(rows: ImportRow[]): Promise<{ success: boole
     let updated = 0;
     let skipped = 0;
     let errors = 0;
+    const errorDetails: string[] = [];
 
     for (const row of rows) {
         if (row.status === 'ERROR' || row.status === 'NEEDS_REVIEW') {
@@ -282,6 +283,7 @@ export async function publishImport(rows: ImportRow[]): Promise<{ success: boole
                         attempts++;
                     } else if (error) {
                         console.error("Insert error", error);
+                        errorDetails.push(`Erreur sur ${row.data.name}: ${error.code} - ${error.message}`);
                         errors++;
                         break;
                     } else {
@@ -290,8 +292,9 @@ export async function publishImport(rows: ImportRow[]): Promise<{ success: boole
                     }
                 }
             }
-        } catch (e) {
+        } catch (e: any) {
             console.error(e);
+            errorDetails.push(`Exception sur ${row.data.name}: ${e.message}`);
             errors++;
         }
     }
@@ -307,7 +310,8 @@ export async function publishImport(rows: ImportRow[]): Promise<{ success: boole
             inserted,
             updated,
             skipped,
-            errors
+            errors,
+            errorDetails
         }
     };
 }

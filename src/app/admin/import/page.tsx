@@ -215,6 +215,21 @@ export default function ImportPage() {
                             <span className="block text-sm text-gray-500">Non traités</span>
                             <span className="text-xl font-bold text-gray-600">{summary.skipped}</span>
                         </div>
+
+                        {summary.errors > 0 && summary.errorDetails && summary.errorDetails.length > 0 && (
+                            <div className="bg-red-50 p-4 rounded-lg border border-red-100 text-left max-h-60 overflow-y-auto">
+                                <h3 className="text-red-800 font-bold text-sm mb-2 flex items-center gap-2">
+                                    <AlertTriangle className="w-4 h-4" /> Détail des erreurs
+                                </h3>
+                                <ul className="space-y-1">
+                                    {summary.errorDetails.map((err: string, idx: number) => (
+                                        <li key={idx} className="text-xs text-red-700 font-mono border-b border-red-100 pb-1 last:border-0">
+                                            {err}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
                     </div>
 
                     <button
