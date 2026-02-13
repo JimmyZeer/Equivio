@@ -3,73 +3,46 @@
 import { ShieldCheck, Phone, MapPin, Camera, Globe, GraduationCap } from "lucide-react";
 import { useState } from "react";
 
-interface TransparencyIndexProps {
-    // Score components (each true = points)
-    isVerified?: boolean;        // Profil vérifié = +20pts
-    hasPhone?: boolean;          // Téléphone confirmé = +15pts
-    hasRegion?: boolean;         // Présence terrain = +25pts
-    hasCity?: boolean;           // Ville renseignée = +15pts
-    hasWebsite?: boolean;        // Site web = +10pts
-    hasPhoto?: boolean;          // Photo pro = +15pts (future)
-    hasDiploma?: boolean;        // Diplôme vérifié = +20pts (future)
-}
+import { TransparencyCriteria, calculateTransparencyScore, getTransparencyLevel, TRANSPARENCY_WEIGHTS } from "@/lib/transparency";
 
-const SCORE_WEIGHTS = {
-    isVerified: 20,
-    hasPhone: 15,
-    hasRegion: 25,
-    hasCity: 15,
-    hasWebsite: 10,
-    hasPhoto: 15,
-    hasDiploma: 20,
-};
+// ... existing imports
 
-export function TransparencyIndex({
-    isVerified = false,
-    hasPhone = false,
-    hasRegion = false,
-    hasCity = false,
-    hasWebsite = false,
-    hasPhoto = false,
-    hasDiploma = false,
-}: TransparencyIndexProps) {
+interface TransparencyIndexProps extends TransparencyCriteria { }
+
+export function TransparencyIndex(props: TransparencyIndexProps) {
     const [isExpanded, setIsExpanded] = useState(false);
+    const {
+        isVerified, hasPhone, hasRegion, hasCity,
+        hasWebsite, hasPhoto, hasDiploma
+    } = props;
 
-    // Calculate score
-    const score =
-        (isVerified ? SCORE_WEIGHTS.isVerified : 0) +
-        (hasPhone ? SCORE_WEIGHTS.hasPhone : 0) +
-        (hasRegion ? SCORE_WEIGHTS.hasRegion : 0) +
-        (hasCity ? SCORE_WEIGHTS.hasCity : 0) +
-        (hasWebsite ? SCORE_WEIGHTS.hasWebsite : 0) +
-        (hasPhoto ? SCORE_WEIGHTS.hasPhoto : 0) +
-        (hasDiploma ? SCORE_WEIGHTS.hasDiploma : 0);
+    // Calculate score using shared utility
+    const { score, maxScore, percentage } = calculateTransparencyScore(props);
 
-    // Max possible score based on current criteria
-    const maxScore = Object.values(SCORE_WEIGHTS).reduce((a, b) => a + b, 0);
-    const percentage = Math.round((score / maxScore) * 100);
+    // Get level and color info
+    const { label, color } = getTransparencyLevel(percentage);
 
     // Color based on score
     const getColor = () => {
-        if (percentage >= 70) return "text-emerald-600 bg-emerald-50 border-emerald-200";
-        if (percentage >= 40) return "text-amber-600 bg-amber-50 border-amber-200";
+        if (color === "emerald") return "text-emerald-600 bg-emerald-50 border-emerald-200";
+        if (color === "amber") return "text-amber-600 bg-amber-50 border-amber-200";
         return "text-neutral-500 bg-neutral-100 border-neutral-200";
     };
 
     const getProgressColor = () => {
-        if (percentage >= 70) return "bg-emerald-500";
-        if (percentage >= 40) return "bg-amber-500";
+        if (color === "emerald") return "bg-emerald-500";
+        if (color === "amber") return "bg-amber-500";
         return "bg-neutral-400";
     };
 
     const criteria = [
-        { key: "isVerified", label: "Profil vérifié", icon: ShieldCheck, active: isVerified, points: SCORE_WEIGHTS.isVerified },
-        { key: "hasPhone", label: "Téléphone confirmé", icon: Phone, active: hasPhone, points: SCORE_WEIGHTS.hasPhone },
-        { key: "hasRegion", label: "Zone d'intervention", icon: MapPin, active: hasRegion, points: SCORE_WEIGHTS.hasRegion },
-        { key: "hasCity", label: "Ville renseignée", icon: MapPin, active: hasCity, points: SCORE_WEIGHTS.hasCity },
-        { key: "hasWebsite", label: "Site web vérifié", icon: Globe, active: hasWebsite, points: SCORE_WEIGHTS.hasWebsite },
-        { key: "hasPhoto", label: "Photo professionnelle", icon: Camera, active: hasPhoto, points: SCORE_WEIGHTS.hasPhoto },
-        { key: "hasDiploma", label: "Diplôme vérifié", icon: GraduationCap, active: hasDiploma, points: SCORE_WEIGHTS.hasDiploma },
+        { key: "isVerified", label: "Profil vérifié", icon: ShieldCheck, active: isVerified, points: TRANSPARENCY_WEIGHTS.isVerified },
+        { key: "hasPhone", label: "Téléphone confirmé", icon: Phone, active: hasPhone, points: TRANSPARENCY_WEIGHTS.hasPhone },
+        { key: "hasRegion", label: "Zone d'intervention", icon: MapPin, active: hasRegion, points: TRANSPARENCY_WEIGHTS.hasRegion },
+        { key: "hasCity", label: "Ville renseignée", icon: MapPin, active: hasCity, points: TRANSPARENCY_WEIGHTS.hasCity },
+        { key: "hasWebsite", label: "Site web vérifié", icon: Globe, active: hasWebsite, points: TRANSPARENCY_WEIGHTS.hasWebsite },
+        { key: "hasPhoto", label: "Photo professionnelle", icon: Camera, active: hasPhoto, points: TRANSPARENCY_WEIGHTS.hasPhoto },
+        { key: "hasDiploma", label: "Diplôme vérifié", icon: GraduationCap, active: hasDiploma, points: TRANSPARENCY_WEIGHTS.hasDiploma },
     ];
 
     return (
@@ -110,7 +83,7 @@ export function TransparencyIndex({
                 <div className="text-left">
                     <p className="text-xs font-bold uppercase tracking-wider opacity-70">Indice de Transparence</p>
                     <p className="text-sm font-bold">
-                        {percentage >= 70 ? "Excellent" : percentage >= 40 ? "Bon" : "À compléter"}
+                        {label}
                     </p>
                 </div>
             </button>

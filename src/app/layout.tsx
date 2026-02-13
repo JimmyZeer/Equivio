@@ -43,7 +43,7 @@ export const metadata: Metadata = {
         follow: true,
     },
     verification: {
-        google: "your-google-verification-code", // TODO: Add actual verification code
+        google: "google-site-verification=PLACEHOLDER", // TODO: Replace with actual code from Search Console
     },
 };
 

@@ -37,9 +37,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     // Log for debugging
     if (error) {
-        console.error('Sitemap: Error fetching practitioners:', error)
+        // console.error('Sitemap: Error fetching practitioners:', error)
     }
-    console.log(`Sitemap: Found ${practitioners?.length || 0} practitioners`)
+    // console.log(`Sitemap: Found ${practitioners?.length || 0} practitioners`)
 
     const now = new Date()
 
@@ -135,6 +135,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         ...staticPages,
         ...specialtyPages,
         ...regionPages,
-        // ...practitionerPages, // TODO: Uncomment when ready to index all practitioners
+        ...practitionerPages,
     ]
 }

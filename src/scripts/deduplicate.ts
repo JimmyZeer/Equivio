@@ -29,11 +29,29 @@ if (!supabaseUrl || !supabaseKey) {
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+// ... imports
+
+// Helper interface for script
+interface ScriptPractitioner {
+    id: string;
+    name: string;
+    specialty: string;
+    city?: string | null;
+    address_full?: string | null;
+    phone_norm?: string | null;
+    website?: string | null;
+    description?: string | null;
+    status: string;
+}
+
+const DRY_RUN = true; // Set to false to actually apply changes
+
 async function deduplicate() {
     console.log("--- Starting Deduplication Analysis ---");
+    if (DRY_RUN) console.log("⚠️ DRY RUN MODE: No changes will be applied to the database.");
 
     // 1. Fetch all active practitioners
-    const { data: practitioners, error } = await supabase
+    const { data, error } = await supabase
         .from('practitioners')
         .select('*')
         .eq('status', 'active');
@@ -43,30 +61,24 @@ async function deduplicate() {
         return;
     }
 
+    const practitioners = data as ScriptPractitioner[];
+
     console.log(`Fetched ${practitioners.length} active practitioners.`);
 
     // 2. Group by keys
-    const paramMap = new Map<string, any[]>();
+    const paramMap = new Map<string, ScriptPractitioner[]>();
 
     // Helper to normalize strings
-    const norm = (s: string | null) => s ? s.trim().toLowerCase().replace(/\s+/g, ' ') : '';
+    const norm = (s: string | null | undefined) => s ? s.trim().toLowerCase().replace(/\s+/g, ' ') : '';
 
     practitioners.forEach(p => {
-        // Key 1: Name + Phone (if phone exists)
-        // Key 2: Name + First 5 chars of Address (if address exists)
-        // For simplicity, let's use Name + Phone as primary strong signal, and Name + City as secondary.
-
-        // Strategy: Use Name as bucket, then check sub-conditions.
-        // Actually, let's use Name as the main grouping key for now, because phone might be missing.
-        // But names can be common.
-
         let key = norm(p.name);
         if (p.phone_norm) {
             key += `|${norm(p.phone_norm)}`;
         } else if (p.city) {
             key += `|${norm(p.city)}`;
         } else {
-            key += `|${p.id}`; // No phone/city -> treat as unique to be safe, or just name? Risk of false positive.
+            key += `|${p.id}`;
         }
 
         if (!paramMap.has(key)) {
@@ -84,9 +96,8 @@ async function deduplicate() {
             console.log(`\nFound potential duplicates for key [${key}]: ${group.length} records`);
             duplicatesParamCount++;
 
-            // Sort by "quality" (e.g. has website, has phone, most recent intervention?)
-            // We want to KEEP the one with the most filled fields.
-            const score = (p: any) => {
+            // Sort by "quality"
+            const score = (p: ScriptPractitioner) => {
                 let s = 0;
                 if (p.website) s += 2;
                 if (p.phone_norm) s += 2;
@@ -115,18 +126,19 @@ async function deduplicate() {
     console.log(`Records to archive: ${toArchiveIds.length}`);
 
     if (toArchiveIds.length > 0) {
-        // Uncomment to execute
-        console.log("Starting update...");
+        if (!DRY_RUN) {
+            console.log("Starting update...");
 
-        const { error: updateError } = await supabase
-            .from('practitioners')
-            .update({ status: 'duplicate' }) // or 'archived'
-            .in('id', toArchiveIds);
+            const { error: updateError } = await supabase
+                .from('practitioners')
+                .update({ status: 'duplicate' })
+                .in('id', toArchiveIds);
 
-        if (updateError) console.error("Update failed:", updateError);
-        else console.log("Update successful. Archived duplicates.");
-
-        // console.log("DRY RUN: Updates commented out. Set 'status' to 'duplicate' for IDs:", toArchiveIds);
+            if (updateError) console.error("Update failed:", updateError);
+            else console.log("Update successful. Archived duplicates.");
+        } else {
+            console.log("[DRY RUN] Would set 'status' to 'duplicate' for IDs:", toArchiveIds);
+        }
     } else {
         console.log("No duplicates found to merge.");
     }

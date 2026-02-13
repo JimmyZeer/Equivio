@@ -12,22 +12,12 @@ import { Metadata } from 'next';
 import { SPECIALTY_CONTENT } from "@/lib/seo-content";
 import { BreadcrumbSchema, FAQSchema } from "@/components/StructuredData";
 
+import { SPECIALTIES_CONFIG, DEFAULT_SPECIALTY } from "@/config/specialties";
+
 export async function generateMetadata({ params }: { params: Promise<{ specialite: string }> }): Promise<Metadata> {
     const resolvedParams = await params;
 
-    // Plural mapping for Title
-    const config: Record<string, { plural: string, singular: string, db: string }> = {
-        osteopathes: { plural: "Ostéopathes équins", singular: "ostéopathe équin", db: "Ostéopathe animalier" },
-        marechaux: { plural: "Maréchaux-ferrants", singular: "maréchal-ferrant", db: "Maréchal-ferrant" },
-        dentistes: { plural: "Dentistes équins", singular: "dentiste équin", db: "Dentisterie équine" },
-        "bien-etre": { plural: "Praticiens bien-être", singular: "praticien bien-être", db: "Praticien bien-être" },
-    };
-
-    const current = config[resolvedParams.specialite] || {
-        plural: "Praticiens équins",
-        singular: "praticien équin",
-        db: "Praticien équin"
-    };
+    const current = SPECIALTIES_CONFIG[resolvedParams.specialite] || DEFAULT_SPECIALTY;
 
     const { count } = await fetchPractitioners({
         specialty: current.db,
@@ -50,23 +40,9 @@ export default async function CategoryPage({ params, searchParams }: { params: P
     const page = parseInt(resolvedSearchParams.page || '1', 10) || 1;
     const pageSize = 50;
 
-    const dbTitles: Record<string, string> = {
-        osteopathes: "Ostéopathe animalier",
-        marechaux: "Maréchal-ferrant",
-        dentistes: "Dentisterie équine",
-        "bien-etre": "Praticien bien-être",
-    };
-
-    // Plural display for H1
-    const pluralTitles: Record<string, string> = {
-        osteopathes: "Ostéopathes équins",
-        marechaux: "Maréchaux-ferrants",
-        dentistes: "Dentistes équins",
-        "bien-etre": "Praticiens bien-être",
-    };
-
-    const currentDbTitle = dbTitles[resolvedParams.specialite] || "Praticien équin";
-    const currentDisplayTitle = pluralTitles[resolvedParams.specialite] || "Praticiens équins";
+    const current = SPECIALTIES_CONFIG[resolvedParams.specialite] || DEFAULT_SPECIALTY;
+    const currentDbTitle = current.db;
+    const currentDisplayTitle = current.plural;
     const seoContent = SPECIALTY_CONTENT[resolvedParams.specialite];
 
     // SEO H1 fallback if exact match not found (should not happen for core specialties)
@@ -167,7 +143,7 @@ export default async function CategoryPage({ params, searchParams }: { params: P
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 text-sm">
                             {["Normandie", "Bretagne", "Nouvelle-Aquitaine", "Pays de la Loire", "Hauts-de-France", "Grand Est", "Occitanie", "Auvergne-Rhône-Alpes", "PACA", "Ile-de-France", "Corse"].map(r => (
                                 <Link key={r} href={`/regions/${r.toLowerCase()}`} className="text-neutral-charcoal/60 hover:text-primary hover:underline transition-all">
-                                    Trouver un {dbTitles[resolvedParams.specialite]?.toLowerCase() || "praticien"} en {r}
+                                    Trouver un {(SPECIALTIES_CONFIG[resolvedParams.specialite]?.db || DEFAULT_SPECIALTY.db).toLowerCase()} en {r}
                                 </Link>
                             ))}
                         </div>

@@ -79,7 +79,7 @@ export async function fetchPractitioners({
         }
 
         // RPC returns total_count in each row. We pick it from the first row.
-        const count = data && data.length > 0 ? Number(data[0].total_count) : 0;
+        const count = data && data.length > 0 ? Number((data[0] as any).total_count) : 0;
 
         return {
             data: (data as Practitioner[]) || [],

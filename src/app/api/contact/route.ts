@@ -24,13 +24,13 @@ export async function POST(request: NextRequest) {
         }
 
         // Log the contact request (always works)
-        console.log("📧 Nouvelle demande de contact:", {
-            practitionerId,
-            practitionerName,
-            sender: { name, email, phone },
-            message: message.substring(0, 100) + (message.length > 100 ? "..." : ""),
-            timestamp: timestamp || new Date().toISOString()
-        });
+        // console.log("📧 Nouvelle demande de contact:", {
+        //     practitionerId,
+        //     practitionerName,
+        //     sender: { name, email, phone },
+        //     message: message.substring(0, 100) + (message.length > 100 ? "..." : ""),
+        //     timestamp: timestamp || new Date().toISOString()
+        // });
 
         // Try to store in Supabase (may fail if table doesn't exist)
         try {
@@ -50,12 +50,12 @@ export async function POST(request: NextRequest) {
                 .single();
 
             if (error) {
-                console.warn("Supabase insert failed (table may not exist):", error.code);
+                // console.warn("Supabase insert failed (table may not exist):", error.code);
             } else {
-                console.log("✅ Contact saved to Supabase:", data?.id);
+                // console.log("✅ Contact saved to Supabase:", data?.id);
             }
         } catch (dbError) {
-            console.warn("Database operation failed:", dbError);
+            // console.warn("Database operation failed:", dbError);
         }
 
         // TODO: Send email notification to practitioner

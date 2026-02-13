@@ -13,7 +13,7 @@ export function middleware(req: NextRequest) {
         const [user, pwd] = atob(authValue).split(":");
 
         const validUser = "admin";
-        const validPass = process.env.ADMIN_PASSWORD || "admin123"; // Fallback dev password
+        const validPass = process.env.ADMIN_PASSWORD;
 
         if (user === validUser && pwd === validPass) {
             return NextResponse.next();
