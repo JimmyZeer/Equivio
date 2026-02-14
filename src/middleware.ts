@@ -15,8 +15,6 @@ export function middleware(req: NextRequest) {
         const validUser = "admin";
         const validPass = process.env.ADMIN_PASSWORD;
 
-        console.log("Auth Attempt:", { user, pwdReceived: !!pwd, validPassSet: !!validPass });
-
         if (user === validUser && pwd === validPass) {
             return NextResponse.next();
         }
