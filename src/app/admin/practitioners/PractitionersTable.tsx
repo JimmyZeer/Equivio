@@ -17,6 +17,7 @@ interface PractitionersTableProps {
 
 export function PractitionersTable({ practitioners, currentPage, totalPages, totalCount }: PractitionersTableProps) {
     const router = useRouter();
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
     const [editingPractitioner, setEditingPractitioner] = useState<any | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
@@ -56,8 +57,19 @@ export function PractitionersTable({ practitioners, currentPage, totalPages, tot
         }
     };
 
+    const openCreate = () => {
+        setEditingPractitioner(null);
+        setIsDrawerOpen(true);
+    };
+
     const openEdit = (p: any) => {
         setEditingPractitioner(p);
+        setIsDrawerOpen(true);
+    };
+
+    const closeDrawer = () => {
+        setIsDrawerOpen(false);
+        setTimeout(() => setEditingPractitioner(null), 300); // Clear after animation
     };
 
     const handleExport = () => {
@@ -71,6 +83,15 @@ export function PractitionersTable({ practitioners, currentPage, totalPages, tot
                 {/* Toolbar */}
                 <div className="flex items-center justify-between gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-100">
                     <div className="flex items-center gap-2">
+                        <button
+                            onClick={openCreate}
+                            className="bg-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-emerald-700 flex items-center gap-2 shadow-sm shadow-emerald-200"
+                        >
+                            + Nouveau Praticien
+                        </button>
+
+                        <div className="h-6 w-px bg-gray-200 mx-2" />
+
                         {selectedIds.size > 0 && (
                             <>
                                 <span className="text-sm font-medium text-gray-700">{selectedIds.size} sélectionné(s)</span>
@@ -93,18 +114,20 @@ export function PractitionersTable({ practitioners, currentPage, totalPages, tot
                         )}
                     </div>
 
-                    <div className="text-sm text-gray-500 font-medium">
-                        {totalCount} fiches
+                    <div className="flex items-center gap-4">
+                        <div className="text-sm text-gray-500 font-medium">
+                            {totalCount} fiches
+                        </div>
+                        <button
+                            onClick={handleExport}
+                            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2 transition-colors"
+                        >
+                            <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                            </svg>
+                            Exporter CSV
+                        </button>
                     </div>
-                    <button
-                        onClick={handleExport}
-                        className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2 transition-colors"
-                    >
-                        <svg className="w-4 h-4 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                        </svg>
-                        Exporter CSV
-                    </button>
                 </div>
             </div>
 
@@ -210,8 +233,8 @@ export function PractitionersTable({ practitioners, currentPage, totalPages, tot
             </div>
 
             <PractitionerDrawer
-                isOpen={!!editingPractitioner}
-                onClose={() => setEditingPractitioner(null)}
+                isOpen={isDrawerOpen}
+                onClose={closeDrawer}
                 practitioner={editingPractitioner}
             />
         </>

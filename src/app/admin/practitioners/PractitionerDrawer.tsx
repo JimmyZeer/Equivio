@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { X, Save, Lock, Unlock, MapPin, Loader2, AlertTriangle, Search } from 'lucide-react';
-import { updatePractitioner, geocodeAddress } from '../actions';
+import { updatePractitioner, createPractitioner, geocodeAddress } from '../actions';
 import { Button } from '@/components/ui/Button';
 
 interface PractitionerDrawerProps {
     isOpen: boolean;
     onClose: () => void;
-    practitioner: any | null;
+    practitioner: any | null; // null = creation mode
 }
 
 export function PractitionerDrawer({ isOpen, onClose, practitioner }: PractitionerDrawerProps) {
@@ -19,14 +19,22 @@ export function PractitionerDrawer({ isOpen, onClose, practitioner }: Practition
     const [error, setError] = useState('');
 
     useEffect(() => {
-        if (practitioner) {
-            setFormData({ ...practitioner });
-            setSlugLocked(true);
+        if (isOpen) {
+            if (practitioner) {
+                setFormData({ ...practitioner });
+                setSlugLocked(true);
+            } else {
+                // Creation Mode: Reset form
+                setFormData({ status: 'active', country: 'FRANCE' });
+                setSlugLocked(false);
+            }
             setError('');
         }
-    }, [practitioner]);
+    }, [isOpen, practitioner]);
 
-    if (!isOpen || !practitioner) return null;
+    if (!isOpen) return null;
+
+    const isCreation = !practitioner;
 
     const handleChange = (field: string, value: any) => {
         setFormData((prev: any) => ({ ...prev, [field]: value }));
@@ -67,14 +75,14 @@ export function PractitionerDrawer({ isOpen, onClose, practitioner }: Practition
         setError('');
 
         try {
-            // Helper to parse numbers safely (preserve 0, null if empty/NaN)
+            // Helper to parse numbers safely
             const parseNum = (v: any) => {
                 if (v === '' || v === null || v === undefined) return null;
                 const n = parseFloat(v);
                 return isNaN(n) ? null : n;
             };
 
-            const result = await updatePractitioner(practitioner.id, {
+            const dataToSave = {
                 name: formData.name,
                 specialty: formData.specialty,
                 city: formData.city,
@@ -87,13 +95,20 @@ export function PractitionerDrawer({ isOpen, onClose, practitioner }: Practition
                 status: formData.status,
                 is_verified: formData.is_verified,
                 slug_seo: formData.slug_seo
-            });
+            };
+
+            let result;
+            if (isCreation) {
+                result = await createPractitioner(dataToSave);
+            } else {
+                result = await updatePractitioner(practitioner.id, dataToSave);
+            }
 
             if (!result.success) {
                 setError(result.error || 'Erreur lors de la sauvegarde');
             } else {
                 onClose();
-                router.refresh(); // Refresh server data
+                router.refresh();
             }
         } catch (err: any) {
             setError(err.message || 'Erreur inattendue');
@@ -112,7 +127,9 @@ export function PractitionerDrawer({ isOpen, onClose, practitioner }: Practition
 
                 {/* Header */}
                 <div className="p-4 border-b border-gray-100 flex items-center justify-between bg-gray-50">
-                    <h2 className="font-bold text-lg text-gray-900">Modifier Praticien</h2>
+                    <h2 className="font-bold text-lg text-gray-900">
+                        {isCreation ? "Nouveau Praticien" : "Modifier Praticien"}
+                    </h2>
                     <button onClick={onClose} className="p-2 hover:bg-gray-200 rounded-full transition-colors">
                         <X className="w-5 h-5 text-gray-500" />
                     </button>

@@ -29,6 +29,13 @@ async function getStats() {
         .eq('status', 'active')
         .is('city', null); // Or empty string check? Supabase treats empty string diff than null usually.
 
+    // 4. Recent Activity
+    const { data: recentPractitioners } = await supabaseAdmin
+        .from('practitioners')
+        .select('id, name, city, specialty, created_at, status')
+        .order('created_at', { ascending: false })
+        .limit(5);
+
     return {
         activeCount: activeCount || 0,
         inactiveCount: inactiveCount || 0,
@@ -36,7 +43,7 @@ async function getStats() {
         verifiedCount: verifiedCount || 0,
         missingCoords: missingCoords || 0,
         missingCity: missingCity || 0,
-        // Calculate others roughly or add more queries if critical
+        recentPractitioners: recentPractitioners || [],
         total: (activeCount || 0) + (inactiveCount || 0)
     };
 }
@@ -131,22 +138,41 @@ export default async function AdminDashboardPage() {
                         </Link>
                     </div>
 
-                    {/* Placeholder for complex query like "Incomplete" */}
-                    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:border-orange-300 transition-colors group">
+                    {/* Recent Activity */}
+                    <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200 hover:border-emerald-300 transition-colors group">
                         <div className="flex items-center gap-3 mb-3">
-                            <FileWarning className="w-5 h-5 text-yellow-500" />
-                            <h3 className="font-bold text-gray-800">Profils Incomplets</h3>
+                            <Users className="w-5 h-5 text-emerald-500" />
+                            <h3 className="font-bold text-gray-800">Derniers Ajouts</h3>
                         </div>
-                        <p className="text-3xl font-black text-gray-900 mb-2">--</p>
-                        <p className="text-sm text-gray-500 mb-4">Critère: &gt;2 infos manquantes</p>
-                        <Link href="/admin/practitioners?warning=incomplete" className="text-sm font-bold text-blue-600 hover:underline flex items-center gap-1">
-                            Explorer <span>→</span>
-                        </Link>
+                        <div className="space-y-3">
+                            {stats.recentPractitioners?.map((p: any) => (
+                                <div key={p.id} className="flex justify-between items-center text-sm border-b border-gray-100 last:border-0 pb-2 last:pb-0">
+                                    <div>
+                                        <p className="font-bold text-gray-900 truncate max-w-[120px]">{p.name}</p>
+                                        <p className="text-xs text-gray-500">{p.city || "Ville inconnue"}</p>
+                                    </div>
+                                    <div className="text-right">
+                                        <p className="text-xs font-mono text-gray-400">
+                                            {p.created_at ? new Date(p.created_at).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' }) : 'N/A'}
+                                        </p>
+                                        <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${p.status === 'active' ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-100 text-gray-600'}`}>
+                                            {p.status}
+                                        </span>
+                                    </div>
+                                </div>
+                            ))}
+                            {(!stats.recentPractitioners || stats.recentPractitioners.length === 0) && (
+                                <p className="text-sm text-gray-400 italic">Aucune activité récente.</p>
+                            )}
+                        </div>
+                        <div className="mt-4 pt-2 border-t border-gray-100">
+                            <Link href="/admin/practitioners" className="text-sm font-bold text-emerald-600 hover:underline flex items-center gap-1">
+                                Voir tout <span>→</span>
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>
-
-            {/* Quick Actions / Recent Activity could go here */}
         </div>
     );
 }

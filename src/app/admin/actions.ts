@@ -102,6 +102,54 @@ export async function updatePractitioner(id: string, data: any) {
     }
 }
 
+export async function createPractitioner(data: any) {
+    try {
+        // Basic validation / cleaning
+        const insertData = { ...data };
+
+        // Normalize phone
+        if (insertData.phone_norm) {
+            insertData.phone_norm = insertData.phone_norm.replace(/\s/g, '');
+        }
+
+        // Generate Slug if missing
+        if (!insertData.slug_seo && insertData.name) {
+            insertData.slug_seo = insertData.name
+                .toLowerCase()
+                .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/(^-|-$)/g, '');
+        }
+
+        // Default status
+        if (!insertData.status) insertData.status = 'active';
+
+        // Clean undefined
+        Object.keys(insertData).forEach(key => insertData[key] === undefined && delete insertData[key]);
+
+        const { data: newPractitioner, error } = await supabaseAdmin
+            .from('practitioners')
+            .insert(insertData)
+            .select()
+            .single();
+
+        if (error) {
+            console.error("Create Error:", error);
+            return { success: false, error: error.message };
+        }
+
+        // Audit Log
+        await logAdminAction('practitioner.create', 'practitioner', newPractitioner.id, null, insertData);
+
+        revalidatePath('/admin/practitioners');
+        return { success: true, id: newPractitioner.id };
+
+    } catch (err: any) {
+        console.error("Unexpected Create Error:", err);
+        return { success: false, error: err.message || "Erreur inattendue" };
+    }
+}
+
 export async function bulkUpdateStatus(ids: string[], status: 'active' | 'inactive') {
     if (!ids || ids.length === 0) return { success: false, error: "Aucun élément sélectionné" };
 
