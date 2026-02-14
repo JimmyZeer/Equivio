@@ -1,3 +1,4 @@
+'use client';
 import { Practitioner } from "@/lib/practitioners";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -14,6 +15,7 @@ import Link from "next/link";
 import { TransparencyIndex } from "@/components/TransparencyIndex";
 import { TrackPractitioner } from "@/components/analytics/TrackPractitioner";
 import { ClaimButton } from "@/components/analytics/ClaimButton";
+import { trackWebsiteClick } from "@/lib/analytics";
 
 export type PractitionerTemplateType = 'osteo' | 'dentist' | 'farrier' | 'generic';
 
@@ -407,7 +409,13 @@ export function DynamicPractitionerTemplate({ practitioner, templateType }: Prop
                                             </div>
                                             <div className="min-w-0">
                                                 <span className="block text-neutral-400 text-xs uppercase tracking-wider font-bold mb-0.5">Site web</span>
-                                                <a href={practitioner.website} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline hover:text-emerald-700 transition-colors font-semibold text-base break-all block truncate">
+                                                <a
+                                                    href={practitioner.website}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    onClick={() => trackWebsiteClick(practitioner.id, practitioner.website!)}
+                                                    className="text-primary hover:underline hover:text-emerald-700 transition-colors font-semibold text-base break-all block truncate"
+                                                >
                                                     Voir le site
                                                 </a>
                                             </div>
