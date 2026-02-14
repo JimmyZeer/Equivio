@@ -9,7 +9,7 @@ import { PhoneNumberReveal } from "@/components/PhoneNumberReveal";
 import { ContactButton } from "@/components/ContactButton";
 import { ProfileFavoriteButton } from "@/components/ProfileFavoriteButton";
 import { ShareButtons } from "@/components/ShareButtons";
-import { LocalBusinessSchema, BreadcrumbSchema } from "@/components/StructuredData";
+import { LocalBusinessSchema, BreadcrumbSchema, FAQSchema } from "@/components/StructuredData";
 import { MapPin, ShieldCheck, CheckCircle2, Clock, HelpCircle, Info, ExternalLink } from "lucide-react";
 import Link from "next/link";
 import { TransparencyIndex } from "@/components/TransparencyIndex";
@@ -170,6 +170,9 @@ export function DynamicPractitionerTemplate({ practitioner, templateType }: Prop
             <BreadcrumbSchema
                 items={breadcrumbItems.map(item => ({ name: item.label, url: `https://equivio.fr${item.href}` }))}
             />
+            {config.faq.length > 0 && (
+                <FAQSchema questions={config.faq.map(q => ({ question: q.q, answer: q.a }))} />
+            )}
 
             <Header />
 

@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const resolvedParams = await params;
     const { data: practitioner } = await supabase
         .from('practitioners')
-        .select('name, specialty, city, status')
+        .select('name, specialty, city, status, photo_url')
         .eq('slug_seo', resolvedParams.slug)
         .single();
 
@@ -30,11 +30,22 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
     const displaySpecialty = normalizeSpecialty(practitioner.specialty);
 
+    // Default OG Image
+    let ogImages = ["https://equivio.fr/og-image.png"];
+
+    // Use practitioner photo if available
+    if (practitioner.photo_url) {
+        ogImages = [practitioner.photo_url];
+    }
+
     return {
         title: `${practitioner.name}, ${displaySpecialty.toLowerCase()} à ${practitioner.city} | Equivio`,
         description: `Fiche professionnelle de ${practitioner.name}, ${displaySpecialty.toLowerCase()} exerçant à ${practitioner.city}. Coordonnées et informations vérifiées.`,
         alternates: {
             canonical: `/praticien/${resolvedParams.slug}`
+        },
+        openGraph: {
+            images: ogImages
         }
     };
 }

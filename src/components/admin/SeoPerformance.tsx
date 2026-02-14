@@ -1,5 +1,6 @@
-import { LineChart, Search, MousePointer2, Eye, FileText, TrendingUp, Lock } from 'lucide-react';
+import { LineChart, Search, MousePointer2, Eye, FileText, TrendingUp, Lock, AlertCircle, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
+import { fetchGscData } from '@/lib/gsc';
 
 // Force dynamic rendering
 export const dynamic = 'force-dynamic';
@@ -12,6 +13,9 @@ interface SparklineProps {
 function Sparkline({ data, color }: SparklineProps) {
     const height = 40;
     const width = 100;
+
+    if (!data || data.length === 0) return null;
+
     const max = Math.max(...data);
     const min = Math.min(...data);
     const range = max - min || 1;
