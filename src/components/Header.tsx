@@ -40,6 +40,10 @@ export function Header() {
                         <Link href="/praticiens/osteopathes" className="hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full">Ostéopathes</Link>
                         <Link href="/praticiens/marechaux" className="hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full">Maréchaux</Link>
                         <Link href="/praticiens/dentistes" className="hover:text-primary transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full">Dentistes</Link>
+                        <Link href="/carnet" className="text-primary hover:text-primary-soft transition-colors relative inline-flex items-center gap-2 group">
+                            Carnet
+                            <span className="text-[9px] font-bold tracking-wider px-1.5 py-0.5 rounded-full bg-leather text-white normal-case">NOUVEAU</span>
+                        </Link>
                     </nav>
 
                     <div className="flex items-center gap-4">
@@ -77,6 +81,10 @@ export function Header() {
             {/* Mobile Menu Panel */}
             <div className={`md:hidden fixed top-20 left-0 right-0 bg-white border-b border-neutral-stone z-50 transition-all duration-300 ease-out ${isMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-4 opacity-0 pointer-events-none'}`}>
                 <nav className="flex flex-col p-6 space-y-4">
+                    <Link href="/carnet" onClick={() => setIsMenuOpen(false)} className="text-lg font-bold text-primary py-3 border-b border-neutral-stone/10 active:bg-neutral-offwhite transition-colors flex items-center gap-2">
+                        Carnet de mon cheval
+                        <span className="text-[9px] font-bold tracking-wider px-1.5 py-0.5 rounded-full bg-leather text-white">NOUVEAU</span>
+                    </Link>
                     <Link href="/praticiens/osteopathes" onClick={() => setIsMenuOpen(false)} className="text-lg font-bold text-primary py-3 border-b border-neutral-stone/10 active:bg-neutral-offwhite transition-colors">Ostéopathes</Link>
                     <Link href="/praticiens/marechaux" onClick={() => setIsMenuOpen(false)} className="text-lg font-bold text-primary py-3 border-b border-neutral-stone/10 active:bg-neutral-offwhite transition-colors">Maréchaux</Link>
                     <Link href="/praticiens/dentistes" onClick={() => setIsMenuOpen(false)} className="text-lg font-bold text-primary py-3 border-b border-neutral-stone/10 active:bg-neutral-offwhite transition-colors">Dentistes</Link>
