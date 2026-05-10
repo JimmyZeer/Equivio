@@ -16,8 +16,12 @@ export function Footer() {
                         <span className="text-lg font-bold text-primary tracking-tight">EQUIVIO</span>
                     </div>
                     <p className="leading-relaxed opacity-70">
-                        Le réseau de confiance des praticiens équins. Basé exclusivement sur l’activité réelle enregistrée.
+                        Le carnet de santé numérique de ton cheval. Vaccins, vermifuges, ferrures, ostéo : tout au même endroit, même sans réseau à l’écurie.
                     </p>
+                    <ul className="space-y-2 text-[13px] opacity-80">
+                        <li><Link href="/" className="hover:text-primary transition-colors">Carnet de santé</Link></li>
+                        <li><Link href="/annuaire" className="hover:text-primary transition-colors">Annuaire des praticiens</Link></li>
+                    </ul>
                     <TransparencySeal className="pt-4" />
                 </div>
 

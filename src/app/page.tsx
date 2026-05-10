@@ -1,359 +1,369 @@
+import type { Metadata } from "next";
+import Link from "next/link";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { SearchBar } from "@/components/SearchBar";
-import { ShieldCheck, Database, Globe, Stethoscope, Hammer, Zap, Heart, Activity, GraduationCap, Lock, CheckCircle2, ArrowRight, MapPin, Users } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import Link from "next/link";
-import { supabase } from "@/lib/supabase";
-import { PractitionerCard } from "@/components/PractitionerCard";
-import type { Metadata } from "next";
-import { FAQSchema } from "@/components/StructuredData";
+import { EmailCaptureForm } from "@/components/carnet/EmailCaptureForm";
+import {
+    BellRing,
+    Calendar,
+    FileText,
+    Share2,
+    ShieldCheck,
+    Sparkles,
+    Heart,
+    AlertCircle,
+    History,
+    ArrowRight,
+    CheckCircle2,
+    Smartphone,
+    WifiOff,
+} from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "Equivio – Annuaire des praticiens équins en France (ostéo, dentiste, maréchal)",
-    description: "Trouvez un ostéopathe animalier, dentiste équin ou maréchal-ferrant près de chez vous. Annuaire national de praticiens équins en France.",
+    title: "Equivio — Le carnet de santé numérique de ton cheval",
+    description:
+        "Tous les soins de ton cheval réunis dans une seule app mobile : vaccins, vermifuges, ferrures, ostéo, dentiste. Rappels intelligents, historique partageable, fonctionne hors-ligne dans ton écurie. Inscris-toi à l'accès anticipé.",
     alternates: {
         canonical: "https://equivio.fr/",
     },
+    openGraph: {
+        title: "Equivio — Le carnet de santé numérique de ton cheval",
+        description:
+            "Vaccins, vermifuges, ferrures, ostéo : tout au même endroit, dans ta poche, même sans réseau à l'écurie.",
+        url: "https://equivio.fr/",
+        type: "website",
+    },
 };
 
-const HOMEPAGE_FAQ = [
+const PROBLEMS = [
     {
-        question: "Comment trouver un ostéopathe animalier pour mon cheval ?",
-        answer: "Utilisez la barre de recherche Equivio pour sélectionner la spécialité \"Ostéopathe\" et votre localisation. Vous accéderez à la liste des professionnels vérifiés intervenant dans votre secteur."
+        icon: AlertCircle,
+        title: "Le livret papier qui se perd",
+        body: "SIRE, vaccins, ordonnances : 5 documents éparpillés, illisibles, jamais à jour quand le véto te le demande.",
     },
     {
-        question: "Quelle est la différence entre dentiste équin et vétérinaire ?",
-        answer: "Le technicien dentaire équin (TDE) est spécialisé uniquement dans l'entretien de la table dentaire. Pour les actes chirurgicaux ou les sédations lourdes, l'intervention d'un vétérinaire est requise."
+        icon: BellRing,
+        title: "Les rappels qui passent à la trappe",
+        body: "Vermifuge en retard de 3 mois, vaccin grippe oublié, dentiste qu'on n'a pas vu depuis 2 ans : on ne s'en rend compte qu'au pire moment.",
     },
     {
-        question: "Les praticiens sont-ils classés par région ?",
-        answer: "Oui, Equivio permet de filtrer les résultats par région et département. Chaque professionnel indique sa zone d'intervention réelle pour vous garantir des résultats pertinents."
-    }
+        icon: History,
+        title: "L'historique qui disparaît",
+        body: "Quand tu changes d'écurie ou que tu vends ton cheval, l'historique des soins reste dans la tête de l'ancien proprio. Plus jamais.",
+    },
 ];
 
-export default async function Home() {
-    // Fetch latest verified profiles
-    const { data: latestPractitioners } = await supabase
-        .from('practitioners')
-        .select('*')
-        .eq('status', 'active')
-        .order('created_at', { ascending: false })
-        .limit(4);
+const FEATURES = [
+    {
+        icon: FileText,
+        title: "Tous les soins, un seul carnet",
+        body: "Vaccins, vermifuges, ferrures, ostéo, dentiste, parage, visites véto. Avec photos d'ordonnances et factures.",
+    },
+    {
+        icon: BellRing,
+        title: "Rappels intelligents",
+        body: "On connaît les protocoles (grippe/tétanos tous les 6 mois, vermifuge selon coproscopie). Tu reçois la bonne notification au bon moment.",
+    },
+    {
+        icon: Share2,
+        title: "Partage en 1 tap",
+        body: "Envoie l'historique complet à ton véto, à l'acheteur, à l'écurie de pension. PDF propre, prêt à imprimer.",
+    },
+    {
+        icon: WifiOff,
+        title: "Marche sans réseau",
+        body: "Saisie offline-first. Tu notes la ferrure dans le manège sans 4G, ça se synchronise dès que tu sors.",
+    },
+    {
+        icon: Calendar,
+        title: "Carnet sanitaire FFE export",
+        body: "Génère le carnet sanitaire conforme pour les concours et compétitions, en PDF, sans recopier à la main.",
+    },
+    {
+        icon: Smartphone,
+        title: "100% mobile",
+        body: "Pensé pour la poche, à une main, dans la poussière de l'écurie. Pas un site qu'on bricole sur ordi.",
+    },
+];
 
+const FAQ = [
+    {
+        q: "C'est gratuit ?",
+        a: "Pour 1 cheval avec les fonctions de base : oui, totalement gratuit. Si tu en as plusieurs ou si tu veux les rappels SMS, l'export PDF concours et le partage avec ton écurie, ce sera 4,99 €/mois ou 49 €/an au lancement.",
+    },
+    {
+        q: "C'est dispo quand ?",
+        a: "On construit le MVP. En t'inscrivant en accès anticipé, tu recevras une invitation prioritaire avant l'ouverture publique, prévue dans les prochains mois. Tu auras aussi 3 mois Premium offerts si tu fais partie des 100 premiers inscrits.",
+    },
+    {
+        q: "Et mes données ?",
+        a: "Hébergement européen (Cloudflare + Supabase EU), conformité RGPD, export complet sur demande, suppression en 1 clic. Tes données t'appartiennent : à aucun moment on ne les vend ou on ne les partage avec des partenaires.",
+    },
+    {
+        q: "Mon ostéo / véto pourra l'utiliser aussi ?",
+        a: "Oui. Les pros auront leur propre espace pour ajouter directement leurs comptes-rendus de visite sur la fiche du cheval, après que tu les aies autorisés. Plus de papier, plus d'oubli, plus de retranscription.",
+    },
+    {
+        q: "Je cherche juste un praticien équin, c'est encore possible ?",
+        a: "Bien sûr. L'annuaire Equivio est toujours là : ostéopathes, dentistes, maréchaux référencés par région et spécialité. C'est notre point de départ et il continue de vivre.",
+    },
+];
+
+export default function HomePage() {
     return (
         <div className="flex flex-col min-h-screen bg-neutral-offwhite">
             <Header />
 
-            <main className="flex-grow pb-24 lg:pb-0">
-                {/* 🏠 Hero Section — With Depth & Geolocation Badge */}
-                <section className="pt-12 pb-10 lg:pt-20 lg:pb-16 px-6 bg-gradient-to-b from-white via-white to-neutral-offwhite relative overflow-hidden">
-                    {/* Subtle gradient orbs for depth */}
-                    <div className="absolute -top-20 -left-20 w-80 h-80 bg-gradient-to-br from-primary/8 to-transparent rounded-full blur-3xl" />
-                    <div className="absolute -bottom-10 right-0 w-64 h-64 bg-gradient-to-br from-primary-soft/10 to-transparent rounded-full blur-3xl" />
+            <main className="flex-grow pb-28 lg:pb-0">
+                {/* Hero */}
+                <section className="relative overflow-hidden pt-10 pb-14 lg:pt-20 lg:pb-24 px-5 sm:px-6">
+                    <div className="absolute -top-32 -left-20 w-80 h-80 bg-gradient-to-br from-primary/10 to-transparent rounded-full blur-3xl pointer-events-none" />
+                    <div className="absolute -bottom-20 -right-10 w-80 h-80 bg-gradient-to-br from-leather/15 to-transparent rounded-full blur-3xl pointer-events-none" />
 
-                    <div className="max-w-4xl mx-auto text-center space-y-8 relative z-10">
-                        {/* Badge géolocalisation */}
-                        <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-card-rest border border-primary/20 reveal">
-                            <MapPin className="w-4 h-4 text-primary" />
-                            <span className="text-sm font-semibold text-primary">📍 Recherche locale disponible</span>
+                    <div className="max-w-3xl mx-auto relative z-10">
+                        <div className="inline-flex items-center gap-2 bg-white px-3 py-1.5 rounded-full shadow-card-rest border border-primary/20 reveal">
+                            <Sparkles className="w-3.5 h-3.5 text-primary" />
+                            <span className="text-xs font-semibold text-primary uppercase tracking-wider">
+                                Accès anticipé
+                            </span>
                         </div>
 
-                        <div className="space-y-4 reveal [animation-delay:100ms]">
-                            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary leading-tight tracking-tight">
-                                Annuaire des praticiens équins en France
-                            </h1>
-                            <p className="text-base sm:text-lg text-neutral-charcoal/60 max-w-xl mx-auto">
-                                Trouvez un ostéopathe animalier, un dentiste équin ou un maréchal-ferrant <span className="text-primary font-semibold">qualifié</span> près de chez vous.
-                            </p>
-                        </div>
-                        <div className="pt-6 reveal [animation-delay:200ms]">
-                            <SearchBar />
-                        </div>
-                    </div>
-                </section>
+                        <h1 className="mt-6 text-4xl sm:text-5xl lg:text-6xl font-bold text-primary leading-[1.05] tracking-tight">
+                            Tous les soins de ton cheval,
+                            <span className="block text-primary-soft mt-2">dans ta poche.</span>
+                        </h1>
 
-                {/* 📝 Intro SEO Text */}
-                <section className="bg-white py-12 px-6 border-b border-neutral-stone/30">
-                    <div className="max-w-3xl mx-auto text-center space-y-6 text-neutral-charcoal/80 leading-relaxed reveal">
-                        <p>
-                            <strong>Equivio est un annuaire spécialisé dédié aux praticiens équins en France.</strong><br />
-                            Il permet aux propriétaires de chevaux de trouver rapidement un ostéopathe animalier, un dentiste équin ou un maréchal-ferrant qualifié, partout sur le territoire.
+                        <p className="mt-5 text-lg sm:text-xl text-neutral-charcoal/70 leading-relaxed max-w-2xl">
+                            Vaccins, vermifuges, ferrures, ostéo, dentiste : un seul carnet, des rappels
+                            intelligents, et qui marche même sans réseau à l'écurie.
                         </p>
-                        <p className="hidden sm:block">
-                            Chaque praticien référencé intervient auprès des chevaux pour des soins de bien-être, de locomotion ou d’entretien, selon sa spécialité.
-                            L’objectif d’Equivio est de centraliser des professionnels équins par région afin de faciliter la mise en relation et d’améliorer la visibilité des praticiens de terrain.
+
+                        <div id="early-access" className="mt-8 lg:mt-10 scroll-mt-24">
+                            <EmailCaptureForm placement="hero" />
+                        </div>
+
+                        <p className="mt-6 text-sm text-neutral-charcoal/50 flex items-center gap-2">
+                            <CheckCircle2 className="w-4 h-4 text-primary-soft flex-shrink-0" />
+                            Les 100 premiers inscrits auront 3 mois Premium offerts au lancement.
                         </p>
-                        <p className="text-sm text-neutral-charcoal/60">
-                            L’annuaire est organisé par spécialité et par zone géographique pour offrir une recherche simple, rapide et pertinente.
-                        </p>
-                    </div>
-                </section>
 
-                {/* 🐴 Categories — With Active Colors */}
-                <section className="bg-white border-b border-neutral-stone/30 shadow-[0_2px_8px_rgba(0,0,0,0.04)] pt-8 pb-5">
-                    <div className="max-w-7xl mx-auto px-6 relative">
-                        <h2 className="text-xl font-bold text-primary mb-6 text-center">
-                            Praticiens équins référencés par spécialité
-                        </h2>
-                        <div className="flex items-center justify-center gap-6 sm:gap-10 overflow-x-auto py-2 scrollbar-hide">
-                            {[
-                                { name: "Ostéopathes", icon: Stethoscope, slug: "osteopathes", color: "from-primary to-primary-soft" },
-                                { name: "Maréchaux", icon: Hammer, slug: "marechaux", color: "from-leather to-leather-light" },
-                                { name: "Dentistes", icon: Zap, slug: "dentistes", color: "from-amber-500 to-amber-400" },
-                                { name: "Bien-être", icon: Activity, slug: "bien-etre", color: "from-violet-500 to-violet-400" },
-                            ].map((cat) => (
-                                <Link
-                                    key={cat.slug}
-                                    href={`/praticiens/${cat.slug}`}
-                                    className="group flex flex-col items-center gap-3 min-w-[90px] py-3 border-b-2 border-transparent hover:border-primary transition-all duration-300"
-                                >
-                                    <div className={`w-12 h-12 bg-gradient-to-br ${cat.color} rounded-2xl flex items-center justify-center text-white shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all duration-300`}>
-                                        <cat.icon className="w-6 h-6" strokeWidth={1.5} />
-                                    </div>
-                                    <span className="text-xs font-semibold text-neutral-charcoal/60 group-hover:text-primary transition-colors whitespace-nowrap">
-                                        {cat.name}
-                                    </span>
-                                </Link>
-                            ))}
-                        </div>
-                        {/* Fade-out indicator for scroll on mobile */}
-                        <div className="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white via-white/80 to-transparent pointer-events-none md:hidden" />
-                    </div>
-                </section>
-
-                {/* ✨ Social Proof Section — Elevated Cards with Reveal */}
-                {latestPractitioners && latestPractitioners.length > 0 && (
-                    <section className="py-14 lg:py-20 reveal [animation-delay:100ms]">
-                        <div className="max-w-7xl mx-auto px-6 space-y-10">
-                            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                                <div>
-                                    <h2 className="text-2xl sm:text-3xl font-bold text-primary">
-                                        Praticiens récemment vérifiés
-                                    </h2>
-                                    <p className="text-sm text-neutral-charcoal/50 mt-2">
-                                        Derniers professionnels dont l'activité a été confirmée.
-                                    </p>
-                                </div>
-                                <Link
-                                    href="/search"
-                                    className="text-sm font-semibold text-primary hover:text-primary-soft flex items-center gap-2 group"
-                                >
-                                    Voir tout <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                                </Link>
-                            </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                                {latestPractitioners.map((practitioner, idx) => (
-                                    <div key={practitioner.id} className="reveal" style={{ animationDelay: `${idx * 100}ms` }}>
-                                        <PractitionerCard {...practitioner} />
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </section>
-                )}
-
-                {/* 🛡 Trust Pillars — Elevated Style with Reveal */}
-                <section className="py-14 lg:py-20 bg-white reveal [animation-delay:200ms]">
-                    <div className="max-w-7xl mx-auto px-6">
-                        <h2 className="text-2xl sm:text-3xl font-bold text-primary text-center mb-12">
-                            Pourquoi utiliser l’annuaire Equivio ?
-                        </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                            {[
-                                {
-                                    icon: Database,
-                                    title: "Présence vérifiée",
-                                    desc: "Nous validons que le praticien intervient régulièrement dans votre secteur.",
-                                    gradient: "from-primary to-primary-soft"
-                                },
-                                {
-                                    icon: Globe,
-                                    title: "Sans avis clients",
-                                    desc: "La réputation ne s'achète pas. Seule la réalité du travail compte.",
-                                    gradient: "from-leather to-leather-light"
-                                },
-                                {
-                                    icon: ShieldCheck,
-                                    title: "Expertise certifiée",
-                                    desc: "Diplômes contrôlés et statut professionnel validé.",
-                                    gradient: "from-primary-soft to-primary"
-                                }
-                            ].map((item, idx) => (
-                                <div
-                                    key={idx}
-                                    className="group p-8 bg-gradient-to-br from-white to-neutral-offwhite/60 rounded-3xl border border-neutral-stone/30 shadow-[0_4px_20px_rgba(0,0,0,0.06)] hover:shadow-[0_12px_40px_rgba(31,61,43,0.12)] hover:-translate-y-1 transition-all duration-300 reveal"
-                                    style={{ animationDelay: `${idx * 100}ms` }}
-                                >
-                                    <div className={`w-14 h-14 bg-gradient-to-br ${item.gradient} rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                                        <item.icon className="w-7 h-7" strokeWidth={1.5} />
-                                    </div>
-                                    <h3 className="font-bold text-lg text-primary mb-3">{item.title}</h3>
-                                    <p className="text-sm text-neutral-charcoal/60 leading-relaxed">{item.desc}</p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </section>
-
-                {/* 👥 Dual Journey — Rich Split Section with Enhanced Visibility */}
-                <section className="py-14 lg:py-24 bg-neutral-offwhite reveal [animation-delay:300ms]">
-                    <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        {/* Propriétaires */}
-                        <div className="bg-white rounded-3xl p-8 lg:p-12 space-y-6 shadow-[0_4px_24px_rgba(0,0,0,0.06)] hover:shadow-[0_12px_48px_rgba(31,61,43,0.1)] transition-all duration-300 border border-neutral-stone/20">
-                            <div>
-                                <span className="inline-block px-4 py-1.5 bg-gradient-to-r from-primary/10 to-primary-soft/10 text-primary text-xs font-bold uppercase tracking-wider rounded-full mb-4">
-                                    Propriétaires
-                                </span>
-                                <h2 className="text-2xl lg:text-3xl font-bold text-primary leading-tight">
-                                    Trouvez les meilleurs experts à proximité
-                                </h2>
-                            </div>
-                            <p className="text-neutral-charcoal/60">
-                                Ne vous fiez plus au hasard. Accédez à un annuaire où chaque professionnel est présent pour sa pratique réelle.
-                            </p>
-                            <ul className="space-y-4">
-                                {["Recherche par zone géographique", "Indicateurs de spécialisation"].map((item, idx) => (
-                                    <li key={idx} className="flex gap-3 items-center text-sm font-medium text-neutral-charcoal">
-                                        <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center">
-                                            <CheckCircle2 className="w-4 h-4 text-primary" />
-                                        </div>
-                                        {item}
-                                    </li>
-                                ))}
-                            </ul>
+                        <p className="mt-4 text-sm text-neutral-charcoal/55 max-w-md">
+                            Tu cherches un praticien équin tout de suite ?{" "}
                             <Link
-                                href="/search"
-                                className="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary-soft group mt-4"
+                                href="/annuaire"
+                                className="text-primary font-semibold underline underline-offset-2 hover:text-primary-soft"
                             >
-                                Lancer une recherche <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                                Va sur l'annuaire Equivio →
                             </Link>
-                        </div>
-
-                        {/* Praticiens — ENHANCED VISIBILITY */}
-                        <div className="bg-gradient-to-br from-primary via-primary to-primary-soft rounded-3xl p-8 lg:p-12 space-y-6 text-white shadow-[0_12px_48px_rgba(31,61,43,0.4)] hover:shadow-[0_20px_64px_rgba(31,61,43,0.5)] transition-all duration-300 relative overflow-hidden ring-2 ring-white/20">
-                            {/* Grain texture */}
-                            <div className="absolute inset-0 bg-grain opacity-5" />
-
-                            {/* Glow effect */}
-                            <div className="absolute -top-20 -right-20 w-40 h-40 bg-white/10 rounded-full blur-3xl" />
-
-                            <div className="relative z-10">
-                                <span className="inline-block px-4 py-1.5 bg-white/15 text-white/90 text-xs font-bold uppercase tracking-wider rounded-full mb-4 backdrop-blur-sm">
-                                    Praticiens
-                                </span>
-                                {/* TITRE AMÉLIORÉ : Plus grand, shadow max, meilleur contraste */}
-                                <h2 className="text-3xl lg:text-4xl font-extrabold leading-tight text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
-                                    Votre visibilité dépend de votre activité
-                                </h2>
-                            </div>
-                            <p className="text-white/90 relative z-10 text-base">
-                                Fini le marketing payant. C'est votre travail quotidien qui construit votre réputation.
-                            </p>
-                            <ul className="space-y-4 relative z-10">
-                                {["Pas d'algorithme payant", "Zone d'intervention valorisée"].map((item, idx) => (
-                                    <li key={idx} className="flex gap-3 items-center text-sm font-medium text-white/90">
-                                        <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
-                                            <CheckCircle2 className="w-4 h-4 text-white" />
-                                        </div>
-                                        {item}
-                                    </li>
-                                ))}
-                            </ul>
-                            <div className="pt-4 relative z-10">
-                                <Link href="/rejoindre">
-                                    <Button className="w-full bg-white text-primary hover:bg-white/90 font-bold py-5 rounded-2xl shadow-lg hover:shadow-xl transition-all press-effect">
-                                        Rejoindre le réseau
-                                    </Button>
-                                </Link>
-                            </div>
-                        </div>
+                        </p>
                     </div>
                 </section>
 
-                {/* Pourquoi Equivio — Elevated Cards with Reveal */}
-                <section className="py-14 lg:py-20 bg-white reveal [animation-delay:400ms]">
-                    <div className="max-w-7xl mx-auto px-6">
-                        <h2 className="text-2xl sm:text-3xl font-bold text-primary text-center mb-14">
-                            L'expertise à portée de main
-                        </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                            {[
-                                { title: "Expertise technique", desc: "Plateforme conçue par des experts du milieu équin.", icon: GraduationCap, color: "from-primary to-primary-soft" },
-                                { title: "Données sécurisées", desc: "Protection selon les normes européennes.", icon: Lock, color: "from-neutral-charcoal to-neutral-charcoal/80" },
-                                { title: "Réseau d'échange", desc: "Collaboration entre spécialités.", icon: Globe, color: "from-leather to-leather-light" },
-                                { title: "Neutralité garantie", desc: "Aucune mise en avant payante.", icon: ShieldCheck, color: "from-primary-soft to-primary" },
-                            ].map((pillar, idx) => (
+                {/* Problem section */}
+                <section className="px-5 sm:px-6 py-14 lg:py-20 bg-white border-y border-neutral-stone/60">
+                    <div className="max-w-5xl mx-auto">
+                        <div className="text-center mb-10 lg:mb-14">
+                            <p className="text-xs font-bold text-leather uppercase tracking-[0.2em] mb-3">
+                                Le quotidien d'un proprio
+                            </p>
+                            <h2 className="text-3xl sm:text-4xl font-bold text-primary tracking-tight">
+                                Tu te reconnais ?
+                            </h2>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+                            {PROBLEMS.map((p) => (
                                 <div
-                                    key={idx}
-                                    className="group text-center space-y-4 p-8 bg-gradient-to-br from-neutral-offwhite/50 to-white rounded-2xl border border-neutral-stone/20 shadow-[0_2px_12px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(31,61,43,0.1)] hover:-translate-y-1 transition-all duration-300 reveal"
-                                    style={{ animationDelay: `${idx * 100}ms` }}
+                                    key={p.title}
+                                    className="bg-neutral-offwhite rounded-2xl p-6 shadow-card-rest border border-neutral-stone/40"
                                 >
-                                    <div className={`w-14 h-14 mx-auto bg-gradient-to-br ${pillar.color} rounded-2xl flex items-center justify-center text-white shadow-md group-hover:scale-110 transition-transform duration-300`}>
-                                        <pillar.icon className="w-6 h-6" strokeWidth={1.5} />
+                                    <div className="w-11 h-11 rounded-xl bg-leather/10 flex items-center justify-center mb-4">
+                                        <p.icon className="w-5 h-5 text-leather" />
                                     </div>
-                                    <h3 className="font-bold text-neutral-charcoal">{pillar.title}</h3>
-                                    <p className="text-sm text-neutral-charcoal/60">{pillar.desc}</p>
+                                    <h3 className="text-lg font-bold text-primary mb-2 leading-tight">
+                                        {p.title}
+                                    </h3>
+                                    <p className="text-[15px] text-neutral-charcoal/70 leading-relaxed">
+                                        {p.body}
+                                    </p>
                                 </div>
                             ))}
                         </div>
                     </div>
                 </section>
 
-                {/* ❓ FAQ Section */}
-                <section className="py-14 lg:py-20 bg-white border-t border-neutral-stone/30 reveal">
-                    <div className="max-w-3xl mx-auto px-6">
-                        <h2 className="text-2xl sm:text-3xl font-bold text-primary text-center mb-10">
-                            Questions fréquentes sur les praticiens équins
-                        </h2>
-                        <div className="space-y-8">
-                            {HOMEPAGE_FAQ.map((item, idx) => (
-                                <article key={idx} className="space-y-2">
-                                    <h3 className="font-bold text-lg text-primary">{item.question}</h3>
-                                    <p className="text-neutral-charcoal/70 leading-relaxed">
-                                        {item.answer}
+                {/* Features section */}
+                <section className="px-5 sm:px-6 py-14 lg:py-20">
+                    <div className="max-w-5xl mx-auto">
+                        <div className="text-center mb-10 lg:mb-14">
+                            <p className="text-xs font-bold text-primary-soft uppercase tracking-[0.2em] mb-3">
+                                Ce que tu vas pouvoir faire
+                            </p>
+                            <h2 className="text-3xl sm:text-4xl font-bold text-primary tracking-tight">
+                                Le carnet pensé pour de vrais cavaliers
+                            </h2>
+                            <p className="mt-4 text-neutral-charcoal/70 max-w-2xl mx-auto text-base sm:text-lg">
+                                Pas un Excel déguisé. Pensé mobile, pensé écurie, pensé pour la vraie vie d'un cheval.
+                            </p>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+                            {FEATURES.map((f) => (
+                                <div
+                                    key={f.title}
+                                    className="bg-white rounded-2xl p-6 shadow-card-rest border border-neutral-stone/40 hover-lift hover:shadow-card-hover"
+                                >
+                                    <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center mb-4">
+                                        <f.icon className="w-5 h-5 text-primary" />
+                                    </div>
+                                    <h3 className="text-lg font-bold text-primary mb-2 leading-tight">
+                                        {f.title}
+                                    </h3>
+                                    <p className="text-[15px] text-neutral-charcoal/70 leading-relaxed">
+                                        {f.body}
                                     </p>
-                                </article>
+                                </div>
                             ))}
                         </div>
                     </div>
                 </section>
-                <FAQSchema questions={HOMEPAGE_FAQ} />
 
-                {/* Regions (SEO) — Minimal Footer Links */}
-                <section className="py-12 bg-neutral-offwhite border-t border-neutral-stone/30 reveal [animation-delay:500ms]">
-                    <div className="max-w-7xl mx-auto px-6 text-center md:text-left">
-                        <h2 className="text-xl font-bold text-primary mb-4">
-                            Trouver un praticien équin près de chez vous
-                        </h2>
-                        <p className="text-sm text-neutral-charcoal/60 mb-8 max-w-2xl">
-                            Les praticiens équins sont répartis sur l’ensemble des régions françaises.
-                            Sélectionnez votre région pour accéder aux professionnels intervenant localement.
-                        </p>
-                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-x-6 gap-y-3">
-                            {["Normandie", "Bretagne", "Nouvelle-Aquitaine", "Pays de la Loire", "Hauts-de-France", "Grand Est", "Auvergne-Rhône-Alpes", "Occitanie", "PACA", "Ile-de-France", "Corse"].map((region) => (
-                                <Link
-                                    key={region}
-                                    href={`/regions/${region.toLowerCase()}`}
-                                    className="text-sm text-neutral-charcoal/50 hover:text-primary hover:underline transition-colors"
+                {/* For who — split owner / pro */}
+                <section className="px-5 sm:px-6 py-14 lg:py-20 bg-leather-light/40 border-y border-neutral-stone/60">
+                    <div className="max-w-5xl mx-auto">
+                        <div className="text-center mb-10">
+                            <h2 className="text-3xl sm:text-4xl font-bold text-primary tracking-tight">
+                                Tu es...
+                            </h2>
+                        </div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-card-rest border border-neutral-stone/40">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
+                                        <Heart className="w-6 h-6 text-primary" />
+                                    </div>
+                                    <h3 className="text-2xl font-bold text-primary">Propriétaire</h3>
+                                </div>
+                                <ul className="space-y-3 text-[15px] text-neutral-charcoal/80">
+                                    <li className="flex gap-2">
+                                        <CheckCircle2 className="w-5 h-5 text-primary-soft flex-shrink-0 mt-0.5" />
+                                        <span>Suivi complet de chaque cheval, du poulain au retraité.</span>
+                                    </li>
+                                    <li className="flex gap-2">
+                                        <CheckCircle2 className="w-5 h-5 text-primary-soft flex-shrink-0 mt-0.5" />
+                                        <span>Rappels personnalisés par cheval (vaccin, vermifuge, ferrure).</span>
+                                    </li>
+                                    <li className="flex gap-2">
+                                        <CheckCircle2 className="w-5 h-5 text-primary-soft flex-shrink-0 mt-0.5" />
+                                        <span>Partage du carnet avec écurie, demi-pension, acheteur.</span>
+                                    </li>
+                                    <li className="flex gap-2">
+                                        <CheckCircle2 className="w-5 h-5 text-primary-soft flex-shrink-0 mt-0.5" />
+                                        <span>Export carnet sanitaire FFE pour les concours.</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-card-rest border border-neutral-stone/40">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-12 h-12 rounded-xl bg-leather/15 flex items-center justify-center">
+                                        <ShieldCheck className="w-6 h-6 text-leather" />
+                                    </div>
+                                    <h3 className="text-2xl font-bold text-primary">Professionnel</h3>
+                                </div>
+                                <ul className="space-y-3 text-[15px] text-neutral-charcoal/80">
+                                    <li className="flex gap-2">
+                                        <CheckCircle2 className="w-5 h-5 text-primary-soft flex-shrink-0 mt-0.5" />
+                                        <span>Saisie d'un compte-rendu en 30 secondes après la visite.</span>
+                                    </li>
+                                    <li className="flex gap-2">
+                                        <CheckCircle2 className="w-5 h-5 text-primary-soft flex-shrink-0 mt-0.5" />
+                                        <span>Base clients propre, agenda, rappels pour les chevaux suivis.</span>
+                                    </li>
+                                    <li className="flex gap-2">
+                                        <CheckCircle2 className="w-5 h-5 text-primary-soft flex-shrink-0 mt-0.5" />
+                                        <span>
+                                            Profil pro visible sur{" "}
+                                            <Link href="/annuaire" className="text-primary underline underline-offset-2 hover:text-primary-soft">
+                                                l'annuaire Equivio
+                                            </Link>.
+                                        </span>
+                                    </li>
+                                    <li className="flex gap-2">
+                                        <CheckCircle2 className="w-5 h-5 text-primary-soft flex-shrink-0 mt-0.5" />
+                                        <span>Tu fais gagner du temps à tes clients, ils restent.</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* FAQ */}
+                <section className="px-5 sm:px-6 py-14 lg:py-20">
+                    <div className="max-w-3xl mx-auto">
+                        <div className="text-center mb-10">
+                            <h2 className="text-3xl sm:text-4xl font-bold text-primary tracking-tight">
+                                Questions fréquentes
+                            </h2>
+                        </div>
+
+                        <div className="space-y-3">
+                            {FAQ.map((item) => (
+                                <details
+                                    key={item.q}
+                                    className="group bg-white rounded-2xl border border-neutral-stone/50 shadow-card-rest overflow-hidden"
                                 >
-                                    {region}
-                                </Link>
+                                    <summary className="cursor-pointer list-none px-5 py-4 sm:px-6 sm:py-5 flex items-center justify-between gap-4 min-h-[64px] press-effect">
+                                        <span className="text-base sm:text-lg font-semibold text-primary leading-snug">
+                                            {item.q}
+                                        </span>
+                                        <ArrowRight className="w-5 h-5 text-primary-soft flex-shrink-0 transition-transform duration-300 group-open:rotate-90" />
+                                    </summary>
+                                    <div className="px-5 pb-5 sm:px-6 sm:pb-6 text-[15px] text-neutral-charcoal/75 leading-relaxed">
+                                        {item.a}
+                                    </div>
+                                </details>
                             ))}
                         </div>
+                    </div>
+                </section>
+
+                {/* Final CTA */}
+                <section className="px-5 sm:px-6 py-14 lg:py-20 bg-gradient-to-b from-primary to-primary-soft text-white">
+                    <div className="max-w-2xl mx-auto text-center">
+                        <h2 className="text-3xl sm:text-4xl font-bold leading-tight tracking-tight !text-white">
+                            Sois parmi les premiers à l'avoir.
+                        </h2>
+                        <p className="mt-4 text-white/80 text-base sm:text-lg">
+                            On lance progressivement. Inscris-toi pour recevoir l'invitation et l'offre des 100 premiers.
+                        </p>
+                        <div className="mt-8 bg-white rounded-2xl p-5 sm:p-6 shadow-float">
+                            <EmailCaptureForm placement="footer-cta" />
+                        </div>
+                        <p className="mt-6 text-sm text-white/60">
+                            Tu cherches un praticien dès maintenant ?{" "}
+                            <Link
+                                href="/annuaire"
+                                className="underline underline-offset-2 hover:text-white"
+                            >
+                                Va sur l'annuaire Equivio
+                            </Link>
+                        </p>
                     </div>
                 </section>
             </main>
 
-            {/* CTA Sticky Praticiens (Mobile/Tablet) */}
-            <div className="lg:hidden fixed bottom-6 left-6 right-6 z-50 reveal [animation-delay:600ms]">
-                <Link href="/rejoindre">
-                    <Button className="w-full bg-gradient-to-r from-primary to-primary-soft text-white font-bold py-4 rounded-2xl shadow-[0_8px_24px_rgba(31,61,43,0.4)] hover:shadow-[0_12px_32px_rgba(31,61,43,0.5)] flex items-center justify-center gap-2 press-effect">
-                        <Users className="w-5 h-5" />
-                        Rejoindre Equivio
-                    </Button>
-                </Link>
+            {/* Mobile sticky CTA */}
+            <div className="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-neutral-stone shadow-[0_-4px_16px_-4px_rgba(0,0,0,0.06)]">
+                <a
+                    href="#early-access"
+                    className="flex items-center justify-center gap-2 bg-primary text-white font-semibold text-base mx-4 my-3 py-4 rounded-xl shadow-card-rest press-effect min-h-[52px]"
+                >
+                    Rejoindre l'accès anticipé
+                    <ArrowRight className="w-5 h-5" />
+                </a>
             </div>
 
             <Footer />

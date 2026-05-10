@@ -11,14 +11,14 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
     title: {
-        default: "Equivio | Le réseau de confiance des praticiens équins",
+        default: "Equivio — Le carnet de santé numérique de ton cheval",
         template: "%s | Equivio"
     },
-    description: "Découvrez les praticiens équins basés sur leur activité réelle enregistrée. Aucune note, aucun avis subjectif, uniquement la traçabilité de l'expertise par l'intervention.",
-    keywords: ["équitation", "vétérinaire équin", "ostéopathe équin", "maréchal-ferrant", "dentiste équin", "praticien équin", "activité réelle", "annuaire équin"],
+    description: "Le carnet de santé numérique de ton cheval : vaccins, vermifuges, ferrures, ostéo, dentiste — tout au même endroit, dans ta poche, même sans réseau à l'écurie.",
+    keywords: ["carnet santé cheval", "app cheval", "carnet vaccin cheval", "rappel vermifuge cheval", "carnet sanitaire FFE", "suivi cheval", "ostéopathe équin", "maréchal-ferrant", "dentiste équin", "annuaire équin"],
     openGraph: {
-        title: "Equivio | Le réseau de confiance des praticiens équins",
-        description: "Le premier annuaire premium basé sur l'activité réelle des experts de la santé équine.",
+        title: "Equivio — Le carnet de santé numérique de ton cheval",
+        description: "Vaccins, vermifuges, ferrures, ostéo : tout au même endroit, dans ta poche, même sans réseau à l'écurie.",
         url: "https://equivio.fr",
         siteName: "Equivio",
         locale: "fr_FR",
@@ -28,14 +28,14 @@ export const metadata: Metadata = {
                 url: "https://equivio.fr/og-image.png",
                 width: 1200,
                 height: 630,
-                alt: "Equivio - Le réseau de confiance des praticiens équins",
+                alt: "Equivio — Le carnet de santé numérique de ton cheval",
             },
         ],
     },
     twitter: {
         card: "summary_large_image",
-        title: "Equivio | Réseau de confiance équin",
-        description: "Activité réelle, traçabilité, neutralité.",
+        title: "Equivio — Carnet de santé du cheval",
+        description: "Vaccins, vermifuges, ferrures, ostéo : tout au même endroit, dans ta poche.",
         images: ["https://equivio.fr/og-image.png"],
     },
     robots: {

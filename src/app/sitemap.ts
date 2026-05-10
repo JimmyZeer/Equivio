@@ -52,16 +52,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             priority: 1.0,
         },
         {
-            url: `${baseUrl}/search`,
+            url: `${baseUrl}/annuaire`,
             lastModified: now,
             changeFrequency: 'daily',
             priority: 0.9,
         },
         {
-            url: `${baseUrl}/carnet`,
+            url: `${baseUrl}/search`,
             lastModified: now,
-            changeFrequency: 'weekly',
-            priority: 0.95,
+            changeFrequency: 'daily',
+            priority: 0.85,
         },
         {
             url: `${baseUrl}/revendiquer`,
