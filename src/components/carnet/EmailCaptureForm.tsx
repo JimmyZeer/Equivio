@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useTransition, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { ArrowRight, CheckCircle2, User, Stethoscope } from "lucide-react";
 import { submitEarlyAccess } from "@/app/carnet/actions";
 
@@ -39,7 +39,6 @@ export function EmailCaptureForm({
     compact = false,
 }: Props) {
     const router = useRouter();
-    const searchParams = useSearchParams();
     const [isPending, startTransition] = useTransition();
 
     const [role, setRole] = useState<"owner" | "pro">(defaultRole);
@@ -49,16 +48,6 @@ export function EmailCaptureForm({
     const [error, setError] = useState<string | null>(null);
     const [errorField, setErrorField] = useState<string | null>(null);
 
-    // Track UTM params from URL on mount
-    const [utm, setUtm] = useState({ source: "", medium: "", campaign: "" });
-    useEffect(() => {
-        setUtm({
-            source: searchParams.get("utm_source") || "",
-            medium: searchParams.get("utm_medium") || "",
-            campaign: searchParams.get("utm_campaign") || "",
-        });
-    }, [searchParams]);
-
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError(null);
@@ -67,9 +56,18 @@ export function EmailCaptureForm({
         const formData = new FormData(e.currentTarget);
         formData.set("role", role);
         formData.set("source", placement);
-        if (utm.source) formData.set("utm_source", utm.source);
-        if (utm.medium) formData.set("utm_medium", utm.medium);
-        if (utm.campaign) formData.set("utm_campaign", utm.campaign);
+
+        // Read UTM params at submit time from the live URL —
+        // avoids the Next.js useSearchParams() Suspense requirement.
+        if (typeof window !== "undefined") {
+            const params = new URLSearchParams(window.location.search);
+            const utmSource = params.get("utm_source");
+            const utmMedium = params.get("utm_medium");
+            const utmCampaign = params.get("utm_campaign");
+            if (utmSource) formData.set("utm_source", utmSource);
+            if (utmMedium) formData.set("utm_medium", utmMedium);
+            if (utmCampaign) formData.set("utm_campaign", utmCampaign);
+        }
 
         startTransition(async () => {
             const result = await submitEarlyAccess(formData);
